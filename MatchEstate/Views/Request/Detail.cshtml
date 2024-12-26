@@ -1,0 +1,127 @@
+﻿@model PropertyRequest
+
+<style>
+    .container{
+        font-size:1.25em;
+        color: #000000;
+        width: 35%;
+    }
+
+    .col-6{
+        display:flex;
+        align-items:center;
+        justify-content:end;
+    }
+
+    .row > .col-6:first-child{
+        justify-content: end;
+    }
+
+    .row > .col-6:last-child {
+        border-left:1px solid gray;
+        justify-content:start;
+    }
+
+    .row {
+        padding: 3px;
+        border-bottom: 1px solid gray;
+    }
+
+    .pt-4{
+        padding:0;
+        margin:0;
+        box-sizing:border-box;
+    }
+
+    footer .row{
+        padding:0;
+        border:none;
+    }
+</style>
+
+<h1 class="text-center mt-4">@Model.Title</h1>
+<div class="d-flex justify-content-between pt-4">
+    <div class="container d-grid">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row">Client Name Surname </th>
+                    <td>@Model.Client.NameSurname</td>
+                </tr>
+                <tr>
+                    <th scope="row">Client Email Address </th>
+                    <td>@Model.Client.Email</td>
+                </tr>
+                <tr>
+                    <th scope="row">Property Type </th>
+                    <td>@Model.PropertyType.PropertyName</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">For Sale/Rent </th>
+                    <td>@Model.IsForSaleOrRent</td>
+                </tr>
+                @if (ViewBag.DistrictsAndRooms.districts.Count != 0)
+                {
+                    <tr>
+                        <th scope="row">Districts </th>
+                        <td>
+                            @{
+                                var districts = "";
+
+                                foreach (var district in ViewBag.DistrictsAndRooms.districts)
+                                {
+                                    districts += district + ", ";
+                                }
+
+                                var districtsList = districts.Remove(districts.Length - 2);
+                                @districtsList
+                            }
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <th scope="row">Price Range </th>
+                    <td>@Model.MinimumPrice - @Model.MaximumPrice</td>
+                </tr>
+                @if (ViewBag.DistrictsAndRooms.rooms.Count != 0)
+                {
+                    <tr>
+                        <th scope="row">Number of Rooms </th>
+                        <td>
+                            @{
+                                var rooms = "";
+
+                                foreach (var room in ViewBag.DistrictsAndRooms.rooms)
+                                {
+                                    rooms += room + ", ";
+                                }
+
+                                var roomList = rooms.Remove(rooms.Length - 2);
+                                @roomList
+                            }
+                        </td>
+                    </tr>
+                }
+
+                <tr style="border:none">
+                    <th scope="row">Added Date</th>
+                    <td>@Model.AddedDate</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container w-100 mt-5">
+    Details : @Model.Details
+</div>
+<div class="mt-4">
+    <div class="container-fluid pt-4 px-4">
+        <h3>Suitable listings for this request</h3>
+
+        @await Component.InvokeAsync("GetListingsOfRequestComponent", new { requestId = Model.Id })
+    </div>
+</div>
+<script>
+    $("#navRequest").addClass("active");
+</script>

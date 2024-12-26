@@ -1,0 +1,34 @@
+﻿@model List<PropertyListing>
+
+@if (Model.Count() == 0)
+{
+    <p>There is no suitable request for this listing.</p> 
+}
+else
+{
+    @foreach(var listing in Model){
+        <div class="card mb-2 ml-4">
+            <div class="card-header">
+                @listing.Title (@listing.PropertyType.PropertyName)
+            </div>
+            <div class="card-body">
+                <h5><b>Listing Title:</b> @listing.Title</h5>
+                <p><b>Client Name Surname:</b> @listing.Client.NameSurname</p>
+                <p><b>Property Type:</b> @listing.PropertyType.PropertyName</p>
+                <p><b>For Sale/Rent:</b> @listing.IsForSaleOrRent</p>
+                <p><b>District/City:</b> @listing.District/@listing.City</p>
+                <p><b>Price Range:</b> @listing.Price TL</p>
+                <p><b>Added Date:</b> @listing.AddedDate.Day/@listing.AddedDate.Month/@listing.AddedDate.Year</p>
+                @if (listing.PropertyTypeId == 1)
+                {
+                    <p class="card-text"><b>Number of Rooms:</b> @listing.Shop.NumberOfRooms</p>
+                }
+                @if (listing.PropertyTypeId == 5)
+                {
+                    <p class="card-text"><b>Number of Rooms:</b> @listing.Apartment.NumberOfRooms</p>
+                }
+                <a href="/listing/detail/@listing.Id" class="btn btn-primary">View the listing</a>
+            </div>
+        </div>
+    }
+}

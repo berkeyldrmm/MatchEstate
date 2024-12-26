@@ -1,0 +1,94 @@
+﻿@model List<(string listingTitle, decimal earning)>
+
+<div class="container-fluid pt-4 px-4 w-100" style="background-color: #F8F9D7; height:95%;">
+    <h2>Accounting Page</h2>
+    @{
+        string month = "";
+        int monthInt = DateTime.Now.Month;
+        switch (monthInt)
+        {
+            case 1:
+                month = "January";
+                break;
+            case 2:
+                month = "Februart";
+                break;
+            case 3:
+                month = "March";
+                break;
+            case 4:
+                month = "April";
+                break;
+            case 5:
+                month = "May";
+                break;
+            case 6:
+                month = "June";
+                break;
+            case 7:
+                month = "July";
+                break;
+            case 8:
+                month = "August";
+                break;
+            case 9:
+                month = "September";
+                break;
+            case 10:
+                month = "October";
+                break;
+            case 11:
+                month = "November";
+                break;
+            case 12:
+                month = "December";
+                break;
+            default:
+                break;
+        }
+        <h5>@month income-expense statement</h5>
+    }
+    <div class="d-grid">
+        <div class="row">
+            <div class="col-6 d-flex flex-column align-items-center">
+                <partial name="../PartialViews/AddIncomeFormPartial"></partial>
+                <partial name="../PartialViews/AddExpenseFormPartial"></partial>
+               
+            </div>
+            <div class="col-6 d-flex justify-content-between align-items-center">
+                <div class="d-grid w-75">
+                    <div class="row">
+                        <h6>Amount of incomes of sells and rental in this month</h6>
+                    </div>
+                        @foreach (var income in Model)
+                        {
+                            <div class="row">
+                                <div class="col-6">
+                                    @income.listingTitle :
+                                </div>
+                                <div class="col-6">
+                                    @income.earning.ToString() TL
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-6">
+                                <b>Total:</b>
+                            </div>
+                            <div class="col-6">
+                                <b>@Model.Select(t=>t.earning).Sum().ToString() TL</b>
+                            </div>
+                        </div>
+                    
+                    <hr />
+
+                    @await Component.InvokeAsync("GetIncomeExpenseComponent", new { earning = Model.Select(t => t.earning).Sum() })
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#navAccounting").addClass("active");
+</script>

@@ -1,0 +1,9 @@
+﻿<form asp-controller="account" asp-action="AddIncomeExpense" method="post" class="w-75">
+    <div class="form-group w-100">
+        <label for="expense">Enter expense</label>
+        <input name="IncomeExpense" type="hidden" value="expense" />
+        <input name="Name" id="expense" type="text" class="form-control mt-1" placeholder="Expense Name" />
+        <input name="Cost" type="number" class="form-control mt-1" placeholder="Expense Amount" />
+        <button type="submit" class="btn btn-danger mt-4">Add expense</button>
+    </div>
+</form>

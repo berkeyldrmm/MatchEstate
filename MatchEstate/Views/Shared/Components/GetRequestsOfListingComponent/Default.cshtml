@@ -1,0 +1,29 @@
+﻿@model List<PropertyRequest>
+
+@if (Model.Count() == 0)
+{
+    <p>There is no suitable request for this listing.</p> 
+}
+else{
+    @foreach (var request in Model)
+    {
+        <div class="card mb-2 ml-4">
+            <div class="card-header">
+                @request.Title (@request.PropertyType.PropertyName)
+            </div>
+            <div class="card-body">
+                <h5><b>Request Title:</b> @request.Title</h5>
+                <p><b>Client Name Surname:</b> @request.Client.NameSurname</p>
+                <p><b>Property Type:</b> @request.PropertyType.PropertyName</p>
+                <p><b>For Sale/Rent:</b> @request.IsForSaleOrRent</p>
+                <p><b>City:</b> @request.City</p>
+                <p><b>Price Range:</b> @request.MinimumPrice TL - @request.MaximumPrice TL</p>
+                <p><b>Added Date:</b> @request.AddedDate.Day/@request.AddedDate.Month/@request.AddedDate.Year</p>
+                <a href="/request/detail/@request.Id" class="btn btn-primary">View the request</a>
+
+                <a class="btn btn-success" href="https://api.whatsapp.com/send?phone=@request.Client.PhoneNumber" target="_blank"><i class="fa-brands fa-whatsapp"></i> Contact with client</a>
+
+            </div>
+        </div>
+    }
+}

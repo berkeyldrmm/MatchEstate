@@ -1,0 +1,5 @@
+﻿@model IEnumerable<Client>
+
+@foreach(var item in Model){
+    <option value=@item.Id>@item.NameSurname (+90 @item.PhoneNumber)</option>
+}

@@ -1,0 +1,34 @@
+﻿@model Land
+
+<tr>
+    <td scope="row">Square Metersize </td>
+    <td>@Model.SquareMeterSize</td>
+</tr>
+<tr>
+    <td scope ="row">Block Number </td>
+    <td>@Model.BlockNumber</td>
+</tr>
+<tr>
+    <td scope="row">Parsel Number </td>
+    <td>@Model.ParselNumber</td>
+</tr>
+<tr>
+    <td scope="row">Sheet Number </td>
+    <td>@Model.SheetNumber</td>
+</tr>
+<tr>
+    <td scope="row">Zoning Status </td>
+    <td>@(Model.TitleSheetState ? "Yes" : "No")</td>
+</tr>
+<tr>
+    <td scope="row">Price per Metersize </td>
+    <td>@Model.PricePerSquareMeter</td>
+</tr>
+<tr>
+    <td scope="row">Zoning Status </td>
+    <td>@(Model.ZoningStatus ? "Yes" : "No")</td>
+</tr>
+<tr>
+    <td scope="row">Land Share Eligibity </td>
+    <td>@(Model.LandShareEligibility ? "Yes" : "No")</td>
+</tr>

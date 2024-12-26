@@ -1,0 +1,43 @@
+﻿@model List<(PropertyRequest request, PropertyListing listing)>
+
+<div class="container-fluid pt-4 px-4">
+    <h2>Current Matches</h2>
+    @foreach (var listingRequestPair in Model)
+    {
+        <div class="card mb-2 ml-4">
+            <div class="card-header">
+                @listingRequestPair.request.Title <i class="fa fa-arrow-right"></i> @listingRequestPair.listing.Title
+            </div>
+            <div class="card-body d-grid">
+                <div class="row">
+                    <div class="col-4">
+                        <h5><b>Request Title:</b> @listingRequestPair.request.Title</h5>
+                        <p><b>Client Name Surname:</b> @listingRequestPair.request.Client.NameSurname</p>
+                        <p><b>Property Type:</b> @listingRequestPair.request.PropertyType.PropertyName</p>
+                        <p><b>For Sale/Rent:</b> @listingRequestPair.request.IsForSaleOrRent</p>
+                        <p><b>City:</b> @listingRequestPair.request.City</p>
+                        <p><b>Price Range:</b> @listingRequestPair.request.MinimumPrice TL - @listingRequestPair.request.MaximumPrice TL</p>
+                        <p><b>Added Date:</b> @listingRequestPair.request.AddedDate.Day/@listingRequestPair.request.AddedDate.Month/@listingRequestPair.request.AddedDate.Year</p>
+                        <a href="/request/detail/@listingRequestPair.request.Id" class="btn btn-primary">View the request</a>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center align-items-center">
+                        <i class="fa fa-arrow-right" style="font-size:25px;"></i>
+                    </div>
+                    <div class="col-4">
+                        <h5><b>Listing Title:</b> @listingRequestPair.listing.Title</h5>
+                        <p><b>Client Name Surname:</b> @listingRequestPair.listing.Client.NameSurname</p>
+                        <p><b>Property Type:</b> @listingRequestPair.listing.PropertyType.PropertyName</p>
+                        <p><b>For Sale/Rent:</b> @listingRequestPair.listing.IsForSaleOrRent</p>
+                        <p><b>District/City:</b> @listingRequestPair.listing.District/@listingRequestPair.listing.City</p>
+                        <p><b>Price:</b> @listingRequestPair.listing.Price TL</p>
+                        <p><b>Added Date:</b> @listingRequestPair.listing.AddedDate.Day/@listingRequestPair.listing.AddedDate.Month/@listingRequestPair.listing.AddedDate.Year</p>
+                        <a href="/listing/detail/@listingRequestPair.listing.Id" class="btn btn-primary">View the listing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $("#navMatch").addClass("active");
+</script>

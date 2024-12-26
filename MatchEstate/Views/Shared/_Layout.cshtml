@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.title</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+
+    <link href="img/favicon.ico" rel="icon">
+
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="~/lib/fontawesome/css/all.min.css">
+
+    <link href="~/css/style.css" rel="stylesheet">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap/bootstrap-bundle.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="sidebar pb-3 bg-secondary">
+            <nav class="navbar bg-secondary navbar-dark">
+                <a href="/" class="navbar-brand mb-3 mx-auto">
+                    <img width="200" src="~/img/logo.jpg" />
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="ms-3">
+                        <h6 id="nameSurname" class="mb-0"></h6>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100" id="mainNavbar">
+                    <a href="/" class="nav-item nav-link" id="navHome"><i class="fa fa-house me-2"></i>Home</a>
+                    <a href="/listing" class="nav-item nav-link" id="navListing"><i class="fa fa-laptop me-2"></i>Property Listings</a>
+                    <a href="/request" class="nav-item nav-link" id="navRequest"><i class="fa fa-th me-2"></i>Property Requests</a>
+                    <a href="/matching" class="nav-item nav-link" id="navMatch"><i class="fa fa-equals me-2"></i><span style="font-size:13px;">Listing-Request Matches</span></a>
+                    <a href="/client" class="nav-item nav-link" id="navClient"><i class="fa fa-phone me-2"></i>Clients</a>
+                    <a href="/account" class="nav-item nav-link" id="navAccounting"><i class="fa fa-calculator me-2"></i>Accounting</a>
+                </div>
+            </nav>
+        </div>
+        <div class="content">
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="height:64px;">
+                <a href="/" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item" style="margin-left:15px;">
+                        <a class="btn" href="/login/changepassword" style="background-color: #4CB9E7; color:#ffffff; border-radius:10px;">
+                            Change password
+                        </a>
+                    </div>
+                    <div class="nav-item" style="margin-left:15px;">
+                        <button class="btn" style="background-color: #003049;text-decoration: none; border-radius:10px; color:#ffffff" data-toggle="modal" data-target="#logOutModel">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            
+            @RenderBody()
+
+        </div>
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        
+        <div class="modal" role="dialog" id="logOutModel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to log out?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" href="/login/logout" class="btn btn-danger" onclick="deleteNameSurname()">Logout</a>
+                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-secondary rounded-top p-4">
+                <div class="row">
+                    <div class="col-12 col-sm-6 text-center mx-auto">
+                        &copy; <a href="/">MatchEstate</a>, All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/chart/chart.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="~/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="~/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script>
+        function deleteNameSurname(){
+            localStorage.removeItem("NameSurname");
+        }
+
+        if (localStorage.getItem("NameSurname") == null) {
+            $.get("/login/getNameSurname", (nameSurname) => {
+                localStorage.setItem("NameSurname", nameSurname);
+                $("#nameSurname").html(nameSurname);
+            });
+        }
+
+        $("#nameSurname").html(localStorage.getItem("NameSurname"));
+    </script>
+</body>
+</html>

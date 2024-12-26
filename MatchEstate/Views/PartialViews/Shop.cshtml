@@ -1,0 +1,62 @@
+﻿@model Shop
+
+<tr>
+    <td scope="row">Gross Square Metersize </td>
+    <td>@Model.SquareMeterSizeGross</td>
+</tr>
+<tr>
+    <td scope="row">Square Metersize </td>
+    <td>@Model.SquareMeterSize</td>
+</tr>
+<tr>
+    <td scope="row">Block Number </td>
+    <td>@Model.BlockNumber</td>
+</tr>
+<tr>
+    <td scope="row">Parsel Number </td>
+    <td>@Model.ParselNumber</td>
+</tr>
+<tr>
+    <td scope="row">Number of Rooms </td>
+    <td>@Model.NumberOfRooms</td>
+</tr>
+<tr>
+    <td scope="row">Elevator </td>
+    <td>@(Model.HasElevator ? "Yes" : "No")</td>
+</tr>
+<tr>
+    <td scope="row">Floor </td>
+    <td>@Model.Floor</td>
+</tr>
+<tr>
+    <td scope="row">Number of Floors </td>
+    <td>@Model.NumberOfFloors</td>
+</tr>
+<tr>
+    <td scope="row">Usage State </td>
+    <td>@Model.UsageState</td>
+</tr>
+<tr>
+    <td scope="row">Dues</td>
+    <td>@Model.Dues</td>
+</tr>
+<tr>
+    <td scope="row">Age of Building </td>
+    <td>@Model.AgeOfBuilding</td>
+</tr>
+<tr>
+    <td scope="row">Heating Type </td>
+    <td>@Model.HeatingType</td>
+</tr>
+<tr>
+    <td scope="row">Eligibity for Loan </td>
+    <td>@(Model.IsEligibleForLoan ? "Yes" : "No")</td>
+</tr>
+<tr>
+    <td scope="row">Parking Lot </td>
+    <td>@(Model.HasParkingLot ? "Yes" : "No")</td>
+</tr>
+<tr>
+    <td scope="row">Furnished </td>
+    <td>@(Model.IsFurnished ? "Yes" : "No")</td>
+</tr>

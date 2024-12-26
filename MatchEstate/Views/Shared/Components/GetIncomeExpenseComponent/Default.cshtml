@@ -1,0 +1,65 @@
+﻿@model List<IncomeExpenseModelDTO>
+
+<h6>Other incomes in this month</h6>
+
+@foreach (var item in Model)
+{
+    if (item.IncomeExpense.ToLower() == "income")
+    {
+        <div class="row">
+            <div class="col-6">
+                @item.Name :
+            </div>
+            <div class="col-6">
+                @item.Cost TL
+            </div>
+        </div>
+    }
+}
+<div class="row">
+    <div class="col-6">
+        <b>Total :</b>
+    </div>
+    <div class="col-6">
+        <b>@Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum().ToString() TL</b>
+    </div>
+</div>
+
+<hr />
+
+<h6>Expenses in this month</h6>
+
+@foreach (var item in Model)
+{
+    if (item.IncomeExpense.ToLower() == "expense")
+    {
+        <div class="row">
+            <div class="col-6">
+                @item.Name :
+            </div>
+            <div class="col-6">
+                -@item.Cost TL
+            </div>
+        </div>
+    }
+}
+
+<div class="row">
+    <div class="col-6">
+        <b>Total :</b>
+    </div>
+    <div class="col-6">
+        <b>-@Model.Where(i => i.IncomeExpense.ToLower() == "expense").Select(i => Convert.ToInt32(i.Cost)).Sum().ToString() TL</b>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-6">
+        <b>Net profit-loss :</b>
+    </div>
+    <div class="col-6">
+        <b>@((ViewBag.kazanc + Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum() - Model.Where(i => i.IncomeExpense.ToLower() == "gider").Select(i => Convert.ToInt32(i.Cost)).Sum()).ToString()) TL</b>
+    </div>
+</div>

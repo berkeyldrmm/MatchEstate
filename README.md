@@ -68,3 +68,7 @@ MatchEstate/
 
 6. **Access the Application**
    Open a web browser and navigate to `http://localhost:7191`.
+
+   ## Demo Account
+   Email: berke.yildirimm44@gmail.com
+   Password: Berkeyld34

@@ -69,6 +69,13 @@ MatchEstate/
 6. **Access the Application**
    Open a web browser and navigate to `http://localhost:7191`.
 
-   ## Demo Account
+   ## Application is live
+   You can try the application by visiting following link.
+   
+   https://matchestate.berkeyildirim.com.tr
+   
+   Demo Account:
+   
    Email: berke.yildirimm44@gmail.com
+   
    Password: Berkeyld34

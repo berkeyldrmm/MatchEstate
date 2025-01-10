@@ -15,5 +15,7 @@ namespace DTOLayer
         public string Status { get; set; }
         public string MinPrice { get; set; }
         public string MaxPrice { get; set; }
+        public string PageNumber { get; set; }
+        public string PageSize { get; set; }
     }
 }

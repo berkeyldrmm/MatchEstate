@@ -67,7 +67,7 @@
                                     @income.listingTitle :
                                 </div>
                                 <div class="col-6">
-                                    @income.earning.ToString() TL
+                                    @income.earning.ToString() <i class="fa fa-dollar"></i>
                                 </div>
                             </div>
                         }
@@ -76,7 +76,7 @@
                                 <b>Total:</b>
                             </div>
                             <div class="col-6">
-                                <b>@Model.Select(t=>t.earning).Sum().ToString() TL</b>
+                                <b>@Model.Select(t=>t.earning).Sum().ToString() <i class="fa fa-dollar"></i></b>
                             </div>
                         </div>
                     

@@ -1,0 +1,64 @@
+﻿@model ListingRequestModel;
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid pt-4">
+    <div class="row">
+        <h4 style="margin-left:15px;">@Model.UserNameSurname</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-white" style="background-color:#2A3335;">
+                    <h6 style="color:#ffffff;">Listings of User</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Listing Title</th>
+                                <th>Listing Property Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var listing in Model.Listings)
+                            {
+                                <tr @(listing.Status ? "style=background-color:#95d5b2;" : "")>
+                                    <td>@listing.Title</td>
+                                    <td>@listing.PropertyType</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-white" style="background-color:#2A3335;">
+                    <h6 style="color:#ffffff;">Request of User</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Request Title</th>
+                                <th>Request Property Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in Model.Requests)
+                            {
+                                <tr>
+                                    <td>@request.Title</td>
+                                    <td>@request.PropertyType</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

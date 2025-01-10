@@ -125,9 +125,9 @@
                     <i class="fa-solid fa-trash"></i> Delete listings
                 </button>
             </div>
-            <div class="d-flex justify-content-center" id="paginationContainer">
+            <div class="d-flex justify-content-center">
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination">
+                    <ul class="pagination" id="paginationContainer">
                        
                     </ul>
                 </nav>
@@ -182,36 +182,36 @@
     $("#navListing").addClass("active");
 
     $("input:radio[name='IsForSaleOrRent']").change(() => {
-        getByFilters();
+        getByFilters(1);
     });
 
     $("input:radio[name='PropertyType']").change(() => {
-        getByFilters();
+        getByFilters(1);
     });
 
     $("input:radio[name='status']").change(() => {
-        getByFilters();
+        getByFilters(1);
     });
 
     $("input:radio[name='sort']").change(() => {
-        getByFilters();
+        getByFilters(1);
     });
 
     $("#search").keyup(() => {
         if ($("#search").val().length > 2 || $("#search").val().length == 0) {
-            getByFilters();
+            getByFilters(1);
         }
     });
 
     $("#minPrice").keyup(() => {
         if ($("#minPrice").val().length > 2 || $("#minPrice").val().length == 0) {
-            getByFilters();
+            getByFilters(1);
         }
     });
 
     $("#maxPrice").keyup(() => {
         if ($("#maxPrice").val().length > 2 || $("#maxPrice").val().length == 0) {
-            getByFilters();
+            getByFilters(1);
         }
     });
 
@@ -248,7 +248,6 @@
 
     function sellListing(id) {
         $.post("/listing/selllisting/" + id + "?earning=" + $("#earning").val(), (data, status) => {
-            console.log(data);
             if (data.success) {
                 showStatusDiv("success", data.message, 2000);
                 setTimeout(() => {
@@ -259,11 +258,9 @@
                 showStatusDiv("danger", data.message, 2000);
             }
         });
-    }
+    };
 
-    var listings;
-
-    function getByFilters() {
+    function getByFilters(pageNumber) {
         $("tbody").html('<div class="show d-flex align-items-center justify-content-center w-100"><div class="spinner-border text-primary text-center" style = "width: 3rem; height: 3rem;" role = "status"><span class="sr-only" > Loading...</span></div></div>');
         $.get("/listing/getByFilters", {
             isForSaleOrRent: $("input:radio[name='IsForSaleOrRent']:checked").val(),
@@ -272,20 +269,15 @@
             minPrice: $("#minPrice").val(),
             maxPrice: $("#maxPrice").val(),
             sort: $("input:radio[name='sort']:checked").val(),
-            search: $("#search").val()
+            search: $("#search").val(),
+            pageNumber: pageNumber,
+            pageSize: 20
         }, (data, status) => {
             if (data.success) {
-                listings = data.data;
+                var listings = data.data.listings;
 
-                let count = data.length;
-                let pageCount = count / 20;
-                let netPageCount = Math.floor(pageCount);
-                if (pageCount - netPageCount > 0) {
-                    netPageCount++;
-                }
-                showPageContainer(netPageCount);
-
-                showlistings(1);
+                showPageContainer(Math.ceil(data.data.totalListingCount/20));
+                showlistings(listings);
             }
         })
         .fail(function (xhr, status) {
@@ -296,23 +288,24 @@
 
     function showPageContainer(netPageCount) {
         let html = "";
+        // if (netPageCount == 0) {
+        //     html = "<div class='alert-danger'>An error occured.</div>"
+        // }
         for (i = 1; i <= netPageCount; i++) {
             html += `
-                     <li class="page-item" style="list-style-type: none;"><button type="button" onclick="showlistings(${i})" class="page-link">${i}</button></li>
+                     <li class="page-item" style="list-style-type: none;"><button type="button" onclick="getByFilters(${i})" class="page-link">${i}</button></li>
                 `
         }
 
         $("#paginationContainer").html(html);
     }
 
-    function showlistings(pageNumber) {
-        let startIndex = (pageNumber - 1) * 20;
-        let finishIndex = pageNumber * 20;
+    function showlistings(listings) {
         let html="";
         if(listings.length == 0){
             $("tbody").html(`<div class='alert-warning text-center'>There is no listings.</div>`);
         }
-        for (i = startIndex; i < finishIndex; i++) {
+        for (i = 0; i < listings.length; i++) {
             if (listings[i] != null || listings[i] != undefined) {
                 html += `
                            <tr ${listings[i].status ? "style=background-color:#95d5b2;" : ""}>
@@ -320,10 +313,10 @@
                               <td>${listings[i].listingTitle}</td>
                               <td>${listings[i].clientNameSurname}</td>
                               <td>${listings[i].propertyType}</td>
-                              <td>${listings[i].price}</td>
-                              <td>${listings[i].commission}</td>
+                              <td>${listings[i].price} <i class="fa fa-dollar"></i></td>
+                              <td>${listings[i].commission} <i class="fa fa-dollar"></i></td>
                               <td>${listings[i].isForSaleOrRent}</td>
-                              <td>${listings[i].earning}</td>
+                              <td>${listings[i].earning}<i class="fa fa-dollar"></i></td>
                               <td>${listings[i].neighbourhood}, ${listings[i].district}, ${listings[i].city}</td>
                               <td><a class="btn btn-sm btn-primary" href="listing/detail/${listings[i].id}">Details</a></td>
                               <td>
@@ -354,7 +347,7 @@
         })
     }
 
-    getByFilters();
+    getByFilters(1);
 
     var message = '@TempData["success"]';
     if(message != null && message!="")

@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using BusinessLayer.Abstract;
+﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
-using BusinessLayer.Validation;
 using DTOLayer;
-using EntityLayer.Entities;
 using FluentValidation;
-using MatchEstate.Controllers;
+using MatchEstate.Models;
 using MatchEstate.Wrappers;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Security.Claims;
 
 namespace MatchEstate.Controllers
 {
@@ -65,11 +60,6 @@ namespace MatchEstate.Controllers
         [HttpPost]
         public async Task<IActionResult> AddListing(AddListingDTO listingModel)
         {
-            //if (listingModel.RadioForCommission == "0" && listingModel.Commission == null)
-            //{
-            //    ViewBag.error = "Please enter commission amount.";
-            //    return View();
-            //}
             var validateResult = await _listingModelValidator.ValidateAsync(listingModel);
 
             if (validateResult.IsValid)
@@ -119,12 +109,16 @@ namespace MatchEstate.Controllers
 
         public IActionResult GetByFilters(ListingGetByFiltersDTO getByFiltersDTO)
         {
-            IEnumerable<ListingPageDTO> listings = _listingService.GetByFilters(UserId, getByFiltersDTO);
-            var response = new DataResponse<IEnumerable<ListingPageDTO>>()
+            var data = _listingService.GetByFilters(UserId, getByFiltersDTO);
+            var response = new DataResponse<ListingPageResponseModel>()
             {
                 Success = true,
                 Message = "",
-                Data = listings
+                Data = new ListingPageResponseModel
+                {
+                    Listings = data.Item1,
+                    TotalListingCount = data.Item2
+                }
             };
             return Ok(response);
         }

@@ -12,9 +12,9 @@ namespace BusinessLayer.Validation
     {
         public LoginValidation()
         {
-            RuleFor(l => l.Mail).NotNull().NotEmpty().WithMessage("Please enter your email address.");
+            RuleFor(l => l.Mail).NotEmpty().WithMessage("Please enter your email address.");
             RuleFor(l => l.Mail).EmailAddress().WithMessage("Please enter a valid email address.");
-            RuleFor(l => l.Password).NotNull().NotEmpty().WithMessage("Please enter your password.");
+            RuleFor(l => l.Password).NotEmpty().WithMessage("Please enter your password.");
         }
     }
 }

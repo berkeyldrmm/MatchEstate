@@ -12,5 +12,7 @@ namespace DTOLayer
         public int PropertyType { get; set; }
         public string Sort { get; set; }
         public string Search { get; set; }
+        public string PageNumber { get; set; }
+        public string PageSize { get; set; }
     }
 }

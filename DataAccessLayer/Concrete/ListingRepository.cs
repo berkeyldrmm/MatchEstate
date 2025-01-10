@@ -80,7 +80,7 @@ namespace DataAccessLayer.Concrete
             };
         }
 
-        public IEnumerable<ListingPageDTO> GetByFilters(string userId, List<Expression<Func<PropertyListing, bool>>> expressions, string sort)
+        public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, List<Expression<Func<PropertyListing, bool>>> expressions, string sort, int pageNumber, int pageSize)
         {
             IQueryable<PropertyListing> query = EntityOfUser(userId).Include(i => i.Client).Include(i => i.PropertyType);
 
@@ -109,6 +109,10 @@ namespace DataAccessLayer.Concrete
                 }
             }
 
+            int totalCountOfListings = query.Count();
+
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
             IEnumerable<ListingPageDTO> listings = query.Select(l => new ListingPageDTO
             {
                 Id = l.Id,
@@ -125,7 +129,7 @@ namespace DataAccessLayer.Concrete
                 Status = l.IsSoldOrRented
             });
 
-            return listings;
+            return (listings, totalCountOfListings);
         }
 
         public async Task<List<PropertyListing>> GetListingsForRequest(string userId, List<Expression<Func<PropertyListing, bool>>> expressions)
@@ -149,6 +153,11 @@ namespace DataAccessLayer.Concrete
                 earningsOfMonthTuple.Add((earning.Title, earning.Earning));
             }
             return earningsOfMonthTuple;
+        }
+
+        public int GetListingCount(string userId)
+        {
+            return EntityOfUser(userId).Count();
         }
     }
 }

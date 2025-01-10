@@ -4,7 +4,7 @@
     .container{
         font-size:1.10em;
         color: #000000;
-        width: 35%;
+        width: 65%;
     }
 
     .col-6{
@@ -41,7 +41,7 @@
     }
 </style>
 
-<h1 class="text-center mt-4">@Model.Title</h1>
+@* <h1 class="text-center mt-4">@Model.Title</h1>
 <div class="d-flex justify-content-between pt-4">
     <div class="container d-grid">
         <table class="table table-striped">
@@ -133,7 +133,120 @@
 
     @await Component.InvokeAsync("GetRequestsOfListingComponent", new { listingId = Model.Id })
     </div>
+</div> *@
+<div class="container my-5">
+    <div class="text-center">
+        <h1 class="display-5 fw-bold">@Model.Title</h1>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">Listing Details</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Client Name Surname</th>
+                            <td>@Model.Client.NameSurname</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Client Phone Number</th>
+                            <td>@Model.Client.PhoneNumber</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Client Email Address</th>
+                            <td>@Model.Client.Email</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Property Type</th>
+                            <td>@Model.PropertyType.PropertyName</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">For Sale/Rent</th>
+                            <td>@Model.IsForSaleOrRent</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Address</th>
+                            <td>@Model.Neighbourhood, @Model.District, @Model.City</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Price</th>
+                            <td>@Model.Price <i class="fa fa-dollar"></i></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Commission</th>
+                            <td>@Model.Commission <i class="fa fa-dollar"></i></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Status</th>
+                            <td>@(Model.IsSoldOrRented ? "Sold/Rented" : "Waiting for client")</td>
+                        </tr>
+                        @if (Model.IsSoldOrRented)
+                        {
+                            <tr>
+                                <th scope="row" class="text-nowrap">Earning</th>
+                                <td>@Model.Earning <i class="fa fa-dollar"></i></td>
+                            </tr>
+                        }
+                        <tr>
+                            <th scope="row" class="text-nowrap">Added Date</th>
+                            <td>@Model.AddedDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Property Details</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <tbody>
+                        @if (Model.PropertyType.Id == 1)
+                        {
+                            <partial name="../PartialViews/Shop" model=@Model.Shop></partial>
+                        }
+                        @if (Model.PropertyType.Id == 2)
+                        {
+                            <partial name="../PartialViews/Land" model=@Model.Land></partial>
+                        }
+                        @if (Model.PropertyType.Id == 3)
+                        {
+                            <partial name="../PartialViews/CommercialUnit" model=@Model.CommercialUnit></partial>
+                        }
+                        @if (Model.PropertyType.Id == 4)
+                        {
+                            <partial name="../PartialViews/Farmland" model=@Model.Farmland></partial>
+                        }
+                        @if (Model.PropertyType.Id == 5)
+                        {
+                            <partial name="../PartialViews/Apartment" model=@Model.Apartment></partial>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Additional Details</h5>
+            <p class="card-text">@Model.Details</p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h3 class="card-title">Suitable Requests</h3>
+            <div>
+                @await Component.InvokeAsync("GetRequestsOfListingComponent", new { listingId = Model.Id })
+            </div>
+        </div>
+    </div>
 </div>
+
 <script>
     $("#navListing").addClass("active");
 </script>

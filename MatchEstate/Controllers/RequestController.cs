@@ -1,9 +1,8 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
-using BusinessLayer.Validation;
 using DTOLayer;
-using EntityLayer.Entities;
 using FluentValidation;
+using MatchEstate.Models;
 using MatchEstate.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -104,14 +103,18 @@ namespace MatchEstate.Controllers
             return View(request);
         }
 
-        public async Task<IActionResult> getByFilters(RequestGetByFiltersDTO getByFilters)
+        public IActionResult GetByFilters(RequestGetByFiltersDTO getByFilters)
         {
-            var requests = await _requestService.GetByFilters(UserId, getByFilters);
-            var response = new DataResponse<IEnumerable<PropertyRequestDTO>>()
+            var data = _requestService.GetByFilters(UserId, getByFilters);
+            var response = new DataResponse<RequestPageResponseModel>()
             {
                 Success = true,
                 Message = "",
-                Data = requests
+                Data = new RequestPageResponseModel
+                {
+                    Requests = data.Item1,
+                    TotalRequestCount = data.Item2
+                }
             };
             return Ok(response);
         }

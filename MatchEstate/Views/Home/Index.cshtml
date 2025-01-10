@@ -139,4 +139,8 @@
     function showErrorMessageOnToDoList(message) {
         $("#taskList").html(`<p>${message}</p>`);
     }
+
+    if ('@TempData["nameSurname"]' != null && '@TempData["nameSurname"]' != '') {
+        localStorage.setItem("userNameSurname", '@TempData["nameSurname"]');
+    }
 </script>

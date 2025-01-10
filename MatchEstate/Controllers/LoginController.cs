@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using MatchEstate.Wrappers;
+using BusinessLayer.Concrete;
 
 namespace MatchEstate.Controllers
 {
@@ -20,10 +22,12 @@ namespace MatchEstate.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public LoginController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IValidator<LoginModelDTO> _validator;
+        public LoginController(UserManager<User> userManager, SignInManager<User> signInManager, IValidator<LoginModelDTO> validator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _validator = validator;
         }
 
         public IActionResult Index()
@@ -35,29 +39,27 @@ namespace MatchEstate.Controllers
         [HttpPost]
         public async Task<IActionResult> Index([FromForm] LoginModelDTO model)
         {
-            if(ModelState.IsValid)
+            var validateResult = await _validator.ValidateAsync(model);
+            if (validateResult.IsValid)
             {
                 User? user = await _userManager.FindByNameAsync(model.Mail);
-                if (user == null)
+                if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    ViewBag.error = "Email or password invalid.";
+                    ViewBag.loginFail = "Email or password invalid.";
                     return View();
                 }
 
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
-                };
+                var claimsIdentity = new ClaimsIdentity(authenticationType: "UserScheme");
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = model.RememberMe
-                };
+                await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
 
-                await _signInManager.SignInWithClaimsAsync(user, authProperties, claims);
-
-                ViewBag.nameSurname = user.NameSurname;
+                TempData["nameSurname"] = user.NameSurname;
                 return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.error = validateResult.Errors.Select(x => x.ErrorMessage);
             }
 
             return View();
@@ -75,6 +77,7 @@ namespace MatchEstate.Controllers
             return user.NameSurname;
         }
 
+        [Authorize]
         public IActionResult ChangePassword()
         {
             ViewBag.title = "Change Password Page";
@@ -102,39 +105,39 @@ namespace MatchEstate.Controllers
             return View();
         }
 
-        public IActionResult SignUp()
-        {
-            return View();
-        }
+        //public IActionResult SignUp()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> SignUp(string email, string password)
-        {
-            User user = new User()
-            {
-                Id = Guid.NewGuid().ToString(),
-                NameSurname = "Berke Yıldırım",
-                UserName = email,
-                Email = email,
-                PhoneNumber = "5555555555"
-            };
+        //[HttpPost]
+        //public async Task<IActionResult> SignUp(string email, string password)
+        //{
+        //    User user = new User()
+        //    {
+        //        Id = Guid.NewGuid().ToString(),
+        //        NameSurname = "Berke Yıldırım",
+        //        UserName = email,
+        //        Email = email,
+        //        PhoneNumber = "5555555555"
+        //    };
 
-            IdentityResult result = await _userManager.CreateAsync(user, password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+        //    IdentityResult result = await _userManager.CreateAsync(user, password);
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
 
-            string errorshtml = "<ul>";
-            foreach (var error in result.Errors)
-            {
-                errorshtml += $"<li>{error.Description}</li>";
-            }
+        //    string errorshtml = "<ul>";
+        //    foreach (var error in result.Errors)
+        //    {
+        //        errorshtml += $"<li>{error.Description}</li>";
+        //    }
             
-            errorshtml += "</ul>";
-            TempData["error"] = errorshtml;
+        //    errorshtml += "</ul>";
+        //    TempData["error"] = errorshtml;
 
-            return View();
-        }
+        //    return View();
+        //}
     }
 }

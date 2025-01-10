@@ -233,7 +233,7 @@ namespace BusinessLayer.Concrete
             return _listingRepository.GetForSaleOrRent(userId);
         }
 
-        public IEnumerable<ListingPageDTO> GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO)
+        public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO)
         {
             var expressions = new List<Expression<Func<PropertyListing, bool>>>();
 
@@ -265,7 +265,7 @@ namespace BusinessLayer.Concrete
                 expressions.Add(i => i.Title.Contains(getByFiltersDTO.Search) || i.City.Contains(getByFiltersDTO.Search) || i.District.Contains(getByFiltersDTO.Search) || i.Neighbourhood.Contains(getByFiltersDTO.Search) || i.Client.NameSurname.Contains(getByFiltersDTO.Search));
             }
 
-            return _listingRepository.GetByFilters(userId, expressions, getByFiltersDTO.Sort);
+            return _listingRepository.GetByFilters(userId, expressions, getByFiltersDTO.Sort, Convert.ToInt16(getByFiltersDTO.PageNumber), Convert.ToInt16(getByFiltersDTO.PageSize));
         }
 
         public async Task<List<PropertyListing>> GetListingsForRequest(string userId, PropertyRequest request)

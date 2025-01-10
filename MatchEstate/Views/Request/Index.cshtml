@@ -130,7 +130,6 @@
     function deleteRequest() {
         const checkboxes = document.querySelectorAll('input[name="request"]:checked');
         const selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
-        console.log(selectedValues);
         if (selectedValues.length != 0) {
             $.post("/request/deleterequest", { idsJson: JSON.stringify(selectedValues) }, (data, status) => {
                 if (data.success) {
@@ -150,45 +149,39 @@
     }
 
     $("input:radio[name='isForSaleOrRent']").change(() => {
-        getByFilters();
+        getByFilters(1);
     });
 
     $("input:radio[name='propertyType']").change(() => {
-        getByFilters();
+        getByFilters(1);
     });
 
     $("input:radio[name='sort']").change(() => {
-        getByFilters();
+        getByFilters(1);
     });
 
     $("#search").keyup(() => {
         if ($("#search").val().length > 2 || $("#search").val().length == 0) {
-            getByFilters();
+            getByFilters(1);
         }
     });
 
-    var requests;
-    function getByFilters() {
+    function getByFilters(pageNumber) {
 
         $("tbody").html('<div class="show d-flex align-items-center justify-content-center w-100"><div class="spinner-border text-primary text-center" style = "width: 3rem; height: 3rem;" role = "status"><span class="sr-only" > Loading...</span></div></div>');
         $.get("/request/getByFilters", {
             isForSaleOrRent: $("input:radio[name='isForSaleOrRent']:checked").val(),
             propertyType: $("input:radio[name='propertyType']:checked").val(),
             sort: $("input:radio[name='sort']:checked").val(),
-            search: $("#search").val()
+            search: $("#search").val(),
+            pageNumber: pageNumber,
+            pageSize: 20
         }, (data, status) => {
             if (data.success) {
-                requests = data.data;
+                var requests = data.data.requests;
 
-                let count = requests.length;
-                let pageCount = count / 20;
-                let netPageCount = Math.floor(pageCount);
-                if (pageCount - netPageCount > 0) {
-                    netPageCount++;
-                }
-                showPageContainer(netPageCount);
-
-                showRequests(1);
+                showPageContainer(Math.ceil(data.data.totalRequestCount/20));
+                showRequests(requests);
             }
             else{
                 showStatusDiv("danger", "An error occured while getting the requests. Please try again later.", 2000);
@@ -201,23 +194,24 @@
 
     function showPageContainer(netPageCount) {
         let html = "";
+        // if (netPageCount == 0) {
+        //     html = "<div class='alert-danger'>An error occured.</div>"
+        // }
         for (i = 1; i <= netPageCount; i++) {
             html += `
-                             <li class="page-item" style="list-style-type: none;"><button type="button" onclick="showRequests(${i})" class="page-link">${i}</button></li>
+                             <li class="page-item" style="list-style-type: none;"><button type="button" onclick="getByFilters(${i})" class="page-link">${i}</button></li>
                     `
         }
 
         $("#paginationContainer").html(html);
     }
 
-    function showRequests(pageNumber) {
-        let startIndex = (pageNumber - 1) * 20;
-        let finishIndex = pageNumber * 20;
+    function showRequests(requests) {
         let html = "";
         if(requests.length == 0){
             $("tbody").html(`<div class='alert-warning text-center'>There is no request.</div>`);
         }
-        for (i = startIndex; i < finishIndex; i++) {
+        for (i = 0; i < requests.length; i++) {
             if (requests[i] != null || requests[i] != undefined) {
                 html += `
                          <tr>
@@ -226,7 +220,7 @@
                                      <td>${requests[i].title}</td>
                                      <td>${requests[i].type}</td>
                                      <td>${requests[i].city}</td>
-                                     <td>${requests[i].minPrice} TL - ${requests[i].maxPrice} TL</td>
+                                     <td>${requests[i].minPrice} <i class="fa fa-dollar"></i> - ${requests[i].maxPrice} <i class="fa fa-dollar"></i></td>
                                      <td>${requests[i].forSaleOrRent}</td>
                                      <td><a class="btn btn-sm btn-primary" href="request/detail/${requests[i].id}">Details</a></td>
                          </tr>
@@ -252,7 +246,7 @@
         })
     }
 
-    getByFilters();
+    getByFilters(1);
 
     var message = '@TempData["success"]';
     if (message != null && message != "") {

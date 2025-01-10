@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DTOLayer;
-using Microsoft.AspNetCore.Identity;
-using EntityLayer.Entities;
-using System.Security.Claims;
-using MatchEstate.Controllers;
 
 namespace MatchEstate.Controllers
 {
@@ -11,6 +6,7 @@ namespace MatchEstate.Controllers
     {
         public IActionResult Index()
         {
+            var nameSurname = TempData["nameSurname"];
             ViewBag.title = "Home Page";
             return View();
         }

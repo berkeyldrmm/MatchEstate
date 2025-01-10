@@ -15,6 +15,6 @@ namespace BusinessLayer.Abstract
         public object GetForSaleOrRent(string userId);
         public Task<List<PropertyListing>> GetListingsForRequest(string userId, PropertyRequest request);
         public Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId);
-        public IEnumerable<ListingPageDTO> GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO);
+        public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO);
     }
 }

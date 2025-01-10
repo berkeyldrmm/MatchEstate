@@ -19,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.DependenciesContainer();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServer"],
+builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerDevelopment"],
                 sqlServerOptionsAction: sqlOptions =>
                 {
                     sqlOptions.EnableRetryOnFailure(
@@ -31,14 +31,22 @@ builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlSer
 builder.Services.AddValidatorsFromAssemblyContaining<LoginValidation>();
 builder.Services.AddScoped<IValidator<AddListingDTO>, ListingModelValidator>();
 
-builder.Services.AddAuthentication(
-               CookieAuthenticationDefaults.AuthenticationScheme)
-               .AddCookie(x =>
-               {
-                   x.Cookie.Name = "Auth";
-                   x.LoginPath = "/login";
-                   x.AccessDeniedPath = "/login";
-               });
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = "UserScheme";
+})
+.AddCookie("UserScheme", options =>
+{
+    options.LoginPath = "/Login";
+    options.AccessDeniedPath = "/AccessDenied";
+})
+.AddCookie("AdminScheme", options =>
+{
+    options.LoginPath = "/Admin/Login";
+    options.AccessDeniedPath = "/Admin/AccessDenied";
+});
 
 builder.Services.AddMvc(config =>
 {
@@ -58,10 +66,11 @@ builder.Services.AddIdentity<User, Role>(x =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Admin", policy =>
-    {
-        policy.RequireRole("admin");
-    });
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireAuthenticatedUser()
+        .AddAuthenticationSchemes("AdminScheme")
+        .RequireClaim(ClaimTypes.Role, "Admin"));
+
 });
 
 var app = builder.Build();

@@ -11,7 +11,7 @@
                 @item.Name :
             </div>
             <div class="col-6">
-                @item.Cost TL
+                @item.Cost <i class="fa fa-dollar"></i>
             </div>
         </div>
     }
@@ -21,7 +21,7 @@
         <b>Total :</b>
     </div>
     <div class="col-6">
-        <b>@Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum().ToString() TL</b>
+        <b>@Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum().ToString() <i class="fa fa-dollar"></i></b>
     </div>
 </div>
 
@@ -38,7 +38,7 @@
                 @item.Name :
             </div>
             <div class="col-6">
-                -@item.Cost TL
+                -@item.Cost <i class="fa fa-dollar"></i>
             </div>
         </div>
     }
@@ -49,7 +49,7 @@
         <b>Total :</b>
     </div>
     <div class="col-6">
-        <b>-@Model.Where(i => i.IncomeExpense.ToLower() == "expense").Select(i => Convert.ToInt32(i.Cost)).Sum().ToString() TL</b>
+        <b>-@Model.Where(i => i.IncomeExpense.ToLower() == "expense").Select(i => Convert.ToInt32(i.Cost)).Sum().ToString() <i class="fa fa-dollar"></i></b>
     </div>
 </div>
 
@@ -60,6 +60,6 @@
         <b>Net profit-loss :</b>
     </div>
     <div class="col-6">
-        <b>@((ViewBag.kazanc + Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum() - Model.Where(i => i.IncomeExpense.ToLower() == "gider").Select(i => Convert.ToInt32(i.Cost)).Sum()).ToString()) TL</b>
+        <b>@((ViewBag.kazanc + Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum() - Model.Where(i => i.IncomeExpense.ToLower() == "gider").Select(i => Convert.ToInt32(i.Cost)).Sum()).ToString()) <i class="fa fa-dollar"></i></b>
     </div>
 </div>

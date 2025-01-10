@@ -1,0 +1,66 @@
+﻿@model AddUserDTO
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid position-relative d-flex p-0">
+    
+    <div class="container-fluid">
+        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="col-12 col-sm-8">
+                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3" style="opacity:0.9">
+                    @if (ViewBag.error != null)
+                    {
+                        <div id="errorDiv" class="alert-danger" style="margin-bottom:10px;">
+                            <ul>
+                                @if (ViewBag.error != null)
+                                {
+                                    @foreach (var error in ViewBag.error)
+                                    {
+                                        <li>@error</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <script>
+                            setTimeout(()=>{
+                                $("#errorDiv").fadeOut();
+                            },2000);
+                        </script>
+                    }
+                    <div class="d-flex flex-column align-items-center justify-content-between mb-3">
+                        <h3 class="mt-2">NEW USER FORM</h3>
+                    </div>
+                    <form method="post">
+                        <div class="mb-4">
+                            <label asp-for="NameSurname">Name Surname</label>
+                            <input type="text" asp-for="NameSurname" class="form-control" placeholder="Name surname">
+                            <span asp-validation-for="NameSurname"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Mail">Email</label>
+                            <input type="email" asp-for="Mail" class="form-control" placeholder="example@example.com">
+                            <span asp-validation-for="Mail"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="PhoneNumber">Phone Number</label>
+                            <input type="tel" asp-for="PhoneNumber" class="form-control" placeholder="Phone number">
+                            <span asp-validation-for="PhoneNumber"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="Password">Password</label>
+                            <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+                            <span asp-validation-for="Password"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="PasswordCheck">Password Check</label>
+                            <input type="password" asp-for="PasswordCheck" class="form-control" placeholder="Password check">
+                            <span asp-validation-for="PasswordCheck"></span>
+                        </div>
+                        <button type="submit" class="btn py-3 w-100 mb-4" style="background:#FF2929;color:#ffffff">ADD USER</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

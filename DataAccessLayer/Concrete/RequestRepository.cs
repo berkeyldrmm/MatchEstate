@@ -61,7 +61,7 @@ namespace DataAccessLayer.Concrete
             };
         }
 
-        public async Task<IEnumerable<PropertyRequestDTO>> GetByFilters(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions, string sort)
+        public (IEnumerable<RequestPageDTO>, int) GetByFilters(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions, string sort, int pageNumber, int pageSize)
         {
             IQueryable<PropertyRequest> query = EntityOfUser(userId).Include(i => i.Client).Include(i => i.PropertyType);
 
@@ -82,7 +82,11 @@ namespace DataAccessLayer.Concrete
                 }
             }
 
-            IEnumerable<PropertyRequestDTO> DTOQuery = query.Select(r => new PropertyRequestDTO
+            int totalRequestCount = query.Count();
+
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+            IEnumerable<RequestPageDTO> DTOQuery = query.Select(r => new RequestPageDTO
             {
                 Id = r.Id,
                 Title = r.Title,
@@ -94,7 +98,7 @@ namespace DataAccessLayer.Concrete
                 MaxPrice = r.MaximumPrice.ToString()
             });
 
-            return DTOQuery;
+            return (DTOQuery, totalRequestCount);
         }
 
         public async Task<List<PropertyRequest>> GetRequestsForListing(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions)
@@ -106,6 +110,11 @@ namespace DataAccessLayer.Concrete
             }
 
             return await query.ToListAsync();
+        }
+
+        public int GetRequestCount(string userId)
+        {
+            return EntityOfUser(userId).Count();
         }
     }
 }

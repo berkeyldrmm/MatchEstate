@@ -147,7 +147,7 @@ namespace BusinessLayer.Concrete
             return _reqeustRepository.Update(item);
         }
 
-        public Task<IEnumerable<PropertyRequestDTO>> GetByFilters(string userId, RequestGetByFiltersDTO getByFilers)
+        public (IEnumerable<RequestPageDTO>, int) GetByFilters(string userId, RequestGetByFiltersDTO getByFilers)
         {
             var expressions = new List<Expression<Func<PropertyRequest, bool>>>();
 
@@ -162,7 +162,7 @@ namespace BusinessLayer.Concrete
                 expressions.Add(t => t.Title.Contains(getByFilers.Search) || t.City.Contains(getByFilers.Search) || t.Client.NameSurname.Contains(getByFilers.Search));
             }
 
-            return _reqeustRepository.GetByFilters(userId, expressions, getByFilers.Sort);
+            return _reqeustRepository.GetByFilters(userId, expressions, getByFilers.Sort, Convert.ToInt16(getByFilers.PageNumber), Convert.ToInt16(getByFilers.PageSize));
         }
 
         public async Task<List<PropertyRequest>> GetRequestsForListing(string userId, PropertyListing ilan)

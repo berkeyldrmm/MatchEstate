@@ -31,7 +31,7 @@ MatchEstate/
 
 ## Technologies Used
 
-- **Framework**: .NET 7.0
+- **Framework**: .NET 8.0
 - **Database**: Entity Framework Core with SQL Server
 - **Frontend**: Razor Views, Bootstrap
 - **Validation**: Fluent Validation

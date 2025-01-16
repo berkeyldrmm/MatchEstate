@@ -10,14 +10,9 @@ namespace RealEstate.Extensions
     {
         public static void DependenciesContainer(this IServiceCollection services)
         {
-            services.AddScoped<ILandService, LandService>();
-            services.AddScoped<IApartmentService, ApartmentService>();
-            services.AddScoped<ICommercialUnitService, CommercialUnitService>();
-            services.AddScoped<IShopService, ShopService>();
             services.AddScoped<IListingService, ListingService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IRequestService, RequestService>();
-            services.AddScoped<IFarmlandService, FarmlandService>();
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IAccountService, AccountService>();

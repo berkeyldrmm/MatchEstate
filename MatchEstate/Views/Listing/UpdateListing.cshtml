@@ -94,14 +94,16 @@ input[type="radio"]{
 
 </style>
 
-<form class="mt-4 mb-4 mx-4" asp-controller="listing" asp-action="AddListing" method="post">
+<form class="mt-4 mb-4 mx-4" action="?listingId=@ViewBag.listingId" method="post">
+    <input type="hidden" name="listingId" value="@ViewBag.listingId" />
     @if (ViewBag.error != null)
     {
-        <div id="errorDiv" class="alert-danger" style="padding:20px;">
+            <div id="errorDiv" class="alert-danger" style="padding:20px;">
             @Html.Raw(ViewBag.error)
-        </div>
+            </div>
     }
-    <h1>Adding Listing</h1>
+
+    <h1>Update Listing</h1>
     <div class="form-group">
         <div class="wrapper">
             <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="1" id="newClient" checked>
@@ -149,10 +151,11 @@ input[type="radio"]{
     <hr />
     <div class="d-grid">
         <div class="row">
-            
             <div class="form-group">
                 <label>Property Type</label>
-                <select asp-for="PropertyType" class="form-control" id="propertyTypeInput" data-property="[1,2,3,4,5]">
+                <select asp-for="PropertyType" class="form-control" id="propertyTypeInput" data-property="[1,2,3,4,5]" disabled
+                        data-bs-toggle="tooltip"
+                        title="Warning: Property type cannot be updated. If you selected a wrong property type, please create a new listing and delete this one.">
                     <option value="2">Land</option>
                     <option value="4">Farmland</option>
                     <option value="1">Shop</option>
@@ -160,6 +163,7 @@ input[type="radio"]{
                     <option value="3">Commercial Unit</option>
                 </select>
             </div>
+
             <div class="form-group">
                 <label>Square Metersize</label>
                 <input asp-for="SquareMetersize" id="sqaureMetersize" type="number" class="form-control" data-property="[1,2,3,4,5]">
@@ -342,10 +346,14 @@ input[type="radio"]{
         </div>
     </div>
     <hr />
-    
+
     <div class="form-group">
         <label>Price</label>
-        <input asp-for="Price" type="number" class="form-control w-25" id="price" />
+        <div class="input-group w-25">
+            <input asp-for="Price" type="number" class="form-control" id="price" />
+            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+        </div>
+
     </div>
     <div>
         Price per square metersize = <span id="pricePerMetersize"></span>
@@ -366,8 +374,8 @@ input[type="radio"]{
     <div class="form-group">
         <label>Commission Fee</label>
         <div class="wrapper">
-            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="1" id="option-1" checked>
-            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="0" id="option-2">
+            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="1" id="option-1">
+            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="0" id="option-2" checked>
             <label for="option-1" class="option option-1">
                 <span style="font-size:11px; text-align:center;">Default<br />(For Rent: %4 of price, For Rent: One rental fee)</span>
             </label>
@@ -377,15 +385,18 @@ input[type="radio"]{
         </div>
         <br />
         <span id="commission"></span>
-        <input asp-for="Commission" type="number" style="display:none;" placeholder="Commission fee" class="form-control w-25" id="specialCommission" />
+        <div class="input-group w-25">
+            <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="specialCommission" />
+            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+        </div>
     </div>
-    
+
     <div class="form-group">
         <label>Other Details</label>
         <textarea asp-for="Details" class="form-control" placeholder="Details..."></textarea>
     </div>
     <div class="form-group">
-        <input type="submit" class="form-control btn w-25" style="background-color:#4CB9E7;color:#ffffff;" value="Save listing" />
+        <input type="submit" class="form-control btn w-25" style="background-color:#4CB9E7;color:#ffffff;" value="Update listing" />
     </div>
 
 </form>
@@ -399,41 +410,30 @@ input[type="radio"]{
         .then(datas => {
             turkiye=datas;
             let cities = turkiye.map(data => data.name);
-            let options = "<option value='0' checked>Select city</option>";
-            cities.forEach(city => options += `<option value='${city}'>${city}</option>`)
+            let options = "";
+            cities.forEach(city => {
+                options += `<option value='${city}' ${(city.trim().toLowerCase()==@Html.Raw(Json.Serialize(Model.City.Trim().ToLower()))) ? 'selected' : ''}>${city}</option>`
+            });
             $("#selectCity").html(options);
+        })
+        .then(()=>{
+            setDistrictOptions("");
+            setNeighbourhoodOptions("");
         })
 
     $("#selectCity").change(() => {
-        let cityname = $("#selectCity").val();
-        let cityObject = turkiye.filter(city => city.name == cityname)[0];
-        let towns=cityObject.towns;
-        let townNames = towns.map(town => town.name);
-        let options = "<option value='0' checked>Select district</option>";
-        townNames.forEach(townName => options += `<option value='${townName}'>${townName}</option>`);
-        $("#selectTown").html(options);
+        setDistrictOptions("<option value='0' selected>Select district</option>");
+        setNeighbourhoodOptions("<option value='0' selected>Select neighbourhood</option>");
     });
 
     $("#selectTown").change(() => {
-        let cityname = $("#selectCity").val();
-        let cityObject = turkiye.filter(city => city.name == cityname)[0];
-        let townname = $("#selectTown").val();
-        let townObject = cityObject.towns.filter(town => town.name == townname)[0];
-        let neighbourhoods = townObject.districts;
-        let options = "<option value='0' checked>Select neighbourhood</option>";
-        let neighbourhoodOptions=[];
-        neighbourhoods.forEach(neighbourhood => {
-            neighbourhood.quarters.forEach(quarter => {
-                neighbourhoodOptions.push(`${quarter.name} ${neighbourhood.name != 'Neighbourhood' ? ',' + neighbourhood.name : ''}`)
-            })
-        });
-        neighbourhoodOptions.forEach(neighbourhood => options += `<option value='${neighbourhood}'>${neighbourhood}</option>`);
-        $("#selectNeighbourhood").html(options);
+        setNeighbourhoodOptions("<option value='0' selected>Select neighbourhood</option>");
     })
 
     $(document).ready(function () {
         propertyForm();
-        checkRadioForClient()
+        checkRadioForClient();
+        setPricePerMetersize()
 
         $("input[name='RadioForClient']").change(()=>{
             checkRadioForClient()
@@ -457,13 +457,17 @@ input[type="radio"]{
 
         $("#price").on("keyup", () => {
             setCommission();
-            
-            $("#pricePerMetersize").html(parseInt($("#price").val()) / parseInt($("#sqaureMetersize").val()));
+
+            setPricePerMetersize()
         });
 
         $("#sqaureMetersize").on("keyup", () => {
-            $("#pricePerMetersize").html(parseInt($("#price").val()) / parseInt($("#sqaureMetersize").val()));
-        })
+            setPricePerMetersize()
+        });
+
+        var selectize_item=$(".selectize-input .item").first();
+        selectize_item.attr("data-value")=="@Model.ClientId";
+        selectize_item.html("@Model.ClientNameSurname (+90 @Model.ClientPhoneNumber)")
     });
 
     function propertyForm() {
@@ -499,13 +503,42 @@ input[type="radio"]{
 
     function checkRadioForClient(){
         if ($('#newClient').is(':checked')){
-                $("#newClientDiv").fadeIn();
-                $("#savedClientDiv").fadeOut();
-            }
-            else{
-                $("#newClientDiv").fadeOut();
-                $("#savedClientDiv").fadeIn();
-            }
+            $("#newClientDiv").fadeIn();
+            $("#savedClientDiv").fadeOut();
+        }
+        else{
+            $("#newClientDiv").fadeOut();
+            $("#savedClientDiv").fadeIn();
+        }
+    }
+
+    function setPricePerMetersize(){
+        $("#pricePerMetersize").html(parseInt($("#price").val()) / parseInt($("#sqaureMetersize").val()) + "<i class='fa fa-dollar'></i>");
+    }
+
+    function setDistrictOptions(options){
+        let cityname = $("#selectCity").val().trim().toLowerCase();
+        let cityObject = turkiye.filter(city => city.name.trim().toLowerCase() == cityname)[0];
+        let towns=cityObject.towns;
+        let townNames = towns.map(town => town.name);
+        townNames.forEach(townName => options += `<option value='${townName}' ${(townName.trim().toLowerCase()==@Html.Raw(Json.Serialize(Model.District.Trim().ToLower()))) ? 'selected' : ''}>${townName}</option>`);
+        $("#selectTown").html(options);
+    }
+
+    function setNeighbourhoodOptions(options){
+        let cityname = $("#selectCity").val().trim().toLowerCase();
+        let cityObject = turkiye.filter(city => city.name.trim().toLowerCase() == cityname)[0];
+        let townname = $("#selectTown").val().trim().toLowerCase();
+        let townObject = cityObject.towns.filter(town => town.name.trim().toLowerCase() == townname)[0];
+        let neighbourhoods = townObject.districts;
+        let neighbourhoodOptions=[];
+        neighbourhoods.forEach(neighbourhood => {
+            neighbourhood.quarters.forEach(quarter => {
+                neighbourhoodOptions.push(`${quarter.name} ${neighbourhood.name != 'Neighbourhood' ? ',' + neighbourhood.name : ''}`)
+            })
+        });
+        neighbourhoodOptions.forEach(neighbourhood => options += `<option value='${neighbourhood}' ${(neighbourhood.trim().toLowerCase()==@Html.Raw(Json.Serialize(Model.Neighbourhood.Trim().ToLower()))) ? 'selected' : ''}>${neighbourhood}</option>`);
+        $("#selectNeighbourhood").html(options);
     }
 
 </script>

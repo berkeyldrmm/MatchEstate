@@ -22,17 +22,12 @@ namespace BusinessLayer.Concrete
         private readonly IClientService _clientService;
         private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
-        public RequestService(IRequestDal reqeustRepository, IClientService clientService, IPropertyService propertyService, IUnitOfWork unitOfWork)
+        public RequestService(IRequestDal reqeustRepository, IClientService clientService, IUnitOfWork unitOfWork, IPropertyService propertyService)
         {
             _reqeustRepository = reqeustRepository;
             _clientService = clientService;
             _propertyService = propertyService;
             _unitOfWork = unitOfWork;
-        }
-
-        public bool DeleteAsync(PropertyRequest item)
-        {
-            return _reqeustRepository.Delete(item);
         }
 
         public void DeleteRange(string userId, IEnumerable<string> Ids)
@@ -130,21 +125,9 @@ namespace BusinessLayer.Concrete
             int saved = await _unitOfWork.SaveChanges();
             if (result && saved > 0)
             {
-                //TempData["success"] = "Request has been saved successfully.";
-                //response.Success = true;
-                //response.Message = "";
-                //return Ok(response);
                 return (true, "Request has been saved successfully.");
             }
-            //response.Success = false;
-            //response.Message = "An error occured while adding the request.";
-            //return Ok(response);
             return (false, "An error occured while adding the request.");
-        }
-
-        public Task<bool> Update(PropertyRequest item)
-        {
-            return _reqeustRepository.Update(item);
         }
 
         public (IEnumerable<RequestPageDTO>, int) GetByFilters(string userId, RequestGetByFiltersDTO getByFilers)
@@ -189,9 +172,60 @@ namespace BusinessLayer.Concrete
             return await _reqeustRepository.GetRequestsForListing(userId, expressions);
         }
 
-        public async Task<bool> Insert(PropertyRequest item)
+        public async Task<(bool, string)> Update(string userId, string requestId, RequestModelDTO requestModel)
         {
-            return await _reqeustRepository.Insert(item);
+            var request = await _reqeustRepository.GetWithClient(userId, requestId);
+            if (request == null)
+            {
+                return (false, "Request not found.");
+            }
+
+            request.Title = requestModel.RequestTitle;
+            request.MaximumPrice = requestModel.MaxPrice ?? 0;
+            request.IsForSaleOrRent = requestModel.IsForSaleOrRent == "1" ? "For Sale" : "For Rent";
+            request.City = requestModel.City;
+            request.District = JsonConvert.SerializeObject(requestModel.District);
+            request.NumberOfRooms = JsonConvert.SerializeObject(requestModel.NumberOfRooms);
+            request.Details = requestModel.Details;
+
+            request.PropertyTypeId = Convert.ToInt32(requestModel.PropertyType);
+            request.PropertyType = await this.GetPropertyType(request.PropertyTypeId);
+
+            if (requestModel.RadioForClient == "1")
+            {
+                bool phoneNumberCheck = _clientService.ControlUserPhoneNumber(userId, requestModel.ClientPhoneNumber);
+                if (!phoneNumberCheck)
+                {
+                    return (false, "A client with the same phone number already exists.");
+                }
+
+                var client = new Client()
+                {
+                    Id = request.ClientId ?? Guid.NewGuid().ToString(),
+                    NameSurname = requestModel.ClientNameSurname,
+                    Email = requestModel.ClientEmail,
+                    PhoneNumber = requestModel.ClientPhoneNumber,
+                    UserId = userId
+                };
+
+                request.ClientId = client.Id;
+                request.Client = client;
+            }
+            else
+            {
+                request.ClientId = requestModel.ClientId;
+                request.Client = await _clientService.GetOne(requestModel.ClientId);
+            }
+
+            var result = await _reqeustRepository.Update(request);
+            int saved = await _unitOfWork.SaveChanges();
+
+            if (result && saved > 0)
+            {
+                return (true, "Request has been updated successfully.");
+            }
+
+            return (false, "An error occurred while updating the request. Please try again later.");
         }
     }
 }

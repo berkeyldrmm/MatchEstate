@@ -78,6 +78,7 @@
                                         <th scope="col">City</th>
                                         <th scope="col">Price Range</th>
                                         <th scope="col">For Sale/Rent</th>
+                                        <th scope="col">Update</th>
                                         <th scope="col">Details</th>
                                     </tr>
                                 </thead>
@@ -194,9 +195,6 @@
 
     function showPageContainer(netPageCount) {
         let html = "";
-        // if (netPageCount == 0) {
-        //     html = "<div class='alert-danger'>An error occured.</div>"
-        // }
         for (i = 1; i <= netPageCount; i++) {
             html += `
                              <li class="page-item" style="list-style-type: none;"><button type="button" onclick="getByFilters(${i})" class="page-link">${i}</button></li>
@@ -222,6 +220,7 @@
                                      <td>${requests[i].city}</td>
                                      <td>${requests[i].minPrice} <i class="fa fa-dollar"></i> - ${requests[i].maxPrice} <i class="fa fa-dollar"></i></td>
                                      <td>${requests[i].forSaleOrRent}</td>
+                                     <td><a class="btn btn-sm btn-warning" style="color:#ffffff;" href="request/updaterequest/${requests[i].id}"><i class="fa-solid fa-gear"></i></a></td>
                                      <td><a class="btn btn-sm btn-primary" href="request/detail/${requests[i].id}">Details</a></td>
                          </tr>
                       `

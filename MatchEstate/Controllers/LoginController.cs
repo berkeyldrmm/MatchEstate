@@ -104,40 +104,5 @@ namespace MatchEstate.Controllers
 
             return View();
         }
-
-        //public IActionResult SignUp()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> SignUp(string email, string password)
-        //{
-        //    User user = new User()
-        //    {
-        //        Id = Guid.NewGuid().ToString(),
-        //        NameSurname = "Berke Yıldırım",
-        //        UserName = email,
-        //        Email = email,
-        //        PhoneNumber = "5555555555"
-        //    };
-
-        //    IdentityResult result = await _userManager.CreateAsync(user, password);
-        //    if (result.Succeeded)
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-
-        //    string errorshtml = "<ul>";
-        //    foreach (var error in result.Errors)
-        //    {
-        //        errorshtml += $"<li>{error.Description}</li>";
-        //    }
-            
-        //    errorshtml += "</ul>";
-        //    TempData["error"] = errorshtml;
-
-        //    return View();
-        //}
     }
 }

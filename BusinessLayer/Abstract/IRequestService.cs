@@ -12,6 +12,7 @@ namespace BusinessLayer.Abstract
     public interface IRequestService : IGenericService<PropertyRequest>
     {
         public Task<(bool, string)> Insert(string userId, RequestModelDTO requestModel);
+        public Task<(bool, string)> Update(string userId, string requestId, RequestModelDTO requestModel);
         public Task<IEnumerable<PropertyRequest>> GetAllWithClient(string userId);
         public Task<PropertyRequest> GetWithClient(string userId, string id);
         public Task<PropertyType> GetPropertyType(int id);

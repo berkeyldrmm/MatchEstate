@@ -107,6 +107,7 @@
                                             <th scope="col">For Sale/Rent</th>
                                             <th scope="col">Earning</th>
                                             <th scope="col">Location</th>
+                                            <th scope="col">Update</th>
                                             <th scope="col">Details</th>
                                             <th scope="col">Status</th>
                                         </tr>
@@ -242,8 +243,8 @@
     }
 
     function sellListingModal(id) {
-        $("#earning-footer").html(`<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="sellListing('${id}')">Sold/Rented</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>`)
+        $("#earning-footer").html(`<button type="button" style="color:#ffffff;" class="btn btn-success" data-dismiss="modal" onclick="sellListing('${id}')">Sold/Rented</button>
+                <button type="button" style="color:#000000;" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>`)
     }
 
     function sellListing(id) {
@@ -288,9 +289,7 @@
 
     function showPageContainer(netPageCount) {
         let html = "";
-        // if (netPageCount == 0) {
-        //     html = "<div class='alert-danger'>An error occured.</div>"
-        // }
+
         for (i = 1; i <= netPageCount; i++) {
             html += `
                      <li class="page-item" style="list-style-type: none;"><button type="button" onclick="getByFilters(${i})" class="page-link">${i}</button></li>
@@ -313,15 +312,16 @@
                               <td>${listings[i].listingTitle}</td>
                               <td>${listings[i].clientNameSurname}</td>
                               <td>${listings[i].propertyType}</td>
-                              <td>${listings[i].price} <i class="fa fa-dollar"></i></td>
-                              <td>${listings[i].commission} <i class="fa fa-dollar"></i></td>
+                              <td>${listings[i].price}<i class="fa fa-dollar"></i></td>
+                              <td>${listings[i].commission}<i class="fa fa-dollar"></i></td>
                               <td>${listings[i].isForSaleOrRent}</td>
                               <td>${listings[i].earning}<i class="fa fa-dollar"></i></td>
                               <td>${listings[i].neighbourhood}, ${listings[i].district}, ${listings[i].city}</td>
+                              <td><a class="btn btn-sm btn-warning" style="color:#ffffff;" href="listing/updatelisting/${listings[i].id}"><i class="fa-solid fa-gear"></i></a></td>
                               <td><a class="btn btn-sm btn-primary" href="listing/detail/${listings[i].id}">Details</a></td>
                               <td>
                                   <div class="d-flex justify-content-between align-items-center">
-                                             ${listings[i].status ? '<div>Sold/Rented</div>' : `<div>Waiting for client</div><button type="button" style="height:fit-content;margin-left:10px;" class="btn btn-danger"data-toggle="modal" data-target="#sellListingModal" onclick="sellListingModal('${listings[i].id}')">Sell/Rent</button>`}
+                                             ${listings[i].status ? '<div>Sold/Rented</div>' : `<button type="button" style="height:fit-content;margin-left:10px;color:#ffffff;" class="btn btn-sm btn-success"data-toggle="modal" data-target="#sellListingModal" onclick="sellListingModal('${listings[i].id}')">Sell/Rent</button>`}
                                   </div>
                               </td>
                            </tr>

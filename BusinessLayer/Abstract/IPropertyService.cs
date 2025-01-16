@@ -11,5 +11,6 @@ namespace BusinessLayer.Abstract
     public interface IPropertyService
     {
         public Task<bool> AddProperty(Property property);
+        public Task<bool> UpdateProperty(Property property);
     }
 }

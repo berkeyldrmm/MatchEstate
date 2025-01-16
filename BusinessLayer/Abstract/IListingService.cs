@@ -6,6 +6,7 @@ namespace BusinessLayer.Abstract
     public interface IListingService : IGenericService<PropertyListing>
     {
         public Task<(bool, string)> Insert(string userId, AddListingDTO listingModel);
+        public Task<(bool, string)> Update(string userId, string listingId, AddListingDTO listingModel);
         public Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId);
         public Task<PropertyListing> GetWithClient(string userId, string id);
         public Task<PropertyType> GetPropertyType(int id);

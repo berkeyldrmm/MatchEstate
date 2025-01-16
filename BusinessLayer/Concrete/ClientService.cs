@@ -26,11 +26,6 @@ namespace BusinessLayer.Concrete
             return _clientRepository.ControlUserPhoneNumber(userId, phoneNumber);
         }
 
-        public bool DeleteAsync(Client item)
-        {
-            return _clientRepository.Delete(item);
-        }
-
         public void DeleteRange(string userId, IEnumerable<string> Ids)
         {
             var items = _clientRepository.GetRange(userId, Ids);
@@ -52,19 +47,9 @@ namespace BusinessLayer.Concrete
             return _clientRepository.Read(id);
         }
 
-        public async Task<bool> Insert(Client item)
-        {
-            return await _clientRepository.Insert(item);
-        }
-
         public IEnumerable<ClientPageDTO> SearchClient(string userId, string search)
         {
             return _clientRepository.SearchClient(userId, search);
-        }
-
-        public Task<bool> Update(Client item)
-        {
-            return _clientRepository.Update(item);
         }
     }
 }

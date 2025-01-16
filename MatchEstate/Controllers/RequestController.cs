@@ -1,6 +1,8 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.Validation;
 using DTOLayer;
+using EntityLayer.Entities;
 using FluentValidation;
 using MatchEstate.Models;
 using MatchEstate.Wrappers;
@@ -67,6 +69,46 @@ namespace MatchEstate.Controllers
             if (validateResult.IsValid)
             {
                 var result = await _requestService.Insert(UserId, requestModel);
+                if (result.Item1)
+                {
+                    TempData["success"] = result.Item2;
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = result.Item2;
+                }
+            }
+            else
+            {
+                IEnumerable<string> allErrors = validateResult.Errors.Select(x => x.ErrorMessage);
+                response.Success = false;
+                response.Message = ValidationMessageWriter.MessageWriter(allErrors);
+            }
+
+            return Ok(response);
+        }
+
+        [Route("Request/UpdateRequest/{requestId}")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateRequest(string requestId)
+        {
+            PropertyRequest request = await _requestService.GetWithClient(UserId, requestId);
+            RequestModelDTO dto = RequestMapper.MapToRequestModelDTO(request);
+            dto.RadioForClient = "0";
+            ViewBag.requestId = requestId;
+            return View(dto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRequest(string requestId, RequestModelDTO requestModel)
+        {
+            var validateResult = await _validator.ValidateAsync(requestModel);
+            var response = new BaseResponse();
+            if (validateResult.IsValid)
+            {
+                var result = await _requestService.Update(UserId, requestId, requestModel);
                 if (result.Item1)
                 {
                     TempData["success"] = result.Item2;

@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DTOLayer;
+using EntityLayer.Entities;
 using FluentValidation;
 using MatchEstate.Models;
 using MatchEstate.Wrappers;
@@ -80,6 +81,38 @@ namespace MatchEstate.Controllers
                 return View();
             }
         }
+
+        [Route("Listing/UpdateListing/{listingId}")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateListing(string listingId)
+        {
+            PropertyListing listing = await _listingService.GetWithClient(UserId, listingId);
+            AddListingDTO dto = ListingMapper.MapToAddListingDTO(listing);
+            dto.RadioForClient = "0";
+            ViewBag.listingId = listingId;
+            return View(dto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateListing(string listingId, AddListingDTO listingModel)
+        {
+            var validateResult = await _listingModelValidator.ValidateAsync(listingModel);
+
+            if (validateResult.IsValid)
+            {
+                var result = await _listingService.Update(UserId, listingId, listingModel);
+                if (!result.Item1)
+                {
+                    ViewBag.error = result.Item2;
+                    return View();
+                }
+                TempData["success"] = result.Item2;
+                return RedirectToAction("Index");
+            }
+            
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> SellListing(string id, [FromQuery] string earning)
         {
             bool result = await _listingService.SellListing(id, earning);

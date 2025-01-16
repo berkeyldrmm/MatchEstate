@@ -1,0 +1,428 @@
+﻿@model RequestModelDTO
+
+<link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
+<style>
+
+    .wrapper {
+        display: inline-flex;
+        background: #fff;
+        height: 100px;
+        width: 400px;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 5px;
+        padding: 20px 15px;
+    }
+
+        .wrapper .option {
+            background: #fff;
+            width: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0 10px;
+            border: 2px solid lightgrey;
+            transition: all 0.3s ease;
+        }
+
+            .wrapper .option .dot {
+                height: 20px;
+                width: 20px;
+                background: #d9d9d9;
+                border-radius: 50%;
+                position: relative;
+            }
+
+                .wrapper .option .dot::before {
+                    position: absolute;
+                    content: "";
+                    top: 4px;
+                    left: 4px;
+                    width: 12px;
+                    height: 12px;
+                    background: #0069d9;
+                    border-radius: 50%;
+                    opacity: 0;
+                    transform: scale(1.5);
+                    transition: all 0.3s ease;
+                }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    #option-1:checked:checked ~ .option-1,
+    #option-2:checked:checked ~ .option-2,
+    #newClient:checked:checked ~ .newClient,
+    #savedClient:checked:checked ~ .savedClient,
+    #forSale:checked:checked ~ .forSale,
+    #forRent:checked:checked ~ .forRent {
+        border-color: #0077b6;
+        background: #0077b6;
+    }
+
+        #option-1:checked:checked ~ .option-1 .dot,
+        #option-2:checked:checked ~ .option-2 .dot,
+        #newClient:checked:checked ~ .newClient .dot,
+        #savedClient:checked:checked ~ .savedClient .dot,
+        #forSale:checked:checked ~ .forSale .dot,
+        #forRent:checked:checked ~ .forRent .dot {
+            background: #fff;
+        }
+
+            #option-1:checked:checked ~ .option-1 .dot::before,
+            #option-2:checked:checked ~ .option-2 .dot::before,
+            #newClient:checked:checked ~ .newClient .dot::before,
+            #savedClient:checked:checked ~ .savedClient .dot::before,
+            #forSale:checked:checked ~ .forSale .dot::before,
+            #forRent:checked:checked ~ .forRent .dot::before {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+    .wrapper .option span {
+        font-size: 20px;
+        color: #808080;
+    }
+
+    #option-1:checked:checked ~ .option-1 span,
+    #option-2:checked:checked ~ .option-2 span,
+    #newClient:checked:checked ~ .newClient span,
+    #savedClient:checked:checked ~ .savedClient span,
+    #forSale:checked:checked ~ .forSale span,
+    #forRent:checked:checked ~ .forRent span {
+        color: #fff;
+    }
+
+    .selectize-input.items.not-full.has-options::after {
+        display: none;
+    }
+
+    .flex-wrap input {
+        width: 20px;
+        height: 20px;
+    }
+
+    .flex-wrap div {
+        margin-right: 20px;
+        font-size: 20px;
+    }
+</style>
+
+<form class="mt-4 mb-4 mx-4">
+    <h1>Update Request</h1>
+    <input type="hidden" name="requestId" value="@ViewBag.requestId" />
+    <div class="form-group">
+        <div class="wrapper">
+            <input type="radio" asp-for="RadioForClient" name="radioForClient" value="1" id="newClient" checked>
+            <input type="radio" asp-for="RadioForClient" name="radioForClient" value="0" id="savedClient">
+            <label for="newClient" class="option newClient">
+                <span>New Client</span>
+            </label>
+            <label for="savedClient" class="option savedClient">
+                <span>Saved Client</span>
+            </label>
+        </div>
+
+        <div id="savedClientDiv" style="display:none;">
+            <label>Select client</label>
+            <select asp-for="ClientId" name="ClientId" id="select-client" placeholder="Select client">
+                @await Component.InvokeAsync("GetClientsComponent")
+            </select>
+            <small class="text-warning">Warning: There may be some clients with same name. Phone number can be distinctive in this regard.</small>
+        </div>
+
+        <div id="newClientDiv">
+            <div class="form-group">
+                <br />
+                <label>Client name surname</label>
+                <input asp-for="ClientNameSurname" name="ClientNameSurname" type="text" class="form-control" placeholder="Name Surname">
+            </div>
+            <div class="form-group">
+                <br />
+                <label>Client email</label>
+                <input asp-for="ClientEmail" name="ClientEmail" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email address">
+            </div>
+            <div class="form-group">
+                <br />
+                <label>Client phone number</label>
+                <input asp-for="ClientPhoneNumber" name="ClientPhoneNumber" type="tel" class="form-control" placeholder="Phone number" pattern="[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="d-grid">
+        <div class="row w-100">
+            <div class="form-group w-25">
+                <label>Property Title</label>
+                <input asp-for="RequestTitle" name="RequestTitle" type="text" class="form-control" placeholder="Title">
+            </div>
+            <div class="form-group w-25">
+                <label>Property Type</label>
+                <select asp-for="PropertyType" name="PropertyType" class="form-control" id="propertyTypeInput" data-property="[1,2,3,4,5]" disabled
+                        data-bs-toggle="tooltip"
+                        title="Warning: Property type cannot be updated. If you selected a wrong property type, please create a new listing and delete this one.">
+                    <option value="2">Land</option>
+                    <option value="4">Farmland</option>
+                    <option value="1">Shop</option>
+                    <option value="5">Apartment</option>
+                    <option value="3">Commercial unit</option>
+                </select>
+            </div>
+            <div class="form-group w-50" id="numberOfRooms" data-property="[1,5]">
+                <label for="numberOfRooms" style="font-size:20px;">Number of Rooms</label>
+                <div class="d-flex flex-wrap">
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="1+0" />1+0 (Studio)</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="1+1" />1+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2+0" />2+0</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2+1" />2+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2+2" />2+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2.5+1" />2.5+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+0" />3+0</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+1" />3+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3.5+1" />3.5+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+2" />3+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+3" />3+3</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+0" />4+0</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+1" />4+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4.5+1" />4.5+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+2" />4+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+3" />4+3</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+4" />4+4</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+1" />5+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5.5+1" />5.5+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+2" />5+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+3" />5+3</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+4" />5+4</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+1" />6+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+2" />6+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+3" />6+3</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+4" />6+4</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="7+1" />7+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="7+2" />7+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="7+3" />7+3</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+1" />8+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+2" />8+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+3" />8+3</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+4" />8+4</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+1" />9+1</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+2" />9+2</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+3" />9+3</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+4" />9+4</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+5" />9+5</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+6" />9+6</div>
+                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9 or more" />9 or more</div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group">
+                <label>City</label>
+                <select asp-for="City" name="City" class="form-control" id="selectCity" data-property="[1,2,3,4,5]">
+                </select>
+            </div>
+
+            <div class="form-group d-flex flex-wrap" id="selectTown">
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-group">
+        <label>Minimum Price</label>
+        <input asp-for="MinPrice" name="MinPrice" type="number" class="form-control w-25" id="minPrice" />
+    </div>
+    <div class="form-group">
+        <label>Maximum Price</label>
+        <input asp-for="MaxPrice" name="MaxPrice" type="number" class="form-control w-25" id="maxPrice" />
+    </div>
+    <div class="form-group">
+        <label>For Sale/Rent</label>
+        <div class="wrapper">
+            <input type="radio" asp-for="IsForSaleOrRent" name="IsForSaleOrRent" value="1" id="forSale" checked>
+            <input type="radio" asp-for="IsForSaleOrRent" name="IsForSaleOrRent" value="0" id="forRent">
+            <label for="forSale" class="option forSale">
+                <span>For Sale</span>
+            </label>
+            <label for="forRent" class="option forRent">
+                <span>For Rent</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Other details</label>
+        <textarea asp-for="Details" name="Details" id="detail" class="form-control" placeholder="Details..."></textarea>
+    </div>
+    <div class="form-group">
+        <input type="submit" id="addRequest" class="form-control btn w-25" style="background-color:#0077b6;color:#ffffff;" value="Talep ekle" />
+    </div>
+    <div id="statusDiv" style="display:none;margin-top:10px;"></div>
+
+</form>
+
+<script>
+    $("#navRequest").addClass("active");
+
+    var turkiye = {};
+
+    $(document).ready(function () {
+        fetch("https://raw.githubusercontent.com/nejdetkadir/il-ilce-semt-mahalleler/master/data/data.json")
+        .then(res => res.json())
+        .then(datas => {
+            turkiye = datas;
+            let cities = turkiye.map(data => data.name);
+            let options = "";
+            console.log(@Html.Raw(Json.Serialize(Model.City.Trim().ToLower())));
+            cities.forEach(city => options += `<option value='${city}' ${(city.localeCompare(@Html.Raw(Json.Serialize(Model.City.Trim())), 'tr', { sensitivity: 'base' }) === 0) ? 'selected' : ''}>${city}</option>`)
+            $("#selectCity").html(options);
+        })
+        .then(()=>{
+            getDistricts();
+        })
+        .then(()=>{
+            setDistricts();
+        })
+
+        $("#selectCity").change(() => {
+            getDistricts()
+        });
+
+        $("#addRequest").on("click",(e)=>{
+            e.preventDefault();
+
+            var numberOfRooms = [];
+            var numberOfRoomsOptions = $("input[name='numberOfRooms']");
+            numberOfRoomsOptions.each((index, value) => {
+                if (value.checked) {
+                    numberOfRooms.push(value.value);
+                }
+            });
+
+            var districts = [];
+            var districtOptions = $("input[name='District']");
+            districtOptions.each((index, value) => {
+                if (value.checked) {
+                    districts.push(value.value);
+                }
+            });
+
+            $.post("/request/updaterequest?requestId=@Html.Raw(ViewBag.requestId)", {
+                requestTitle: $("input[name='RequestTitle']").val(),
+                radioForClient: $("input[name='radioForClient']:checked").val(),
+                clientId: $("#select-client").val(),
+                clientNameSurname: $("input[name='ClientNameSurname']").val(),
+                clientPhoneNumber: $("input[name='ClientPhoneNumber']").val(),
+                clientEmail: $("input[name='ClientEmail']").val(),
+                propertyType: $("#propertyTypeInput").val(),
+                isForSaleOrRent: $("input[name='IsForSaleOrRent']:checked").val(),
+                city: $("#selectCity").val(),
+                district: districts,
+                numberOfRooms: numberOfRooms,
+                minPrice: $("#minPrice").val(),
+                maxPrice: $("#maxPrice").val(),
+                details: $("textarea#detail").val()
+            })
+            .done((data, status) => {
+                if (data.success) {
+                    window.location.href = "/request";
+                }
+                else {
+                    showStatusDiv("danger", data.message, 15000);
+                }
+            }).fail((xhr, status, error)=>{
+                showStatusDiv("danger", `An error occured ${status} - ${error}`, 2000);
+            })
+
+        });
+
+        propertyForm();
+        checkRadioForClient()
+
+        $("input[name='radioForClient']").change(() => {
+            checkRadioForClient()
+        });
+
+        $('#select-client').selectize({
+            sortField: 'text'
+        });
+
+        $("#propertyTypeInput").change(() => {
+            propertyForm();
+        });
+
+        var rooms=@Html.Raw(Json.Serialize(Model.NumberOfRooms));
+        $("input[name=NumberOfRooms]").each((index, input) => {
+            if(rooms.includes(input.value)){
+                input.setAttribute("checked", true);
+            }
+        });
+
+        var selectize_item=$(".selectize-input .item").first();
+        selectize_item.attr("data-value")=="@Model.ClientId";
+        selectize_item.html("@Model.ClientNameSurname (+90 @Model.ClientPhoneNumber)")
+
+    });
+
+    function propertyForm() {
+        let val = $("#propertyTypeInput").val();
+        let rooms = $("#numberOfRooms");
+        let dataProperty = JSON.parse(rooms.attr("data-property"));
+
+        if (dataProperty.includes(parseInt(val))) {
+            rooms.css("display", "block");
+        }
+        else {
+            rooms.css("display", "none");
+        }
+    }
+
+    function showStatusDiv(status, message, displayTime) {
+        $("#statusDiv").html(`
+            <div class="alert-${status}" style="padding:20px;">
+                ${message}
+            </div>
+        `);
+        $("#statusDiv").fadeIn(2000, () => {
+            setTimeout(() => {
+                $("#statusDiv").fadeOut();
+            }, displayTime);
+        });
+    }
+
+    function checkRadioForClient(){
+        if ($('#newClient').is(':checked')){
+            $("#newClientDiv").fadeIn();
+            $("#savedClientDiv").fadeOut();
+        }
+        else{
+            $("#newClientDiv").fadeOut();
+            $("#savedClientDiv").fadeIn();
+        }
+    }
+
+    function getDistricts(){
+        let cityname = $("#selectCity").val();
+            let cityObject = turkiye.filter(city => city.name == cityname)[0];
+            let towns = cityObject.towns;
+            let townNames = towns.map(town => town.name);
+            let options = "<label style='font-size:20px;'>Distict</label><br/>";
+            townNames.forEach(townName => options += `<div><input type='checkbox' class="form-check-input" name='District' value='${townName}' data-property='[1,2,3,4,5]' />${townName}</div> `);
+            $("#selectTown").html(options);
+    }
+
+    function setDistricts(){
+        var districts=@Html.Raw(Json.Serialize(Model.District));
+        $("input[name=District]").each((index, input) => {
+            if(districts.includes(input.value)){
+                input.setAttribute("checked", true);
+            }
+        });
+    }
+
+</script>
+<script src="~/lib/jquery-selectize/selectize.min.js"></script>

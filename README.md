@@ -72,7 +72,7 @@ MatchEstate/
    ## Application is live
    You can try the application by visiting following link.
    
-   https://matchestate.berkeyildirim.com.tr
+   https://berkeyldrmm-001-site1.jtempurl.com/
    
    Demo Account:
    

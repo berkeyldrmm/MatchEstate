@@ -31,7 +31,7 @@ MatchEstate/
 
 ## Technologies Used
 
-- **Framework**: .NET 7.0
+- **Framework**: .NET 8.0
 - **Database**: Entity Framework Core with SQL Server
 - **Frontend**: Razor Views, Bootstrap
 - **Validation**: Fluent Validation
@@ -72,7 +72,7 @@ MatchEstate/
    ## Application is live
    You can try the application by visiting following link.
    
-   https://matchestate.berkeyildirim.com.tr
+   https://berkeyldrmm-001-site1.jtempurl.com/
    
    Demo Account:
    

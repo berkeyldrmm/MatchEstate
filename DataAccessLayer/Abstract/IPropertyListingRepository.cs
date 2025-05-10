@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IListingDal : IGenericDal<PropertyListing>
+    public interface IPropertyListingRepository : IGenericRepository<PropertyListing, string>
     {
         public Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId);
         public Task<PropertyListing> GetWithClient(string userId, string id);

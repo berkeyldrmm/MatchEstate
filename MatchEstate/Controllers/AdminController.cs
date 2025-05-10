@@ -21,9 +21,9 @@ namespace MatchEstate.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IValidator<LoginModelDTO> _validator;
         private readonly IValidator<AddUserDTO> _addUserModelValidator;
-        private readonly IListingService _listingService;
-        private readonly IRequestService _requestService;
-        public AdminController(UserManager<User> userManager, SignInManager<User> signInManager, IValidator<LoginModelDTO> validator, IListingService listingService, IRequestService requestService, IValidator<AddUserDTO> addUserModelValidator)
+        private readonly IPropertyListingService _listingService;
+        private readonly IPropertyRequestService _requestService;
+        public AdminController(UserManager<User> userManager, SignInManager<User> signInManager, IValidator<LoginModelDTO> validator, IPropertyListingService listingService, IPropertyRequestService requestService, IValidator<AddUserDTO> addUserModelValidator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -110,7 +110,7 @@ namespace MatchEstate.Controllers
             var listingRequestModel = new ListingRequestModel()
             {
                 UserNameSurname = user,
-                Listings = _listingService.GetAllWithClient(id).Result.Select(l => new AdminPageListingModel { Title = l.Title, PropertyType = l.PropertyType.PropertyName, Status = l.IsSoldOrRented }),
+                Listings = _listingService.GetAllWithClient(id).Result.Select(l => new AdminPageListingModel { Title = l.Title, PropertyType = l.PropertyType.PropertyName, Status = l.Status }),
                 Requests = _requestService.GetAllWithClient(id).Result.Select(r => new AdminPageRequestModel { Title = r.Title, PropertyType = r.PropertyType.PropertyName })
             };
 

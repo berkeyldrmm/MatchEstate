@@ -1,0 +1,13 @@
+﻿@model PropertyStatusViewModel
+
+<span>For Sale/Rent</span>
+<div class="btn-group">
+    <input type="radio" class="btn-check" name="PropertyStatusId" id="allForSaleOrRent" value="0" autocomplete="off" checked />
+    <label class="btn btn-primary" for="allForSaleOrRent">All</label>
+
+    @foreach (var propertyStatus in Model.PropertyStatuses)
+    {
+        <input type="radio" class="btn-check" name="PropertyStatusId" id="status_@propertyStatus.Id" value="@propertyStatus.Id" autocomplete="off" />
+        <label class="btn btn-primary" for="status_@propertyStatus.Id">@propertyStatus.Name</label>
+    }
+</div>

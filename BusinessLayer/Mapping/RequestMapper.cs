@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Concrete
+namespace BusinessLayer.Mapping
 {
     public static class RequestMapper
     {
@@ -23,7 +23,7 @@ namespace BusinessLayer.Concrete
         //        City = dto.City,
         //        District = JsonConvert.SerializeObject(dto.District),
         //        UserId = userId,
-        //        IsForSaleOrRent = dto.IsForSaleOrRent == "1" ? "For Sale" : "For Sale",
+        //        PropertyStatusId = dto.PropertyStatusId == "1" ? "For Sale" : "For Sale",
         //        Details = dto.Details,
         //        AddedDate = DateTime.Now,
         //    };
@@ -60,7 +60,7 @@ namespace BusinessLayer.Concrete
                 MaxPrice = request.MaximumPrice,
                 City = request.City,
                 District = JsonConvert.DeserializeObject<List<string>>(request.District),
-                IsForSaleOrRent = request.IsForSaleOrRent == "For Sale" ? "1" : "0",
+                //PropertyStatusId = request.PropertyStatusId == "For Sale" ? "1" : "0",
                 Details = request.Details,
                 ClientId = request.ClientId,
                 ClientNameSurname = request.Client?.NameSurname,

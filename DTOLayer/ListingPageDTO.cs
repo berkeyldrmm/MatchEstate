@@ -10,7 +10,7 @@
         public string Commission { get; set; }
         public string Earning { get; set; }
         public bool Status { get; set; }
-        public string IsForSaleOrRent { get; set; }
+        public string PropertyStatusName { get; set; }
         public string City { get; set; }
         public string District { get; set; }
         public string Neighbourhood { get; set; }

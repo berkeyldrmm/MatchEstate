@@ -101,7 +101,7 @@ app.MapControllerRoute(
     pattern: "Account/{controller=Login}/{action=Index}/{id?}"
 );
 
-app.MapGet("/getStatistics", (IStatisticsDal statisticsDal, ClaimsPrincipal user) =>
+app.MapGet("/getStatistics", (IStatisticsRepository statisticsDal, ClaimsPrincipal user) =>
 {
     var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 

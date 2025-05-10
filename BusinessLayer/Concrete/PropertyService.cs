@@ -13,13 +13,13 @@ namespace BusinessLayer.Concrete
 {
     public class PropertyService : IPropertyService
     {
-        private readonly IShopDal _shopDal;
-        private readonly ILandDal _landDal;
-        private readonly IApartmentDal _apartmentDal;
-        private readonly ICommercialUnitDal _commercialUnitDal;
-        private readonly IFarmlandDal _farmlandDal;
+        private readonly IShopRepository _shopDal;
+        private readonly ILandRepository _landDal;
+        private readonly IApartmentRepository _apartmentDal;
+        private readonly ICommercialUnitRepository _commercialUnitDal;
+        private readonly IFarmlandRepository _farmlandDal;
 
-        public PropertyService(IShopDal shopDal, ILandDal landDal, IApartmentDal apartmentDal, ICommercialUnitDal commercialUnitDal, IFarmlandDal farmlandDal)
+        public PropertyService(IShopRepository shopDal, ILandRepository landDal, IApartmentRepository apartmentDal, ICommercialUnitRepository commercialUnitDal, IFarmlandRepository farmlandDal)
         {
             _shopDal = shopDal;
             _landDal = landDal;

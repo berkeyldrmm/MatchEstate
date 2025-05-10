@@ -38,7 +38,7 @@ namespace DTOLayer
         public string? IsInResidentalComplex { get; set; } = string.Empty;
         public string? Dues { get; set; } = string.Empty;
         public string? TitleSheetState { get; set; } = string.Empty;
-        public string IsForSaleOrRent { get; set; } = string.Empty;
+        public string PropertyStatusId { get; set; } = string.Empty;
         public string City { get; set; }
         public string District { get; set; }
         public string Neighbourhood { get; set; }

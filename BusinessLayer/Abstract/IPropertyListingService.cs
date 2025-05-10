@@ -3,7 +3,7 @@ using EntityLayer.Entities;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IListingService : IGenericService<PropertyListing>
+    public interface IPropertyListingService : IGenericService<PropertyListing, string>
     {
         public Task<(bool, string)> Insert(string userId, AddListingDTO listingModel);
         public Task<(bool, string)> Update(string userId, string listingId, AddListingDTO listingModel);

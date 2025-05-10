@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface ILandDal : IGenericDal<Land>
+    public interface ILandRepository : IGenericRepository<Land, string>
     {
     }
 }

@@ -3,7 +3,7 @@ using EntityLayer.Entities;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IClientService : IGenericService<Client>
+    public interface IClientService : IGenericService<Client, string>
     {
         public Task<IEnumerable<Client>> GetClientsOfUser(string userId);
         void DeleteRange(string userId, IEnumerable<string> Ids);

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class StatisticsRepository : IStatisticsDal
+    public class StatisticsRepository : IStatisticsRepository
     {
         private readonly MatchEstateDbContext _context;
 
@@ -53,10 +53,10 @@ namespace DataAccessLayer.Concrete
         {
             return _context.PropertyListings
                 .Where(l => l.UserId == userId)
-                .GroupBy(l => l.IsForSaleOrRent)
+                .GroupBy(l => l.PropertyStatusId)
                 .Select(l => new ForSaleOrRentCountDTO
                 {
-                    ForSaleOrRent = l.Key,
+                    //ForSaleOrRent = l.Key,
                     Count = l.Count()
                 })
                 .ToList();
@@ -66,10 +66,10 @@ namespace DataAccessLayer.Concrete
         {
             return _context.PropertyRequests
                 .Where(l => l.UserId == userId)
-                .GroupBy(l => l.IsForSaleOrRent)
+                .GroupBy(l => l.PropertyStatusId)
                 .Select(l => new ForSaleOrRentCountDTO
                 {
-                    ForSaleOrRent = l.Key,
+                    //ForSaleOrRent = l.Key,
                     Count = l.Count()
                 })
                 .ToList();

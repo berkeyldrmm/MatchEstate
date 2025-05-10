@@ -8,7 +8,7 @@ namespace DTOLayer
 {
     public class RequestGetByFiltersDTO
     {
-        public string IsForSaleOrRent { get; set; }
+        public string PropertyStatusId { get; set; }
         public int PropertyType { get; set; }
         public string Sort { get; set; }
         public string Search { get; set; }

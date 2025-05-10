@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IShopDal : IGenericDal<Shop>
+    public interface IShopRepository : IGenericRepository<Shop, string>
     {
     }
 }

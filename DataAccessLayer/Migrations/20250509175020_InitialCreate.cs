@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class migdatabase_setup : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,6 +51,19 @@ namespace DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PropertyStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyStatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -177,7 +190,7 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     NameSurname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -205,8 +218,9 @@ namespace DataAccessLayer.Migrations
                     Earning = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsSoldOrRented = table.Column<bool>(type: "bit", nullable: false),
-                    ForSaleOrRent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    SoldDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PropertyStatusId = table.Column<int>(type: "int", nullable: false),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     District = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -225,8 +239,13 @@ namespace DataAccessLayer.Migrations
                         name: "FK_PropertyListings_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PropertyListings_PropertyStatus_PropertyStatusId",
+                        column: x => x.PropertyStatusId,
+                        principalTable: "PropertyStatus",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PropertyListings_PropertyTypes_PropertyTypeId",
                         column: x => x.PropertyTypeId,
@@ -250,7 +269,7 @@ namespace DataAccessLayer.Migrations
                     PropertyTypeId = table.Column<int>(type: "int", nullable: false),
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsForSaleOrRent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PropertyStatusId = table.Column<int>(type: "int", nullable: false),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -266,8 +285,13 @@ namespace DataAccessLayer.Migrations
                         name: "FK_PropertyRequests_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PropertyRequests_PropertyStatus_PropertyStatusId",
+                        column: x => x.PropertyStatusId,
+                        principalTable: "PropertyStatus",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PropertyRequests_PropertyTypes_PropertyTypeId",
                         column: x => x.PropertyTypeId,
@@ -282,8 +306,6 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SquareMeterSizeGross = table.Column<int>(type: "int", nullable: true),
-                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberOfRooms = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AgeOfBuilding = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Floor = table.Column<int>(type: "int", nullable: true),
@@ -300,7 +322,9 @@ namespace DataAccessLayer.Migrations
                     Dues = table.Column<int>(type: "int", nullable: false),
                     SquareMeterSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PricePerSquareMeter = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -318,11 +342,11 @@ namespace DataAccessLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SquareMeterSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PricePerSquareMeter = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -341,13 +365,13 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ZoningStatus = table.Column<bool>(type: "bit", nullable: false),
-                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SheetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TitleDeedState = table.Column<bool>(type: "bit", nullable: false),
                     SquareMeterSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PricePerSquareMeter = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
-                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -366,14 +390,14 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ZoningStatus = table.Column<bool>(type: "bit", nullable: false),
-                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SheetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LandShareEligibility = table.Column<bool>(type: "bit", nullable: false),
                     TitleSheetState = table.Column<bool>(type: "bit", nullable: false),
                     SquareMeterSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PricePerSquareMeter = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -392,8 +416,6 @@ namespace DataAccessLayer.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SquareMeterSizeGross = table.Column<int>(type: "int", nullable: false),
-                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberOfRooms = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AgeOfBuilding = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Floor = table.Column<int>(type: "int", nullable: true),
@@ -407,7 +429,9 @@ namespace DataAccessLayer.Migrations
                     Dues = table.Column<int>(type: "int", nullable: false),
                     SquareMeterSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PricePerSquareMeter = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    ListingId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParselNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -466,6 +490,13 @@ namespace DataAccessLayer.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Clients_PhoneNumber",
+                table: "Clients",
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Clients_UserId",
                 table: "Clients",
                 column: "UserId");
@@ -494,6 +525,11 @@ namespace DataAccessLayer.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PropertyListings_PropertyStatusId",
+                table: "PropertyListings",
+                column: "PropertyStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PropertyListings_PropertyTypeId",
                 table: "PropertyListings",
                 column: "PropertyTypeId");
@@ -507,6 +543,11 @@ namespace DataAccessLayer.Migrations
                 name: "IX_PropertyRequests_ClientId",
                 table: "PropertyRequests",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropertyRequests_PropertyStatusId",
+                table: "PropertyRequests",
+                column: "PropertyStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PropertyRequests_PropertyTypeId",
@@ -569,6 +610,9 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Clients");
+
+            migrationBuilder.DropTable(
+                name: "PropertyStatus");
 
             migrationBuilder.DropTable(
                 name: "PropertyTypes");

@@ -8,10 +8,10 @@ namespace RealEstate.ViewComponents
 {
     public class GetListingsOfRequestComponent : ViewComponent
     {
-        private readonly IListingService _listingService;
-        private readonly IRequestService _requestService;
+        private readonly IPropertyListingService _listingService;
+        private readonly IPropertyRequestService _requestService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public GetListingsOfRequestComponent(IListingService listingService, IRequestService requestService, IHttpContextAccessor httpContextAccessor)
+        public GetListingsOfRequestComponent(IPropertyListingService listingService, IPropertyRequestService requestService, IHttpContextAccessor httpContextAccessor)
         {
             _listingService = listingService;
             _requestService = requestService;

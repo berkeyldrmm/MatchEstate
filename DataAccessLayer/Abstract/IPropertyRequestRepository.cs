@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IRequestDal : IGenericDal<PropertyRequest>
+    public interface IPropertyRequestRepository : IGenericRepository<PropertyRequest, string>
     {
         public Task<IEnumerable<PropertyRequest>> GetAllWithClient(string userId);
         public Task<PropertyRequest> GetWithClient(string userId, string id);

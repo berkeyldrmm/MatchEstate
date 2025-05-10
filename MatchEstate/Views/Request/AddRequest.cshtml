@@ -52,31 +52,25 @@
         display: none;
     }
 
-    #option-1:checked:checked ~ .option-1,
-    #option-2:checked:checked ~ .option-2,
-    #newClient:checked:checked ~ .newClient,
-    #savedClient:checked:checked ~ .savedClient,
-    #forSale:checked:checked ~ .forSale,
-    #forRent:checked:checked ~ .forRent {
+    #option-1:checked ~ .option-1,
+    #option-2:checked ~ .option-2,
+    #newClient:checked ~ .newClient,
+    #savedClient:checked ~ .savedClient{
         border-color: #0077b6;
         background: #0077b6;
     }
 
-        #option-1:checked:checked ~ .option-1 .dot,
-        #option-2:checked:checked ~ .option-2 .dot,
-        #newClient:checked:checked ~ .newClient .dot,
-        #savedClient:checked:checked ~ .savedClient .dot,
-        #forSale:checked:checked ~ .forSale .dot,
-        #forRent:checked:checked ~ .forRent .dot {
+        #option-1:checked ~ .option-1 .dot,
+        #option-2:checked ~ .option-2 .dot,
+        #newClient:checked ~ .newClient .dot,
+        #savedClient:checked ~ .savedClient .dot {
             background: #fff;
         }
 
-            #option-1:checked:checked ~ .option-1 .dot::before,
-            #option-2:checked:checked ~ .option-2 .dot::before,
-            #newClient:checked:checked ~ .newClient .dot::before,
-            #savedClient:checked:checked ~ .savedClient .dot::before,
-            #forSale:checked:checked ~ .forSale .dot::before,
-            #forRent:checked:checked ~ .forRent .dot::before {
+            #option-1:checked ~ .option-1 .dot::before,
+            #option-2:checked ~ .option-2 .dot::before,
+            #newClient:checked ~ .newClient .dot::before,
+            #savedClient:checked ~ .savedClient .dot::before {
                 opacity: 1;
                 transform: scale(1);
             }
@@ -86,12 +80,10 @@
         color: #808080;
     }
 
-    #option-1:checked:checked ~ .option-1 span,
-    #option-2:checked:checked ~ .option-2 span,
-    #newClient:checked:checked ~ .newClient span,
-    #savedClient:checked:checked ~ .savedClient span,
-    #forSale:checked:checked ~ .forSale span,
-    #forRent:checked:checked ~ .forRent span {
+    #option-1:checked ~ .option-1 span,
+    #option-2:checked ~ .option-2 span,
+    #newClient:checked ~ .newClient span,
+    #savedClient:checked ~ .savedClient span{
         color: #fff;
     }
 
@@ -235,20 +227,7 @@
         <label>Maximum Price</label>
         <input name="MaxPrice" type="number" class="form-control w-25" id="maxPrice" />
     </div>
-    <div class="form-group">
-        <label>For Sale/Rent</label>
-        <div class="wrapper">
-            <input type="radio" name="IsForSaleOrRent" value="1" id="forSale" checked>
-            <input type="radio" name="IsForSaleOrRent" value="0" id="forRent">
-            <label for="forSale" class="option forSale">
-                <span>For Sale</span>
-            </label>
-            <label for="forRent" class="option forRent">
-                <span>For Rent</span>
-            </label>
-        </div>
-    </div>
-
+    @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default" }));
     <div class="form-group">
         <label>Other details</label>
         <textarea name="Details" id="detail" class="form-control" placeholder="Details..."></textarea>
@@ -313,7 +292,7 @@
                 clientPhoneNumber: $("input[name='ClientPhoneNumber']").val(),
                 clientEmail: $("input[name='ClientEmail']").val(),
                 propertyType: $("#propertyTypeInput").val(),
-                isForSaleOrRent: $("input[name='IsForSaleOrRent']:checked").val(),
+                PropertyStatusId: $("input[name='PropertyStatusId']:checked").val(),
                 city: $("#selectCity").val(),
                 district: districts,
                 numberOfRooms: numberOfRooms,

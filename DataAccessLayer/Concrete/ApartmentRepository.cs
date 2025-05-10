@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class ApartmentRepository : GenericRepository<Apartment>, IApartmentDal
+    public class ApartmentRepository : GenericRepository<Apartment, string>, IApartmentRepository
     {
         public ApartmentRepository(MatchEstateDbContext context) : base(context)
         {

@@ -1,0 +1,39 @@
+﻿@model PropertyStatusViewModel
+
+<div class="form-group">
+    <label>Property Status</label>
+    <div class="wrapper">
+        @foreach (var propertyStatus in Model.PropertyStatuses)
+        {
+            <input asp-for="PropertyStatusId" type="radio" name="PropertyStatusId" value="@propertyStatus.Id" id="status_@propertyStatus.Id">
+        }
+
+        @foreach (var propertyStatus in Model.PropertyStatuses)
+        {
+            <label for="status_@propertyStatus.Id" class="option status_@propertyStatus.Id">
+                <span>@propertyStatus.Name</span>
+            </label>
+
+            <style>
+                #status_@propertyStatus.Id:checked ~ .status_@propertyStatus.Id span {
+                    color: #fff;
+                }
+
+                #status_@propertyStatus.Id:checked ~ .status_@propertyStatus.Id .dot::before {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+
+                #status_@propertyStatus.Id:checked ~ .status_@propertyStatus.Id .dot {
+                    background: #fff;
+                }
+
+                #status_@propertyStatus.Id:checked ~ .status_@propertyStatus.Id {
+                    border-color: #4CB9E7;
+                    background: #4CB9E7;
+                }
+            </style>
+        }
+        
+    </div>
+</div>

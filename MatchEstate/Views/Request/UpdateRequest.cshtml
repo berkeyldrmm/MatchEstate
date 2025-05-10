@@ -243,8 +243,8 @@
     <div class="form-group">
         <label>For Sale/Rent</label>
         <div class="wrapper">
-            <input type="radio" asp-for="IsForSaleOrRent" name="IsForSaleOrRent" value="1" id="forSale" checked>
-            <input type="radio" asp-for="IsForSaleOrRent" name="IsForSaleOrRent" value="0" id="forRent">
+            <input type="radio" asp-for="PropertyStatusId" name="PropertyStatusId" value="1" id="forSale" checked>
+            <input type="radio" asp-for="PropertyStatusId" name="PropertyStatusId" value="0" id="forRent">
             <label for="forSale" class="option forSale">
                 <span>For Sale</span>
             </label>
@@ -319,7 +319,7 @@
                 clientPhoneNumber: $("input[name='ClientPhoneNumber']").val(),
                 clientEmail: $("input[name='ClientEmail']").val(),
                 propertyType: $("#propertyTypeInput").val(),
-                isForSaleOrRent: $("input[name='IsForSaleOrRent']:checked").val(),
+                PropertyStatusId: $("input[name='PropertyStatusId']:checked").val(),
                 city: $("#selectCity").val(),
                 district: districts,
                 numberOfRooms: numberOfRooms,

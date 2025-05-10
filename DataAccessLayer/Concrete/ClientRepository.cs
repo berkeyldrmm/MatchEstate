@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class ClientRepository : GenericRepository<Client>, IClientDal
+    public class ClientRepository : GenericRepository<Client, string>, IClientRepository
     {
         public ClientRepository(MatchEstateDbContext context) : base(context)
         {

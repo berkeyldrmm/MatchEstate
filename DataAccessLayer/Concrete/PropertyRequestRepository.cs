@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class RequestRepository : GenericRepository<PropertyRequest>, IRequestDal
+    public class PropertyRequestRepository : GenericRepository<PropertyRequest, string>, IPropertyRequestRepository
     {
         public DbSet<PropertyType> PropertyType => _context.Set<PropertyType>();
-        public RequestRepository(MatchEstateDbContext context) : base(context)
+        public PropertyRequestRepository(MatchEstateDbContext context) : base(context)
         {
         }
         public IQueryable<PropertyRequest> EntityOfUser(string userId) => Entity.Where(i => i.UserId == userId);
@@ -56,8 +56,8 @@ namespace DataAccessLayer.Concrete
         {
             return new
             {
-                ForSale = EntityOfUser(userId).Where(i => i.IsForSaleOrRent == "For Sale").Count(),
-                ForRent = EntityOfUser(userId).Where(i => i.IsForSaleOrRent == "For Rent").Count()
+                //ForSale = EntityOfUser(userId).Where(i => i.PropertyStatusId == "For Sale").Count(),
+                //ForRent = EntityOfUser(userId).Where(i => i.PropertyStatusId == "For Rent").Count()
             };
         }
 
@@ -93,7 +93,7 @@ namespace DataAccessLayer.Concrete
                 Type = r.PropertyType.PropertyName,
                 NameSurname = r.Client.NameSurname,
                 City = r.City,
-                ForSaleOrRent = r.IsForSaleOrRent,
+                //ForSaleOrRent = r.PropertyStatusId,
                 MinPrice = r.MinimumPrice.ToString(),
                 MaxPrice = r.MaximumPrice.ToString()
             });

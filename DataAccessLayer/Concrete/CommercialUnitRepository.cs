@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class CommercialUnitRepository : GenericRepository<CommercialUnit>, ICommercialUnitDal
+    public class CommercialUnitRepository : GenericRepository<CommercialUnit, string>, ICommercialUnitRepository
     {
         public CommercialUnitRepository(MatchEstateDbContext context) : base(context)
         {

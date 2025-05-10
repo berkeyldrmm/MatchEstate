@@ -59,7 +59,7 @@
 
                 <tr>
                     <th scope="row">For Sale/Rent </th>
-                    <td>@Model.IsForSaleOrRent</td>
+                    <td>@Model.PropertyStatusId</td>
                 </tr>
                 @if (ViewBag.DistrictsAndRooms.districts.Count != 0)
                 {
@@ -148,7 +148,7 @@
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">For Sale/Rent</th>
-                            <td>@Model.IsForSaleOrRent</td>
+                            <td>@Model.PropertyStatusId</td>
                         </tr>
                         @if (ViewBag.DistrictsAndRooms.districts.Count != 0)
                         {

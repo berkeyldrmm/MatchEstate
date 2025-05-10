@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IRequestService : IGenericService<PropertyRequest>
+    public interface IPropertyRequestService : IGenericService<PropertyRequest, string>
     {
         public Task<(bool, string)> Insert(string userId, RequestModelDTO requestModel);
         public Task<(bool, string)> Update(string userId, string requestId, RequestModelDTO requestModel);

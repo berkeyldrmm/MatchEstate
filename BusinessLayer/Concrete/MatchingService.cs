@@ -10,9 +10,9 @@ namespace BusinessLayer.Concrete
 {
     public class MatchingService : IMatchingService
     {
-        private readonly IListingService _listingService;
-        private readonly IRequestService _requestService;
-        public MatchingService(IListingService listingService, IRequestService requestService)
+        private readonly IPropertyListingService _listingService;
+        private readonly IPropertyRequestService _requestService;
+        public MatchingService(IPropertyListingService listingService, IPropertyRequestService requestService)
         {
             _listingService = listingService;
             _requestService = requestService;

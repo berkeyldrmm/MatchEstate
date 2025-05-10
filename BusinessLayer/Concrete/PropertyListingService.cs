@@ -9,14 +9,14 @@ using System.Text.RegularExpressions;
 
 namespace BusinessLayer.Concrete
 {
-    public class ListingService : IListingService
+    public class PropertyListingService : IPropertyListingService
     {
-        private readonly IListingDal _listingRepository;
+        private readonly IPropertyListingRepository _listingRepository;
         private readonly IClientService _clientService;
         private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ListingService(IListingDal listingRepository, IClientService clientService, IPropertyService propertyService, IUnitOfWork unitOfWork)
+        public PropertyListingService(IPropertyListingRepository listingRepository, IClientService clientService, IPropertyService propertyService, IUnitOfWork unitOfWork)
         {
             _listingRepository = listingRepository;
             _clientService = clientService;
@@ -47,8 +47,8 @@ namespace BusinessLayer.Concrete
                 Id = Guid.NewGuid().ToString() + DateTime.Now.ToString("hhmmss"),
                 Title = listingModel.ListingTitle,
                 Price = listingModel.Price,
-                IsForSaleOrRent = listingModel.IsForSaleOrRent,
-                IsSoldOrRented = false,
+                PropertyStatusId = Convert.ToInt32(listingModel.PropertyStatusId),
+                Status = false,
                 UserId = userId,
                 City = listingModel.City,
                 District = listingModel.District,
@@ -174,16 +174,11 @@ namespace BusinessLayer.Concrete
                 listing.Commission = Convert.ToDecimal(listingModel.Commission);
             else
             {
-                if (listingModel.IsForSaleOrRent == "0")
+                if (listingModel.PropertyStatusId == "0")
                     listing.Commission = listingModel.Price;
                 else
                     listing.Commission = listingModel.Price * 4 / 100;
             }
-
-            if (listingModel.IsForSaleOrRent == "0")
-                listing.IsForSaleOrRent = "For Rent";
-            else
-                listing.IsForSaleOrRent = "For Sale";
 
             listing.Details = listingModel.Details;
             var result = await _listingRepository.Insert(listing);
@@ -229,14 +224,14 @@ namespace BusinessLayer.Concrete
         {
             var expressions = new List<Expression<Func<PropertyListing, bool>>>();
 
-            if (getByFiltersDTO.IsForSaleOrRent != "0")
-                expressions.Add(i => i.IsForSaleOrRent == getByFiltersDTO.IsForSaleOrRent);
+            if (getByFiltersDTO.PropertyStatusId != "0")
+                expressions.Add(i => i.PropertyStatusId == Convert.ToInt32(getByFiltersDTO.PropertyStatusId));
 
             if (getByFiltersDTO.PropertyType != 0)
                 expressions.Add(i => i.PropertyTypeId == getByFiltersDTO.PropertyType);
 
             if (getByFiltersDTO.Status != "-1")
-                expressions.Add(i => i.IsSoldOrRented == Convert.ToBoolean(Convert.ToInt16(getByFiltersDTO.Status)));
+                expressions.Add(i => i.Status == Convert.ToBoolean(Convert.ToInt16(getByFiltersDTO.Status)));
 
             if(getByFiltersDTO.MinPrice != null && getByFiltersDTO.MinPrice.Length > 2)
             {
@@ -282,13 +277,13 @@ namespace BusinessLayer.Concrete
                 }
             }
 
-            expressions.Add(i => request.IsForSaleOrRent == i.IsForSaleOrRent);
+            expressions.Add(i => request.PropertyStatusId == i.PropertyStatusId);
 
             expressions.Add(i => request.PropertyTypeId == i.PropertyTypeId);
 
             expressions.Add(i => i.Client.Id != request.Client.Id);
 
-            expressions.Add(i => i.IsSoldOrRented == false);
+            expressions.Add(i => i.Status == false);
 
             return await _listingRepository.GetListingsForRequest(userId, expressions);
         }
@@ -308,7 +303,7 @@ namespace BusinessLayer.Concrete
 
             listing.Title = listingModel.ListingTitle;
             listing.Price = listingModel.Price;
-            listing.IsForSaleOrRent = listingModel.IsForSaleOrRent == "1" ? "For Sale" : "For Rent";
+            //listing.PropertyStatusId = listingModel.PropertyStatusId == "1" ? "For Sale" : "For Rent";
             listing.City = listingModel.City;
             listing.District = listingModel.District;
             listing.Neighbourhood = listingModel.Neighbourhood;
@@ -443,7 +438,7 @@ namespace BusinessLayer.Concrete
             if (listingModel.RadioForCommission == "0")
                 listing.Commission = Convert.ToDecimal(listingModel.Commission);
             else
-                listing.Commission = listingModel.IsForSaleOrRent == "0" ? listingModel.Price : listingModel.Price * 4 / 100;
+                listing.Commission = listingModel.PropertyStatusId == "0" ? listingModel.Price : listingModel.Price * 4 / 100;
 
             var result = await _listingRepository.Update(listing);
             int saved = await _unitOfWork.SaveChanges();

@@ -21,7 +21,7 @@ namespace DTOLayer
         public string? ClientPhoneNumber { get; set; }
         public string PropertyType { get; set; }
         public List<string> NumberOfRooms { get; set; }
-        public string IsForSaleOrRent { get; set; }
+        public string PropertyStatusId { get; set; }
         public string City { get; set; }
         public List<string> District { get; set; }
         public decimal? MinPrice { get; set; }

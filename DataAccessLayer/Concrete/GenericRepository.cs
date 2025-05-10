@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class GenericRepository<T> : IGenericDal<T> where T : class
+    public class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : class
     {
         public MatchEstateDbContext _context { get; set; }
         public DbSet<T> Entity => _context.Set<T>();
@@ -35,7 +35,7 @@ namespace DataAccessLayer.Concrete
             return entityEntry.State == EntityState.Added;
         }
 
-        public async Task<T> Read(string id)
+        public async Task<T> Read(TKey id)
         {
             return await Entity.FindAsync(id);
         }

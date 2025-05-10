@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MatchEstateDbContext))]
-    [Migration("20241204002638_mig-client_request")]
-    partial class migclient_request
+    [Migration("20250509175020_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BlockNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Dues")
@@ -81,6 +82,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParselNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PricePerSquareMeter")
@@ -121,13 +123,17 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique()
+                        .HasFilter("[PhoneNumber] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -174,6 +180,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("BlockNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ListingId")
@@ -181,6 +188,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ParselNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PricePerSquareMeter")
@@ -214,6 +222,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("BlockNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LandShareEligibility")
@@ -224,6 +233,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ParselNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PricePerSquareMeter")
@@ -280,13 +290,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<decimal>("Earning")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ForSaleOrRent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsSoldOrRented")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Neighbourhood")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -294,8 +297,17 @@ namespace DataAccessLayer.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("PropertyStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("SoldDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -308,6 +320,8 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("PropertyStatusId");
 
                     b.HasIndex("PropertyTypeId");
 
@@ -341,10 +355,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IsForSaleOrRent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("MaximumPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -353,6 +363,9 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("NumberOfRooms")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PropertyStatusId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
@@ -369,11 +382,30 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("PropertyStatusId");
+
                     b.HasIndex("PropertyTypeId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("PropertyRequests", (string)null);
+                });
+
+            modelBuilder.Entity("EntityLayer.Entities.PropertyStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PropertyStatus");
                 });
 
             modelBuilder.Entity("EntityLayer.Entities.PropertyType", b =>
@@ -429,6 +461,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BlockNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Dues")
@@ -466,6 +499,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParselNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PricePerSquareMeter")
@@ -736,6 +770,12 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("EntityLayer.Entities.PropertyStatus", "PropertyStatus")
+                        .WithMany()
+                        .HasForeignKey("PropertyStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EntityLayer.Entities.PropertyType", "PropertyType")
                         .WithMany("Listings")
                         .HasForeignKey("PropertyTypeId")
@@ -749,6 +789,8 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
+
+                    b.Navigation("PropertyStatus");
 
                     b.Navigation("PropertyType");
 
@@ -763,6 +805,12 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("EntityLayer.Entities.PropertyStatus", "PropertyStatus")
+                        .WithMany()
+                        .HasForeignKey("PropertyStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EntityLayer.Entities.PropertyType", "PropertyType")
                         .WithMany("Requests")
                         .HasForeignKey("PropertyTypeId")
@@ -776,6 +824,8 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
+
+                    b.Navigation("PropertyStatus");
 
                     b.Navigation("PropertyType");
 

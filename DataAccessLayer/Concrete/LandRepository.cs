@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class LandRepository : GenericRepository<Land>, ILandDal
+    public class LandRepository : GenericRepository<Land, string>, ILandRepository
     {
         public LandRepository(MatchEstateDbContext context) : base(context)
         {

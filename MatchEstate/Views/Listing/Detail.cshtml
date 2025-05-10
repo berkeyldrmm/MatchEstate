@@ -65,7 +65,7 @@
                 </tr>
                 <tr>
                     <th scope="row">For Sale/Rent</th>
-                    <td>@Model.IsForSaleOrRent</td>
+                    <td>@Model.PropertyStatusId</td>
                 </tr>
                 <tr>
                     <th scope="row">Address</th>
@@ -81,9 +81,9 @@
                 </tr>
                 <tr>
                     <th scope="row">Status</th>
-                    <td>@(Model.IsSoldOrRented ? "Sold/Rented" : "Waiting for client")</td>
+                    <td>@(Model.Status ? "Sold/Rented" : "Waiting for client")</td>
                 </tr>
-                @if (Model.IsSoldOrRented)
+                @if (Model.Status)
                 {
                     <tr>
                         <th scope="row">Earning</th>
@@ -163,7 +163,7 @@
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">For Sale/Rent</th>
-                            <td>@Model.IsForSaleOrRent</td>
+                            <td>@Model.PropertyStatusId</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Address</th>
@@ -179,9 +179,9 @@
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Status</th>
-                            <td>@(Model.IsSoldOrRented ? "Sold/Rented" : "Waiting for client")</td>
+                            <td>@(Model.Status ? "Sold/Rented" : "Waiting for client")</td>
                         </tr>
-                        @if (Model.IsSoldOrRented)
+                        @if (Model.Status)
                         {
                             <tr>
                                 <th scope="row" class="text-nowrap">Earning</th>

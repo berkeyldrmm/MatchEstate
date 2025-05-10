@@ -49,29 +49,23 @@
 input[type="radio"]{
   display: none;
 }
-#option-1:checked:checked ~ .option-1,
-#option-2:checked:checked ~ .option-2,
-#newClient:checked:checked ~ .newClient,
-#savedClient:checked:checked ~ .savedClient,
-#forSale:checked:checked ~ .forSale,
-#forRent:checked:checked ~ .forRent {
+#option-1:checked ~ .option-1,
+#option-2:checked ~ .option-2,
+#newClient:checked ~ .newClient,
+#savedClient:checked ~ .savedClient{
   border-color: #4CB9E7;
   background: #4CB9E7;
 }
-#option-1:checked:checked ~ .option-1 .dot,
-#option-2:checked:checked ~ .option-2 .dot,
-#newClient:checked:checked ~ .newClient .dot,
-#savedClient:checked:checked ~ .savedClient .dot,
-#forSale:checked:checked ~ .forSale .dot,
-#forRent:checked:checked ~ .forRent .dot {
+#option-1:checked ~ .option-1 .dot,
+#option-2:checked ~ .option-2 .dot,
+#newClient:checked ~ .newClient .dot,
+#savedClient:checked ~ .savedClient .dot{
   background: #fff;
 }
-#option-1:checked:checked ~ .option-1 .dot::before,
-#option-2:checked:checked ~ .option-2 .dot::before,
-#newClient:checked:checked ~ .newClient .dot::before,
-#savedClient:checked:checked ~ .savedClient .dot::before,
-#forSale:checked:checked ~ .forSale .dot::before,
-#forRent:checked:checked ~ .forRent .dot::before{
+#option-1:checked ~ .option-1 .dot::before,
+#option-2:checked ~ .option-2 .dot::before,
+#newClient:checked ~ .newClient .dot::before,
+#savedClient:checked ~ .savedClient .dot::before{
   opacity: 1;
   transform: scale(1);
 }
@@ -79,12 +73,10 @@ input[type="radio"]{
   font-size: 20px;
   color: #808080;
 }
-#option-1:checked:checked ~ .option-1 span,
-#option-2:checked:checked ~ .option-2 span,
-#newClient:checked:checked ~ .newClient span,
-#savedClient:checked:checked ~ .savedClient span,
-#forSale:checked:checked ~ .forSale span,
-#forRent:checked:checked ~ .forRent span {
+#option-1:checked ~ .option-1 span,
+#option-2:checked ~ .option-2 span,
+#newClient:checked ~ .newClient span,
+#savedClient:checked ~ .savedClient span{
   color: #fff;
 }
 
@@ -342,7 +334,6 @@ input[type="radio"]{
         </div>
     </div>
     <hr />
-    
     <div class="form-group">
         <label>Price</label>
         <input asp-for="Price" type="number" class="form-control w-25" id="price" />
@@ -350,19 +341,7 @@ input[type="radio"]{
     <div>
         Price per square metersize = <span id="pricePerMetersize"></span>
     </div>
-    <div class="form-group">
-        <label>For Sale/Rent</label>
-        <div class="wrapper">
-            <input asp-for="IsForSaleOrRent" type="radio" name="IsForSaleOrRent" value="1" id="forSale" checked>
-            <input asp-for="IsForSaleOrRent" type="radio" name="IsForSaleOrRent" value="0" id="forRent">
-            <label for="forSale" class="option forSale">
-                <span>For Sale</span>
-            </label>
-            <label for="forRent" class="option forRent">
-                <span>For Rent</span>
-            </label>
-        </div>
-    </div>
+    @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default" })
     <div class="form-group">
         <label>Commission Fee</label>
         <div class="wrapper">
@@ -443,7 +422,7 @@ input[type="radio"]{
             setCommission();
         });
 
-        $("input[name='IsForSaleOrRent']").change(() => {
+        $("input[name='PropertyStatusId']").change(() => {
             setCommission();
         });
 
@@ -463,7 +442,7 @@ input[type="radio"]{
 
         $("#sqaureMetersize").on("keyup", () => {
             $("#pricePerMetersize").html(parseInt($("#price").val()) / parseInt($("#sqaureMetersize").val()));
-        })
+        });
     });
 
     function propertyForm() {
@@ -499,13 +478,13 @@ input[type="radio"]{
 
     function checkRadioForClient(){
         if ($('#newClient').is(':checked')){
-                $("#newClientDiv").fadeIn();
-                $("#savedClientDiv").fadeOut();
-            }
-            else{
-                $("#newClientDiv").fadeOut();
-                $("#savedClientDiv").fadeIn();
-            }
+            $("#newClientDiv").fadeIn();
+            $("#savedClientDiv").fadeOut();
+        }
+        else{
+            $("#newClientDiv").fadeOut();
+            $("#savedClientDiv").fadeIn();
+        }
     }
 
 </script>

@@ -21,6 +21,7 @@ public partial class PropertyRequest
     public DateTime AddedDate { get; set; }
     public string UserId { get; set; }
     public User User { get; set; }
-    public string IsForSaleOrRent { get; set; }
+    public int PropertyStatusId { get; set; }
+    public PropertyStatus PropertyStatus { get; set; }
     public string Details { get; set; }
 }

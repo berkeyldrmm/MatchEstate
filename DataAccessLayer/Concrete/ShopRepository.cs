@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class ShopRepository : GenericRepository<Shop>, IShopDal
+    public class ShopRepository : GenericRepository<Shop, string>, IShopRepository
     {
         public ShopRepository(MatchEstateDbContext context) : base(context)
         {

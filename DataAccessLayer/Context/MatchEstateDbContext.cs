@@ -21,6 +21,7 @@ namespace DataAccessLayer.Context
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<PropertyRequest> PropertyRequests { get; set; }
         public virtual DbSet<Farmland> Farmlands { get; set; }
+        public virtual DbSet<PropertyStatus> PropertyStatuses { get; set; }
 
         public MatchEstateDbContext(DbContextOptions<MatchEstateDbContext> options) : base(options)
         {
@@ -168,12 +169,13 @@ namespace DataAccessLayer.Context
                 .HasForeignKey(s => s.UserId);
             });
 
-            modelBuilder.Ignore<IdentityUserLogin<string>>();
-            modelBuilder.Ignore<IdentityUserRole<string>>();
-            modelBuilder.Ignore<IdentityUserClaim<string>>();
-            modelBuilder.Ignore<IdentityUserToken<string>>();
-            modelBuilder.Ignore<IdentityRoleClaim<string>>();
-            modelBuilder.Ignore<IdentityRole<string>>();
+            modelBuilder.Entity<PropertyStatus>(entity =>
+            {
+                entity.ToTable("PropertyStatuses");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

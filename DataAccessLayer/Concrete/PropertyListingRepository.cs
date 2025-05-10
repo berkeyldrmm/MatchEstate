@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class ListingRepository : GenericRepository<PropertyListing>, IListingDal
+    public class PropertyListingRepository : GenericRepository<PropertyListing, string>, IPropertyListingRepository
     {
         public DbSet<PropertyType> PropertyType => _context.Set<PropertyType>();
-        public ListingRepository(MatchEstateDbContext context) : base(context)
+        public PropertyListingRepository(MatchEstateDbContext context) : base(context)
         {
         }
 
-        public IQueryable<PropertyListing> EntityOfUser(string userId) => Entity.Where(i => i.UserId == userId);
+        public IQueryable<PropertyListing> EntityOfUser(string userId) => Entity.Include(l=>l.PropertyStatus).Where(i => i.UserId == userId);
 
         public async Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId)
         {
@@ -52,8 +52,9 @@ namespace DataAccessLayer.Concrete
         public async Task<bool> SellListing(string id, string earning)
         {
             PropertyListing listing = await Read(id);
-            listing.IsSoldOrRented = true;
+            listing.Status = true;
             listing.Earning = Convert.ToDecimal(earning);
+            listing.SoldDate = DateTime.Now;
             bool result = await Update(listing);
             return result;
         }
@@ -75,8 +76,8 @@ namespace DataAccessLayer.Concrete
         {
             return new
             {
-                ForSale = EntityOfUser(userId).Where(i => i.IsForSaleOrRent== "For Sale").Count(),
-                ForRent = EntityOfUser(userId).Where(i => i.IsForSaleOrRent == "For Rent").Count()
+                //ForSale = EntityOfUser(userId).Where(i => i.PropertyStatusId == "For Sale").Count(),
+                //ForRent = EntityOfUser(userId).Where(i => i.PropertyStatusId == "For Rent").Count()
             };
         }
 
@@ -123,10 +124,10 @@ namespace DataAccessLayer.Concrete
                 City = l.City,
                 District = l.District,
                 Neighbourhood = l.Neighbourhood,
-                IsForSaleOrRent = l.IsForSaleOrRent,
+                PropertyStatusName = l.PropertyStatus.Name,
                 Commission = l.Commission.ToString(),
                 Earning = l.Earning.ToString(),
-                Status = l.IsSoldOrRented
+                Status = l.Status
             });
 
             return (listings, totalCountOfListings);
@@ -146,7 +147,14 @@ namespace DataAccessLayer.Concrete
 
         public async Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId)
         {
-            var earningsOfMonth = await EntityOfUser(userId).Where(i => i.AddedDate.Month == DateTime.Now.Month && i.AddedDate.Year == DateTime.Now.Year).Where(i => i.IsSoldOrRented).Select(i => new {i.Title, i.Earning}).ToListAsync();
+            var earningsOfMonth = await EntityOfUser(userId)
+                .Where(i => i.Status)
+                .Where(i => i.SoldDate != null &&
+                    i.SoldDate.Value.Month == DateTime.Now.Month &&
+                    i.SoldDate.Value.Year == DateTime.Now.Year)
+                .Select(i => new { i.Title, i.Earning })
+                .ToListAsync();
+            
             List<(string ilanBaslik, decimal kazanc)> earningsOfMonthTuple = new List<(string listingTitle, decimal earning)>();
             foreach (var earning in earningsOfMonth)
             {

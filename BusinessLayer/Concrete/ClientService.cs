@@ -14,9 +14,9 @@ namespace BusinessLayer.Concrete
 {
     public class ClientService : IClientService
     {
-        private readonly IClientDal _clientRepository;
+        private readonly IClientRepository _clientRepository;
 
-        public ClientService(IClientDal clientRepository)
+        public ClientService(IClientRepository clientRepository)
         {
             _clientRepository = clientRepository;
         }

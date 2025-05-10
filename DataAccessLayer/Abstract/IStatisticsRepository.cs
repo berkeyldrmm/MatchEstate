@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IStatisticsDal
+    public interface IStatisticsRepository
     {
         public List<ForSaleOrRentCountDTO> GetForSaleOrRentOfListings(string userId);
         public List<ForSaleOrRentCountDTO> GetForSaleOrRentOfRequests(string userId);

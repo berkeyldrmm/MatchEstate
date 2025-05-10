@@ -361,8 +361,8 @@ input[type="radio"]{
     <div class="form-group">
         <label>For Sale/Rent</label>
         <div class="wrapper">
-            <input asp-for="IsForSaleOrRent" type="radio" name="IsForSaleOrRent" value="1" id="forSale" checked>
-            <input asp-for="IsForSaleOrRent" type="radio" name="IsForSaleOrRent" value="0" id="forRent">
+            <input asp-for="PropertyStatusId" type="radio" name="PropertyStatusId" value="1" id="forSale" checked>
+            <input asp-for="PropertyStatusId" type="radio" name="PropertyStatusId" value="0" id="forRent">
             <label for="forSale" class="option forSale">
                 <span>For Sale</span>
             </label>
@@ -443,7 +443,7 @@ input[type="radio"]{
             setCommission();
         });
 
-        $("input[name='IsForSaleOrRent']").change(() => {
+        $("input[name='PropertyStatusId']").change(() => {
             setCommission();
         });
 

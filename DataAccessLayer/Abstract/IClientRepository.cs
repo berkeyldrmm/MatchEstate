@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IClientDal : IGenericDal<Client>
+    public interface IClientRepository : IGenericRepository<Client, string>
     {
         public Task<IEnumerable<Client>> GetClientsOfUser(string userId);
         IEnumerable<Client> GetRange(string userId, IEnumerable<string> Ids);

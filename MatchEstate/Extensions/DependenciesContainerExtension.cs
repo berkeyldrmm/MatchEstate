@@ -10,24 +10,26 @@ namespace RealEstate.Extensions
     {
         public static void DependenciesContainer(this IServiceCollection services)
         {
-            services.AddScoped<IListingService, ListingService>();
+            services.AddScoped<IPropertyListingService, PropertyListingService>();
             services.AddScoped<IClientService, ClientService>();
-            services.AddScoped<IRequestService, RequestService>();
+            services.AddScoped<IPropertyRequestService, PropertyRequestService>();
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IMatchingService, MatchingService>();
+            services.AddScoped<IPropertyStatusService, PropertyStatusService>();
 
-            services.AddScoped<IClientDal, ClientRepository>();
-            services.AddScoped<ILandDal, LandRepository>();
-            services.AddScoped<IApartmentDal, ApartmentRepository>();
-            services.AddScoped<ICommercialUnitDal, CommercialUnitRepository>();
-            services.AddScoped<IShopDal, ShopRepository>();
-            services.AddScoped<IListingDal, ListingRepository>();
-            services.AddScoped<IClientDal, ClientRepository>();
-            services.AddScoped<IRequestDal, RequestRepository>();
-            services.AddScoped<IFarmlandDal, FarmlandRepository>();
-            services.AddScoped<IStatisticsDal, StatisticsRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<ILandRepository, LandRepository>();
+            services.AddScoped<IApartmentRepository, ApartmentRepository>();
+            services.AddScoped<ICommercialUnitRepository, CommercialUnitRepository>();
+            services.AddScoped<IShopRepository, ShopRepository>();
+            services.AddScoped<IPropertyListingRepository, PropertyListingRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IPropertyRequestRepository, PropertyRequestRepository>();
+            services.AddScoped<IFarmlandRepository, FarmlandRepository>();
+            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+            services.AddScoped<IPropertyStatusRepository, PropertyStatusRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }

@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.Mapping;
 using DTOLayer;
 using EntityLayer.Entities;
 using FluentValidation;
@@ -12,12 +13,12 @@ namespace MatchEstate.Controllers
 {
     public class ListingController : BaseController
     {
-        private readonly IListingService _listingService;
+        private readonly IPropertyListingService _listingService;
         private readonly IClientService _clientService;
         private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<AddListingDTO> _listingModelValidator;
-        public ListingController(IListingService listingService, IClientService clientService, IPropertyService propertyService, IUnitOfWork unitOfWork, IValidator<AddListingDTO> listingModelValidator)
+        public ListingController(IPropertyListingService listingService, IClientService clientService, IPropertyService propertyService, IUnitOfWork unitOfWork, IValidator<AddListingDTO> listingModelValidator)
         {
             _listingService = listingService;
             _clientService = clientService;

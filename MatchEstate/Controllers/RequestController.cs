@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.Mapping;
 using BusinessLayer.Validation;
 using DTOLayer;
 using EntityLayer.Entities;
@@ -13,13 +14,13 @@ namespace MatchEstate.Controllers
 {
     public class RequestController : BaseController
     {
-        private readonly IRequestService _requestService;
-        private readonly IListingService _listingService;
+        private readonly IPropertyRequestService _requestService;
+        private readonly IPropertyListingService _listingService;
         private readonly IClientService _clientService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<RequestModelDTO> _validator;
 
-        public RequestController(IRequestService requestService, IListingService listingService, IClientService clientService, IUnitOfWork unitOfWork, IValidator<RequestModelDTO> validator)
+        public RequestController(IPropertyRequestService requestService, IPropertyListingService listingService, IClientService clientService, IUnitOfWork unitOfWork, IValidator<RequestModelDTO> validator)
         {
             _requestService = requestService;
             _listingService = listingService;

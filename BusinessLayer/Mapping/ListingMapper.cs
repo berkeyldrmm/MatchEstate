@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Concrete
+namespace BusinessLayer.Mapping
 {
     public static class ListingMapper
     {
@@ -22,7 +22,7 @@ namespace BusinessLayer.Concrete
         //        District = dto.District,
         //        Neighbourhood = dto.Neighbourhood,
         //        UserId = userId,
-        //        IsForSaleOrRent = dto.IsForSaleOrRent == "1" ? "For Sale" : "For Sale",
+        //        PropertyStatusId = dto.PropertyStatusId == "1" ? "For Sale" : "For Sale",
         //        Details = dto.Details,
         //        AddedDate = DateTime.Now,
         //    };
@@ -59,7 +59,7 @@ namespace BusinessLayer.Concrete
                 City = listing.City,
                 District = listing.District,
                 Neighbourhood = listing.Neighbourhood,
-                IsForSaleOrRent = listing.IsForSaleOrRent == "For Sale" ? "1" : "0",
+                //PropertyStatusId = listing.PropertyStatusId == "For Sale" ? "1" : "0",
                 Details = listing.Details,
                 ClientId = listing.ClientId,
                 ClientNameSurname = listing.Client?.NameSurname,

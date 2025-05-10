@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrete
 {
-    public class RequestService : IRequestService
+    public class PropertyRequestService : IPropertyRequestService
     {
-        private readonly IRequestDal _reqeustRepository;
+        private readonly IPropertyRequestRepository _reqeustRepository;
         private readonly IClientService _clientService;
         private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
-        public RequestService(IRequestDal reqeustRepository, IClientService clientService, IUnitOfWork unitOfWork, IPropertyService propertyService)
+        public PropertyRequestService(IPropertyRequestRepository reqeustRepository, IClientService clientService, IUnitOfWork unitOfWork, IPropertyService propertyService)
         {
             _reqeustRepository = reqeustRepository;
             _clientService = clientService;
@@ -78,7 +78,7 @@ namespace BusinessLayer.Concrete
                 Id = Guid.NewGuid().ToString(),
                 District = JsonConvert.SerializeObject(requestModel.District),
                 NumberOfRooms = JsonConvert.SerializeObject(requestModel.NumberOfRooms),
-                IsForSaleOrRent = requestModel.IsForSaleOrRent,
+                //PropertyStatusId = requestModel.PropertyStatusId,
                 UserId = userId,
                 MinimumPrice = requestModel.MinPrice ?? 0,
                 MaximumPrice = requestModel.MaxPrice ?? 0,
@@ -115,10 +115,10 @@ namespace BusinessLayer.Concrete
 
             request.AddedDate = DateTime.Now;
 
-            if (requestModel.IsForSaleOrRent == "0")
-                request.IsForSaleOrRent = "For Rent";
+            if (requestModel.PropertyStatusId == "0")
+                request.PropertyStatusId = 0;
             else
-                request.IsForSaleOrRent = "For Sale";
+                request.PropertyStatusId = 1;
 
             request.Details = requestModel.Details ?? "";
             var result = await _reqeustRepository.Insert(request);
@@ -134,8 +134,8 @@ namespace BusinessLayer.Concrete
         {
             var expressions = new List<Expression<Func<PropertyRequest, bool>>>();
 
-            if (getByFilers.IsForSaleOrRent != "0")
-                expressions.Add(t => t.IsForSaleOrRent == getByFilers.IsForSaleOrRent);
+            //if (getByFilers.PropertyStatusId != "0")
+            //    expressions.Add(t => t.PropertyStatusId == getByFilers.PropertyStatusId);
 
             if (getByFilers.PropertyType != 0)
                 expressions.Add(t => t.PropertyTypeId == getByFilers.PropertyType);
@@ -163,7 +163,7 @@ namespace BusinessLayer.Concrete
                 expressions.Add(t => t.NumberOfRooms.Contains("\"" + ilan.Shop.NumberOfRooms + "\""));
             }
 
-            expressions.Add(t => t.IsForSaleOrRent == ilan.IsForSaleOrRent);
+            expressions.Add(t => t.PropertyStatusId == ilan.PropertyStatusId);
 
             expressions.Add(t => t.PropertyTypeId == ilan.PropertyTypeId);
 
@@ -182,7 +182,7 @@ namespace BusinessLayer.Concrete
 
             request.Title = requestModel.RequestTitle;
             request.MaximumPrice = requestModel.MaxPrice ?? 0;
-            request.IsForSaleOrRent = requestModel.IsForSaleOrRent == "1" ? "For Sale" : "For Rent";
+            //request.PropertyStatusId = requestModel.PropertyStatusId == "1" ? "For Sale" : "For Rent";
             request.City = requestModel.City;
             request.District = JsonConvert.SerializeObject(requestModel.District);
             request.NumberOfRooms = JsonConvert.SerializeObject(requestModel.NumberOfRooms);

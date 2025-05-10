@@ -6,9 +6,9 @@ namespace MatchEstate.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly IListingService _listingService;
+        private readonly IPropertyListingService _listingService;
         private readonly IAccountService _accountService;
-        public AccountController(IListingService listingService, IAccountService accountService)
+        public AccountController(IPropertyListingService listingService, IAccountService accountService)
         {
             _listingService = listingService;
             _accountService = accountService;

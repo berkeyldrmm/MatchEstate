@@ -16,7 +16,6 @@ namespace BusinessLayer.Validation
             RuleFor(l => l.ListingTitle).NotEmpty().WithMessage("Please enter a title for the listing.");
             RuleFor(t => t.City).Must(c => c != "0").WithMessage("Please select a city");
             RuleFor(l => l.Price).NotNull().GreaterThan(0).WithMessage("Please enter a valid price.");
-            RuleFor(l => l.Commission).NotNull().When(l => l.RadioForCommission == "0").WithMessage("Please enter a valid commission.");
 
             RuleFor(l => l.SquareMetersize)
                 .NotNull().WithMessage("Please enter a valid square metersize.");

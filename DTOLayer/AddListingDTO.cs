@@ -43,7 +43,6 @@ namespace DTOLayer
         public string District { get; set; }
         public string Neighbourhood { get; set; }
         public decimal Price { get; set; }
-        public string RadioForCommission { get; set; } = string.Empty;
         public string? Commission { get; set; } = string.Empty;
         public string? Details { get; set; } = string.Empty;
     }

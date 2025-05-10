@@ -6,23 +6,20 @@
 .wrapper{
   display: inline-flex;
   background: #fff;
-  height: 100px;
-  width: 400px;
   align-items: center;
   justify-content: space-evenly;
   border-radius: 5px;
-  padding: 20px 15px;
+  padding-top: 15px;
 }
 .wrapper .option{
   background: #fff;
-  width: 40%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  margin: 0 10px;
+  margin-right: 20px;
   border-radius: 5px;
   cursor: pointer;
-  padding: 0 10px;
+  padding: 0 12px;
   border: 2px solid lightgrey;
   transition: all 0.3s ease;
 }
@@ -344,19 +341,7 @@ input[type="radio"]{
     @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default" })
     <div class="form-group">
         <label>Commission Fee</label>
-        <div class="wrapper">
-            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="1" id="option-1" checked>
-            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="0" id="option-2">
-            <label for="option-1" class="option option-1">
-                <span style="font-size:11px; text-align:center;">Default<br />(For Rent: %4 of price, For Rent: One rental fee)</span>
-            </label>
-            <label for="option-2" class="option option-2" style="height:63px;">
-                <span>Special</span>
-            </label>
-        </div>
-        <br />
-        <span id="commission"></span>
-        <input asp-for="Commission" type="number" style="display:none;" placeholder="Commission fee" class="form-control w-25" id="specialCommission" />
+        <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="commission" />
     </div>
     
     <div class="form-group">
@@ -458,23 +443,23 @@ input[type="radio"]{
         });
     }
 
-    function setCommission() {
-        if ($('#option-1').is(':checked')) {
-            $("#specialCommission").css("display", "none");
-            $("#commission").css("display", "block");
-        }
-        else {
-            $("#commission").css("display", "none");
-            $("#specialCommission").css("display", "block");
-        }
+    // function setCommission() {
+    //     if ($('#option-1').is(':checked')) {
+    //         $("#specialCommission").css("display", "none");
+    //         $("#commission").css("display", "block");
+    //     }
+    //     else {
+    //         $("#commission").css("display", "none");
+    //         $("#specialCommission").css("display", "block");
+    //     }
 
-        if ($("#forSale").is(':checked')) {
-            $("#commission").html("Commission: " + parseInt($("#price").val()) * 4 / 100);
-        }
-        else {
-            $("#commission").html("Commission: " + $("#price").val());
-        }
-    }
+    //     if ($("#forSale").is(':checked')) {
+    //         $("#commission").html("Commission: " + parseInt($("#price").val()) * 4 / 100);
+    //     }
+    //     else {
+    //         $("#commission").html("Commission: " + $("#price").val());
+    //     }
+    // }
 
     function checkRadioForClient(){
         if ($('#newClient').is(':checked')){

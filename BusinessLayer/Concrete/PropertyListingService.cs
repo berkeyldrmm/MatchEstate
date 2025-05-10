@@ -170,15 +170,7 @@ namespace BusinessLayer.Concrete
 
             listing.AddedDate = DateTime.Now;
 
-            if (listingModel.RadioForCommission == "0")
-                listing.Commission = Convert.ToDecimal(listingModel.Commission);
-            else
-            {
-                if (listingModel.PropertyStatusId == "0")
-                    listing.Commission = listingModel.Price;
-                else
-                    listing.Commission = listingModel.Price * 4 / 100;
-            }
+            listing.Commission = Convert.ToDecimal(listingModel.Commission);
 
             listing.Details = listingModel.Details;
             var result = await _listingRepository.Insert(listing);
@@ -435,10 +427,12 @@ namespace BusinessLayer.Concrete
                 return (false, "An error occurred while updating the property.");
             }
 
-            if (listingModel.RadioForCommission == "0")
-                listing.Commission = Convert.ToDecimal(listingModel.Commission);
-            else
-                listing.Commission = listingModel.PropertyStatusId == "0" ? listingModel.Price : listingModel.Price * 4 / 100;
+            listing.Commission = Convert.ToDecimal(listingModel.Commission);
+            
+            //if (listingModel.RadioForCommission == "0")
+            //    listing.Commission = Convert.ToDecimal(listingModel.Commission);
+            //else
+            //    listing.Commission = listingModel.PropertyStatusId == "0" ? listingModel.Price : listingModel.Price * 4 / 100;
 
             var result = await _listingRepository.Update(listing);
             int saved = await _unitOfWork.SaveChanges();

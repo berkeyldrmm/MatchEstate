@@ -373,9 +373,9 @@ input[type="radio"]{
     </div>
     <div class="form-group">
         <label>Commission Fee</label>
-        <div class="wrapper">
-            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="1" id="option-1">
-            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="0" id="option-2" checked>
+        @* <div class="wrapper">
+            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="1" id="option-1" checked>
+            <input asp-for="RadioForCommission" type="radio" name="RadioForCommission" value="0" id="option-2">
             <label for="option-1" class="option option-1">
                 <span style="font-size:11px; text-align:center;">Default<br />(For Rent: %4 of price, For Rent: One rental fee)</span>
             </label>
@@ -383,12 +383,10 @@ input[type="radio"]{
                 <span>Special</span>
             </label>
         </div>
-        <br />
-        <span id="commission"></span>
-        <div class="input-group w-25">
-            <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="specialCommission" />
-            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
-        </div>
+        <br /> *@
+        @* <span id="commission"></span> *@
+        <label for="commission">Commission fee</label>
+        <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="commission" />
     </div>
 
     <div class="form-group">

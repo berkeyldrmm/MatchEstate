@@ -2,7 +2,7 @@
 using DataAccessLayer;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;

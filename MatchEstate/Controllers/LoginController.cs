@@ -1,5 +1,5 @@
 ﻿using Azure.Core;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;

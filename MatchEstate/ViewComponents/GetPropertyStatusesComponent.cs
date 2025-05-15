@@ -13,16 +13,16 @@ namespace MatchEstate.ViewComponents
             _propertyStatusService = propertyStatusService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string view)
+        public async Task<IViewComponentResult> InvokeAsync(string view, string bgColor, int propertyStatusId = 1)
         {
             var propertyStatuses = await _propertyStatusService.GetAll();
 
             var propertyStatusViewModel = new PropertyStatusViewModel
             {
                 PropertyStatuses = propertyStatuses,
-                PropertyStatusId = 1
+                PropertyStatusId = propertyStatusId
             };
-
+            ViewData["bgColor"] = bgColor;
             return View(view, propertyStatusViewModel);
         }
     }

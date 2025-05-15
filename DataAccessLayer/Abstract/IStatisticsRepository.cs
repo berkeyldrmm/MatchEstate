@@ -1,5 +1,4 @@
-﻿using DTOLayer;
-using MatchEstate.Models;
+﻿using DTOLayer.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +9,8 @@ namespace DataAccessLayer.Abstract
 {
     public interface IStatisticsRepository
     {
-        public List<ForSaleOrRentCountDTO> GetForSaleOrRentOfListings(string userId);
-        public List<ForSaleOrRentCountDTO> GetForSaleOrRentOfRequests(string userId);
+        public List<PropertyStatusCountDto> GetPropertyStatusesOfListings(string userId);
+        public List<PropertyStatusCountDto> GetPropertyStatusesOfRequests(string userId);
         public List<TypeCountModelDTO> GetPropertyTypesOfListings(string userId);
         public List<TypeCountModelDTO> GetPropertyTypesOfRequests(string userId);
     }

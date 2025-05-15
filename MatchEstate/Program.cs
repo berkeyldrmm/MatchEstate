@@ -1,7 +1,7 @@
 using BusinessLayer.Validation;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
 using MatchEstate.Models;
@@ -29,7 +29,7 @@ builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlSer
                        );
                 }));
 builder.Services.AddValidatorsFromAssemblyContaining<LoginValidation>();
-builder.Services.AddScoped<IValidator<AddListingDTO>, ListingModelValidator>();
+builder.Services.AddScoped<IValidator<AddListingDTO>, AddListingDtoValidator>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -107,8 +107,8 @@ app.MapGet("/getStatistics", (IStatisticsRepository statisticsDal, ClaimsPrincip
 
     var propertyTypesOfListings = statisticsDal.GetPropertyTypesOfListings(userId);
     var propertyTypesOfRequests = statisticsDal.GetPropertyTypesOfRequests(userId);
-    var ForSaleOrRentOfListings = statisticsDal.GetForSaleOrRentOfListings(userId);
-    var ForSaleOrRentOfRequests = statisticsDal.GetForSaleOrRentOfRequests(userId);
+    var ForSaleOrRentOfListings = statisticsDal.GetPropertyStatusesOfListings(userId);
+    var ForSaleOrRentOfRequests = statisticsDal.GetPropertyStatusesOfRequests(userId);
 
     return new StatisticsModelDTO()
     {
@@ -124,11 +124,11 @@ app.MapGet("/getStatistics", (IStatisticsRepository statisticsDal, ClaimsPrincip
         CountOfCommercialUnitRequests = propertyTypesOfRequests.Where(o => o.PropertyTypeId == 3).FirstOrDefault()?.Count ?? 0,
         CountOfShopRequests = propertyTypesOfRequests.Where(o => o.PropertyTypeId == 1).FirstOrDefault()?.Count ?? 0,
 
-        CountOfListingsForRent = ForSaleOrRentOfListings.Where(o => o.ForSaleOrRent == "For Rent").FirstOrDefault()?.Count ?? 0,
-        CountOfListingsForSale = ForSaleOrRentOfListings.Where(o => o.ForSaleOrRent == "For Sale").FirstOrDefault()?.Count ?? 0,
+        CountOfListingsPropertyStatuses = ForSaleOrRentOfListings,
+        CountOfRequestsPropertyStatuses = ForSaleOrRentOfRequests,
 
-        CountOfRequestsForRent = ForSaleOrRentOfRequests.Where(o => o.ForSaleOrRent == "For Rent").FirstOrDefault()?.Count ?? 0,
-        CountOfRequestsForSale = ForSaleOrRentOfRequests.Where(o => o.ForSaleOrRent == "For Sale").FirstOrDefault()?.Count ?? 0
+        //CountOfRequestsForRent = ForSaleOrRentOfRequests.Where(o => o.ForSaleOrRent == "For Rent").FirstOrDefault()?.Count ?? 0,
+        //CountOfRequestsForSale = ForSaleOrRentOfRequests.Where(o => o.ForSaleOrRent == "For Sale").FirstOrDefault()?.Count ?? 0
     };
 });
 

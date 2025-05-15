@@ -136,9 +136,7 @@
     function showPageContainer(netPageCount) {
         let html = "";
         for (i = 1; i <= netPageCount; i++) {
-            html += `
-                                 <li class="page-item" style="list-style-type: none;"><button type="button" onclick="showClients(${i})" class="page-link">${i}</button></li>
-                        `
+            html += `<li class="page-item" style="list-style-type: none;"><button type="button" onclick="showClients(${i})" class="page-link">${i}</button></li>`
         }
 
         $("#paginationContainer").html(html);
@@ -159,7 +157,7 @@
                               <td><input name="clients" class="form-check-input" type="checkbox" value=${clients[i].id}></td>
                               <td>${clients[i].nameSurname}</td>
                               <td>${clients[i].phoneNumber}</td>
-                              <td>${clients[i].email}</td>
+                              <td>${(clients[i].email != null) ? clients[i].email : "-"}</td>
                           </tr>
                         `
                 }

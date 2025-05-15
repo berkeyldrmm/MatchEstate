@@ -1,4 +1,4 @@
-﻿using DTOLayer;
+﻿using DTOLayer.Dtos;
 using EntityLayer.Entities;
 
 namespace BusinessLayer.Abstract

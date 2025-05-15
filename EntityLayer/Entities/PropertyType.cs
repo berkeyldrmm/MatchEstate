@@ -12,6 +12,7 @@ public partial class PropertyType
     }
     public int Id { get; set; }
     public string PropertyName { get; set; }
+    public string RgbColorForStatistics { get; set; }
     public IEnumerable<PropertyListing> Listings { get; set; }
     public IEnumerable<PropertyRequest> Requests { get; set; }
 }

@@ -1,0 +1,332 @@
+﻿@model DTOLayer.Dtos.UpdateListingDto;
+
+<link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
+<style>
+
+    .wrapper{
+      display: inline-flex;
+      background: #fff;
+      align-items: center;
+      justify-content: space-evenly;
+      border-radius: 5px;
+      padding-top: 15px;
+    }
+
+    .wrapper .option{
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      margin-right: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 0 12px;
+      border: 2px solid lightgrey;
+      transition: all 0.3s ease;
+    }
+
+    .wrapper .option .dot{
+      height: 20px;
+      width: 20px;
+      background: #d9d9d9;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .wrapper .option .dot::before{
+      position: absolute;
+      content: "";
+      top: 4px;
+      left: 4px;
+      width: 12px;
+      height: 12px;
+      background: #0069d9;
+      border-radius: 50%;
+      opacity: 0;
+      transform: scale(1.5);
+      transition: all 0.3s ease;
+    }
+
+    input[type="radio"]{
+      display: none;
+    }
+
+    #newClient:checked:checked ~ .newClient,
+    #savedClient:checked:checked ~ .savedClient{
+      border-color: #4CB9E7;
+      background: #4CB9E7;
+    }
+
+    #newClient:checked:checked ~ .newClient .dot,
+    #savedClient:checked:checked ~ .savedClient .dot{
+      background: #fff;
+    }
+
+    #newClient:checked:checked ~ .newClient .dot::before,
+    #savedClient:checked:checked ~ .savedClient .dot::before{
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .wrapper .option span{
+      font-size: 20px;
+      color: #808080;
+    }
+
+    #newClient:checked:checked ~ .newClient span,
+    #savedClient:checked:checked ~ .savedClient span{
+      color: #fff;
+    }
+
+    .selectize-input.items.not-full.has-options::after{
+        display:none;
+    }
+</style>
+
+<form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="updatelisting" method="post">
+    <input type="hidden" asp-for="ListingId" />
+    @if (ViewBag.error != null)
+    {
+        <div id="errorDiv" class="alert-danger" style="padding:20px;">
+            @Html.Raw(ViewBag.error)
+        </div>
+    }
+
+    <h1>Update Listing</h1>
+    <div class="form-group">
+        <div class="wrapper">
+            <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="1" id="newClient" checked>
+            <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="0" id="savedClient">
+            <label for="newClient" class="option newClient">
+                <span>New Client</span>
+            </label>
+            <label for="savedClient" class="option savedClient">
+                <span>Saved Client</span>
+            </label>
+        </div>
+
+        <div id="savedClientDiv" style="display:none;">
+            <br />
+            <div class="form-group">
+                <label for="select-client">Select Client</label>
+                <select asp-for="ClientId" id="select-client" placeholder="Select Client">
+                    @await Component.InvokeAsync("GetClientsComponent", new { clientId = Model.ClientId })
+                </select>
+                <small class="text-warning">Warning: There may be some client with same name. Phone number can be distinctive in this regard.</small>
+            </div>
+        </div>
+
+        <div id="newClientDiv">
+            <div class="form-group">
+                <br />
+                <label>Client name surname</label>
+                <input asp-for="ClientNameSurname" type="text" class="form-control" placeholder="Name surname">
+            </div>
+            <div class="form-group">
+                <br />
+                <label>Client email address</label>
+                <input asp-for="ClientEmail" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email address">
+            </div>
+            <div class="form-group">
+                <br />
+                <label>Client phone number</label>
+                <input asp-for="ClientPhoneNumber" type="tel" class="form-control" placeholder="Phone number" pattern="[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}" title="Please enter a valid phone number (10 digits)">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="form-group">
+        <br />
+        <label>Listing title</label>
+        <input asp-for="ListingTitle" type="text" class="form-control" placeholder="Title">
+    </div>
+    <hr />
+    <div class="d-grid">
+        <div class="row">
+            <div class="form-group">
+                <label>Property Type</label>
+                <select asp-for="PropertyTypeId" class="form-control" id="propertyTypeInput" data-property="[1,2,3,4,5]" disabled
+                        data-bs-toggle="tooltip"
+                        title="Warning: Property type cannot be updated. If you selected a wrong property type, please create a new listing and delete this one.">
+                    <option value=2>Land</option>
+                    <option value=4>Farmland</option>
+                    <option value=1>Shop</option>
+                    <option value=5>Apartment</option>
+                    <option value=3>Commercial Unit</option>
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="form-group">
+                <label>City</label>
+                <select class="form-control" asp-for="City" id="selectCity" data-property="[1,2,3,4,5]">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>District</label>
+                <select class="form-control" asp-for="District" id="selectTown" data-property="[1,2,3,4,5]">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Neighbourhood</label>
+                <select class="form-control" asp-for="Neighbourhood" id="selectNeighbourhood" data-property="[1,2,3,4,5]">
+                </select>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-group">
+        <label>Price</label>
+        <div class="input-group w-25">
+            <input asp-for="Price" type="number" class="form-control" id="price" />
+            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+        </div>
+
+    </div>
+    <div>
+        Price per square metersize = <span id="pricePerMetersize"></span>
+    </div>
+
+    @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#4CB9E7", propertyStatusId = Model.PropertyStatusId })
+
+    <div class="form-group">
+        <label>Commission Fee</label>
+        <div class="input-group w-25">
+            <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="commission" />
+            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Other Details</label>
+        <textarea asp-for="Details" class="form-control" placeholder="Details..."></textarea>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="form-control btn w-25" style="background-color:#4CB9E7;color:#ffffff;" value="Update listing" />
+    </div>
+
+</form>
+
+<script>
+    $("#navListing").addClass("active");
+
+    var turkiye={};
+    fetch("/js/countries.json")
+        .then(res => res.json())
+        .then(datas => {
+            turkiye=datas;
+            let cities = turkiye.map(data => data.name);
+            let options = "";
+            cities.forEach(city => {
+                options += `<option value='${city}' ${(city.replace("İ","i").trim().toLowerCase() == @Json.Serialize(Model.City.Trim().ToLower())) ? 'selected' : ''}>${city}</option>`
+            });
+            $("#selectCity").html(options);
+        })
+        .then(()=>{
+            setDistrictOptions("");
+            setNeighbourhoodOptions("");
+        })
+
+    $("#selectCity").change(() => {
+        setDistrictOptions("<option value='0' selected>Select district</option>");
+        setNeighbourhoodOptions("<option value='0' selected>Select neighbourhood</option>");
+    });
+
+    $("#selectTown").change(() => {
+        setNeighbourhoodOptions("<option value='0' selected>Select neighbourhood</option>");
+    })
+
+    $(document).ready(function () {
+        propertyForm();
+        checkRadioForClient();
+        setPricePerMetersize()
+
+        $("input[name='RadioForClient']").change(()=>{
+            checkRadioForClient()
+        });
+
+        $("input[name='RadioForCommission']").change(() => {
+            setCommission();
+        });
+
+        $("input[name='PropertyStatusId']").change(() => {
+            setCommission();
+        });
+
+        $('#select-client').selectize({
+          sortField: 'text'
+        });
+
+        $("#propertyTypeInput").change(()=>{
+            propertyForm();
+        });
+
+        $("#price").on("keyup", () => {
+            setCommission();
+            setPricePerMetersize()
+        });
+
+        $("#sqaureMetersize").on("keyup", () => {
+            setPricePerMetersize()
+        });
+    });
+
+    function propertyForm() {
+        var val = $("#propertyTypeInput").val();
+        $(".d-grid .form-control").each((index, element) => {
+            var dataProperty = JSON.parse(element.getAttribute("data-property"));
+            if (dataProperty.includes(parseInt(val))) {
+                element.parentElement.style.display = "block";
+            }
+            else {
+                element.parentElement.style.display = "none";
+            }
+        });
+    }
+
+    function checkRadioForClient(){
+        if ($('#newClient').is(':checked')){
+            $("#newClientDiv").fadeIn();
+            $("#savedClientDiv").fadeOut();
+        }
+        else{
+            $("#newClientDiv").fadeOut();
+            $("#savedClientDiv").fadeIn();
+        }
+    }
+
+    function setPricePerMetersize(){
+        $("#pricePerMetersize").html(parseInt($("#price").val()) / parseInt($("#sqaureMetersize").val()) + "<i class='fa fa-dollar'></i>");
+    }
+
+    function setDistrictOptions(options){
+        let cityname = $("#selectCity").val().trim().toLowerCase();
+        let cityObject = turkiye.filter(city => city.name.trim().toLowerCase() == cityname)[0];
+        let towns=cityObject.towns;
+        let townNames = towns.map(town => town.name);
+        townNames.forEach(townName => options += `<option value='${townName}' ${(townName.trim().toLowerCase()==@Html.Raw(Json.Serialize(Model.District.Trim().ToLower()))) ? 'selected' : ''}>${townName}</option>`);
+        $("#selectTown").html(options);
+    }
+
+    function setNeighbourhoodOptions(options){
+        let cityname = $("#selectCity").val().trim().toLowerCase();
+        let cityObject = turkiye.filter(city => city.name.trim().toLowerCase() == cityname)[0];
+        let townname = $("#selectTown").val().trim().toLowerCase();
+        let townObject = cityObject.towns.filter(town => town.name.trim().toLowerCase() == townname)[0];
+        let neighbourhoods = townObject.districts;
+        let neighbourhoodOptions=[];
+        neighbourhoods.forEach(neighbourhood => {
+            neighbourhood.quarters.forEach(quarter => {
+                neighbourhoodOptions.push(`${quarter.name} ${neighbourhood.name != 'Neighbourhood' ? ',' + neighbourhood.name : ''}`)
+            })
+        });
+        neighbourhoodOptions.forEach(neighbourhood => options += `<option value='${neighbourhood}' ${(neighbourhood.trim().toLowerCase()==@Html.Raw(Json.Serialize(Model.Neighbourhood.Trim().ToLower()))) ? 'selected' : ''}>${neighbourhood}</option>`);
+        $("#selectNeighbourhood").html(options);
+    }
+
+</script>
+<script src="~/lib/jquery-selectize/selectize.min.js"></script>

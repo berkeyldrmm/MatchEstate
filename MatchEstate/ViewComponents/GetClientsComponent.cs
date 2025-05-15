@@ -16,11 +16,12 @@ namespace RealEstate.ViewComponents
         }
 
         [HttpGet]
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string clientId)
         {
-            var saticilar = await _clientService.GetClientsOfUser(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+            var clients = await _clientService.GetClientsOfUser(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+            ViewData["clientId"] = clientId;
 
-            return View(saticilar);
+            return View(clients);
         }
     }
 }

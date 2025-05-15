@@ -1,6 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using MatchEstate.Wrappers;
 using Microsoft.AspNetCore.Identity;

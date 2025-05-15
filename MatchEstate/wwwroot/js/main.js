@@ -62,6 +62,7 @@
 
     if (window.location.pathname == "/") {
         $.get("/getStatistics", (data, status) => {
+            console.log(data);
             if (status == "success") {
 
                 var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
@@ -95,13 +96,10 @@
                 var myChart7 = new Chart(ctx7, {
                     type: "doughnut",
                     data: {
-                        labels: ["For Sale", "For Rent"],
+                        labels: data.countOfListingsPropertyStatuses.map(x => x.propertyStatus),
                         datasets: [{
-                            backgroundColor: [
-                                "rgba(76, 185, 231, .7)",
-                                "rgba(76, 185, 231, .3)"
-                            ],
-                            data: [data.countOfListingsForSale, data.countOfListingsForRent]
+                            backgroundColor: data.countOfListingsPropertyStatuses.map(x => x.rgbColor),
+                            data: data.countOfListingsPropertyStatuses.map(x => x.count)
                         }]
                     },
                     options: {
@@ -138,13 +136,10 @@
                 var myChart9 = new Chart(ctx9, {
                     type: "doughnut",
                     data: {
-                        labels: ["For Sale", "For Rent"],
+                        labels: data.countOfRequestsPropertyStatuses.map(x => x.propertyStatus),
                         datasets: [{
-                            backgroundColor: [
-                                "rgba(76, 185, 231, .7)",
-                                "rgba(76, 185, 231, .3)"
-                            ],
-                            data: [data.countOfRequestsForSale, data.countOfRequestsForRent]
+                            backgroundColor: data.countOfRequestsPropertyStatuses.map(x => x.rgbColor),
+                            data: data.countOfRequestsPropertyStatuses.map(x => x.count)
                         }]
                     },
                     options: {

@@ -1,4 +1,4 @@
-﻿using DTOLayer;
+﻿using DTOLayer.Dtos;
 
 namespace MatchEstate.Models
 {

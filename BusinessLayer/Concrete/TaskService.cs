@@ -1,5 +1,5 @@
 ﻿using BusinessLayer.Abstract;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;

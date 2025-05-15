@@ -1,7 +1,6 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using DTOLayer;
-using MatchEstate.Models;
+using DTOLayer.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,27 +48,33 @@ namespace DataAccessLayer.Concrete
                 .ToList();
         }
 
-        public List<ForSaleOrRentCountDTO> GetForSaleOrRentOfListings(string userId)
+        public List<PropertyStatusCountDto> GetPropertyStatusesOfListings(string userId)
         {
             return _context.PropertyListings
                 .Where(l => l.UserId == userId)
-                .GroupBy(l => l.PropertyStatusId)
-                .Select(l => new ForSaleOrRentCountDTO
+                .Include(l=>l.PropertyStatus)
+                .GroupBy(l => l.PropertyStatus)
+                .Select(l => new PropertyStatusCountDto
                 {
-                    //ForSaleOrRent = l.Key,
+                    PropertyStatusId = l.Key.Id,
+                    PropertyStatus = l.Key.Name,
+                    RgbColor = l.Key.RgbColorForStatistics,
                     Count = l.Count()
                 })
                 .ToList();
         }
 
-        public List<ForSaleOrRentCountDTO> GetForSaleOrRentOfRequests(string userId)
+        public List<PropertyStatusCountDto> GetPropertyStatusesOfRequests(string userId)
         {
             return _context.PropertyRequests
                 .Where(l => l.UserId == userId)
-                .GroupBy(l => l.PropertyStatusId)
-                .Select(l => new ForSaleOrRentCountDTO
+                .Include(l => l.PropertyStatus)
+                .GroupBy(l => l.PropertyStatus)
+                .Select(l => new PropertyStatusCountDto
                 {
-                    //ForSaleOrRent = l.Key,
+                    PropertyStatusId = l.Key.Id,
+                    PropertyStatus = l.Key.Name,
+                    RgbColor = l.Key.RgbColorForStatistics,
                     Count = l.Count()
                 })
                 .ToList();

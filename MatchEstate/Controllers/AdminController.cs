@@ -2,7 +2,7 @@
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using BusinessLayer.Validation;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
 using MatchEstate.Models;
@@ -110,7 +110,7 @@ namespace MatchEstate.Controllers
             var listingRequestModel = new ListingRequestModel()
             {
                 UserNameSurname = user,
-                Listings = _listingService.GetAllWithClient(id).Result.Select(l => new AdminPageListingModel { Title = l.Title, PropertyType = l.PropertyType.PropertyName, Status = l.Status }),
+                Listings = _listingService.GetAllWithClient(id).Result.Select(l => new AdminPageListingModel { Title = l.Title, PropertyType = l.PropertyType.PropertyName, Status = l.DealStatus }),
                 Requests = _requestService.GetAllWithClient(id).Result.Select(r => new AdminPageRequestModel { Title = r.Title, PropertyType = r.PropertyType.PropertyName })
             };
 

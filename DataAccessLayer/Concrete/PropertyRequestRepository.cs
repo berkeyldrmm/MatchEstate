@@ -1,6 +1,7 @@
-﻿using DataAccessLayer.Abstract;
+﻿using BusinessLayer.Mapping;
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace DataAccessLayer.Concrete
         public PropertyRequestRepository(MatchEstateDbContext context) : base(context)
         {
         }
-        public IQueryable<PropertyRequest> EntityOfUser(string userId) => Entity.Where(i => i.UserId == userId);
+        public IQueryable<PropertyRequest> EntityOfUser(string userId) => Entity.Include(l => l.PropertyStatus).Where(i => i.UserId == userId);
         public async Task<IEnumerable<PropertyRequest>> GetAllWithClient(string userId)
         {
             return await EntityOfUser(userId).Include(t => t.Client).Include(t => t.PropertyType).ToListAsync();
@@ -35,9 +36,20 @@ namespace DataAccessLayer.Concrete
             return EntityOfUser(userId).Where(request => Ids.Contains(request.Id)).ToList();
         }
 
-        public async Task<PropertyRequest> GetWithClient(string userId, string id)
+        public IQueryable<PropertyRequest> GetWithClient(string userId, string id)
         {
-            return await EntityOfUser(userId).Include(t => t.Client).Include(t => t.PropertyType).FirstOrDefaultAsync(t => t.Id == id);
+            return EntityOfUser(userId)
+                .Include(r=>r.PropertyStatus)
+                .Include(t => t.Client)
+                .Include(t => t.PropertyType)
+                .Where(t => t.Id == id);
+        }
+
+        public UpdateRequestDto? GetRequestForUpdate(string userId, string id)
+        {
+            return GetWithClient(userId, id)
+                .Select(RequestMapper.MapToUpdateRequestDto)
+                .FirstOrDefault();
         }
 
         public object GetCountsOfRequestTypes(string userId)
@@ -93,7 +105,7 @@ namespace DataAccessLayer.Concrete
                 Type = r.PropertyType.PropertyName,
                 NameSurname = r.Client.NameSurname,
                 City = r.City,
-                //ForSaleOrRent = r.PropertyStatusId,
+                PropertyStatus = r.PropertyStatus.Name,
                 MinPrice = r.MinimumPrice.ToString(),
                 MaxPrice = r.MaximumPrice.ToString()
             });

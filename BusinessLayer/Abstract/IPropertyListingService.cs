@@ -1,12 +1,13 @@
-﻿using DTOLayer;
+﻿using BusinessLayer.Mapping;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 
 namespace BusinessLayer.Abstract
 {
     public interface IPropertyListingService : IGenericService<PropertyListing, string>
     {
-        public Task<(bool, string)> Insert(string userId, AddListingDTO listingModel);
-        public Task<(bool, string)> Update(string userId, string listingId, AddListingDTO listingModel);
+        public Task<bool> Insert(string userId, AddListingDTO listingModel);
+        public Task<bool> Update(string userId, UpdateListingDto listingModel);
         public Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId);
         public Task<PropertyListing> GetWithClient(string userId, string id);
         public Task<PropertyType> GetPropertyType(int id);
@@ -17,5 +18,6 @@ namespace BusinessLayer.Abstract
         public Task<List<PropertyListing>> GetListingsForRequest(string userId, PropertyRequest request);
         public Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId);
         public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO);
+        public UpdateListingDto? GetListingForUpdate(string userId, string id);
     }
 }

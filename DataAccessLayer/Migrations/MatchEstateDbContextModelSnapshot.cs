@@ -277,6 +277,12 @@ namespace DataAccessLayer.Migrations
                     b.Property<decimal>("Commission")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime?>("DealDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("DealStatus")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
@@ -299,12 +305,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("SoldDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -401,6 +401,10 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("RgbColorForStatistics")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("PropertyStatuses", (string)null);
@@ -415,6 +419,10 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("RgbColorForStatistics")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

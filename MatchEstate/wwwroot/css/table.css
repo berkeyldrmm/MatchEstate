@@ -75,9 +75,13 @@ p {
         text-transform: uppercase;
     }
 
-    .table td, .jsgrid .jsgrid-table td {
-        font-size: 0.875rem;
-        padding: .875rem 0.9375rem;
+    .table td,
+    .table th,
+    .jsgrid .jsgrid-table td,
+    .table a,
+    .table button {
+        text-align: center;
+        font-size: 13.5px;
     }
 
 .badge {
@@ -87,4 +91,3 @@ p {
     padding: .375rem .5625rem;
     font-weight: normal;
 }
-

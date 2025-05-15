@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;

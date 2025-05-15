@@ -1,5 +1,12 @@
 ﻿@model IEnumerable<Client>
 
 @foreach(var item in Model){
-    <option value=@item.Id>@item.NameSurname (+90 @item.PhoneNumber)</option>
+    @if (ViewData["clientId"] is not null && ViewData["clientId"].ToString() == item.Id)
+    {
+        <option value="@item.Id" selected>@item.NameSurname (+90@(item.PhoneNumber))</option>
+    }
+    else
+    {
+        <option value="@item.Id">@item.NameSurname (+90@(item.PhoneNumber))</option>
+    }
 }

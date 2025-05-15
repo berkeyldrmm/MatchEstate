@@ -1,7 +1,9 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Mapping;
 using DataAccessLayer.Abstract;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -12,14 +14,12 @@ namespace BusinessLayer.Concrete
     public class PropertyListingService : IPropertyListingService
     {
         private readonly IPropertyListingRepository _listingRepository;
-        private readonly IClientService _clientService;
         private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public PropertyListingService(IPropertyListingRepository listingRepository, IClientService clientService, IPropertyService propertyService, IUnitOfWork unitOfWork)
+        public PropertyListingService(IPropertyListingRepository listingRepository, IPropertyService propertyService, IUnitOfWork unitOfWork)
         {
             _listingRepository = listingRepository;
-            _clientService = clientService;
             _propertyService = propertyService;
             _unitOfWork = unitOfWork;
         }
@@ -40,147 +40,30 @@ namespace BusinessLayer.Concrete
             return _listingRepository.Read(id);
         }
 
-        public async Task<(bool, string)> Insert(string userId, AddListingDTO listingModel)
+        public UpdateListingDto? GetListingForUpdate(string userId, string id)
         {
-            PropertyListing listing = new PropertyListing()
-            {
-                Id = Guid.NewGuid().ToString() + DateTime.Now.ToString("hhmmss"),
-                Title = listingModel.ListingTitle,
-                Price = listingModel.Price,
-                PropertyStatusId = Convert.ToInt32(listingModel.PropertyStatusId),
-                Status = false,
-                UserId = userId,
-                City = listingModel.City,
-                District = listingModel.District,
-                Neighbourhood = listingModel.Neighbourhood
-            };
-            listing.PropertyTypeId = Convert.ToInt32(listingModel.PropertyType);
-            listing.PropertyType = await this.GetPropertyType(listing.PropertyTypeId);
-            if (listingModel.RadioForClient == "1")
-            {
-                bool phoneNumberCheck = _clientService.ControlUserPhoneNumber(userId, listingModel.ClientPhoneNumber);
-                if (!phoneNumberCheck)
-                {
-                    return (false, "A client with the same phone number already exists.");
-                }
+            return _listingRepository.GetListingForUpdate(userId, id);
+        }
 
-                var client = new Client()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    NameSurname = listingModel.ClientNameSurname,
-                    Email = listingModel.ClientEmail,
-                    PhoneNumber = listingModel.ClientPhoneNumber,
-                    UserId = userId
-                };
+        public async Task<bool> Insert(string userId, AddListingDTO dto)
+        {
+            var property = ListingMapper.MapToProperty(dto);
 
-                listing.ClientId = client.Id.ToString();
-                listing.Client = client;
-            }
-            else
+            var propertyResult = await _propertyService.AddProperty(property);
+            if (!propertyResult)
+                return false;
+
+            var listing = ListingMapper.MapToListingEntity(dto, userId, property.ListingId);
+
+            var listingResult = await _listingRepository.Insert(listing);
+            if (!listingResult)
             {
-                listing.ClientId = listingModel.ClientId;
-                listing.Client = await _clientService.GetOne(listingModel.ClientId);
-            }
-            var property = new Property();
-            switch (listing.PropertyTypeId)
-            {
-                case 1:
-
-                    property = new Shop()
-                    {
-                        Dues = Convert.ToInt32(listingModel.Dues),
-                        HasElevator = Convert.ToBoolean(Convert.ToInt32(listingModel.Elevator)),
-                        HasParkingLot = Convert.ToBoolean(Convert.ToInt32(listingModel.ParkingLot)),
-                        AgeOfBuilding = listingModel.AgeOfBuilding,
-                        Floor = Convert.ToInt32(listingModel.Floor),
-                        IsFurnished = Convert.ToBoolean(Convert.ToInt32(listingModel.Furnished)),
-                        HeatingType = listingModel.HeatingType,
-                        NumberOfFloors = Convert.ToInt32(listingModel.NumberOfFloor),
-                        IsEligibleForLoan = Convert.ToBoolean(Convert.ToInt32(listingModel.IsEligibleForLoan)),
-                        UsageState = listingModel.UsageState,
-                        SquareMeterSizeGross = Convert.ToInt32(listingModel.SquareMetersizeGross),
-                        ParselNumber = listingModel.ParselNumber,
-                        NumberOfRooms = listingModel.NumberOfRooms
-                    };
-
-                    break;
-                case 2:
-                    property = new Land()
-                    {
-                        BlockNumber = listingModel.BlockNumber,
-                        ParselNumber = listingModel.ParselNumber,
-                        ZoningStatus = Convert.ToBoolean(Convert.ToInt32(listingModel.ZoningStatus)),
-                        LandShareEligibility = Convert.ToBoolean(Convert.ToInt32(listingModel.IsEligibleForLoan)),
-                        SheetNumber = listingModel.SheetNumber,
-                        TitleSheetState = Convert.ToBoolean(Convert.ToInt32(listingModel.TitleSheetState))
-                    };
-                    break;
-                case 3:
-                    property = new CommercialUnit()
-                    {
-                        BlockNumber = listingModel.BlockNumber,
-                        ParselNumber = listingModel.ParselNumber
-                    };
-                    break;
-                case 4:
-                    property = new Farmland()
-                    {
-                        BlockNumber = listingModel.BlockNumber,
-                        ParselNumber = listingModel.ParselNumber,
-                        SheetNumber = listingModel.SheetNumber,
-                        TitleDeedState = Convert.ToBoolean(Convert.ToInt32(listingModel.TitleSheetState)),
-                        ZoningStatus = Convert.ToBoolean(Convert.ToInt32(listingModel.ZoningStatus))
-                    };
-                    break;
-                case 5:
-                    property = new Apartment()
-                    {
-                        BlockNumber = listingModel.BlockNumber,
-                        Dues = Convert.ToInt32(listingModel.Dues),
-                        HasElevator = Convert.ToBoolean(Convert.ToInt32(listingModel.Elevator)),
-                        HasParkingLot = Convert.ToBoolean(Convert.ToInt32(listingModel.ParkingLot)),
-                        AgeOfBuilding = listingModel.AgeOfBuilding,
-                        Floor = Convert.ToInt32(listingModel.Floor),
-                        IsFurnished = Convert.ToBoolean(Convert.ToInt32(listingModel.Furnished)),
-                        HeatingType = listingModel.HeatingType,
-                        NumberOfFloors = Convert.ToInt32(listingModel.NumberOfFloor),
-                        IsEligibleForLoan = Convert.ToBoolean(Convert.ToInt32(listingModel.IsEligibleForLoan)),
-                        UsageState = listingModel.UsageState,
-                        SquareMeterSizeGross = Convert.ToInt32(listingModel.SquareMetersizeGross),
-                        ParselNumber = listingModel.ParselNumber,
-                        NumberOfRooms = listingModel.NumberOfRooms,
-                        IsInResidentalComplex = Convert.ToBoolean(Convert.ToInt32(listingModel.IsInResidentalComplex)),
-                        NumberOfBalcony = Convert.ToInt32(listingModel.NumberOfBalcony),
-                        NumberOfBathRooms = Convert.ToInt32(listingModel.NumberOfBathrooms)
-                    };
-                    break;
-                default:
-                    break;
+                return false;
             }
 
-            property.Id = Guid.NewGuid().ToString();
-            property.ListingId = listing.Id;
-            property.SquareMeterSize = listingModel.SquareMetersize;
-            property.PricePerSquareMeter = Math.Ceiling(listing.Price / Convert.ToInt32(property.SquareMeterSize));
-            bool propertyresult = await _propertyService.AddProperty(property);
-            if (!propertyresult)
-            {
-                return (false, "An error occured while saving the listing. Please try again later.");
-            }
-
-            listing.AddedDate = DateTime.Now;
-
-            listing.Commission = Convert.ToDecimal(listingModel.Commission);
-
-            listing.Details = listingModel.Details;
-            var result = await _listingRepository.Insert(listing);
             int saved = await _unitOfWork.SaveChanges();
-            if (result && saved > 0)
-            {
-                return (true, "Listing has been saved successfully.");
-            }
 
-            return (false, "An error occured while saving the listing. Please try again later.");
+            return saved > 0;
         }
 
         public async Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId)
@@ -189,7 +72,7 @@ namespace BusinessLayer.Concrete
         }
         public async Task<PropertyListing> GetWithClient(string userId, string id)
         {
-            return await _listingRepository.GetWithClient(userId, id);
+            return await _listingRepository.GetWithClient(userId, id).FirstOrDefaultAsync();
         }
 
         public Task<PropertyType> GetPropertyType(int id)
@@ -223,7 +106,7 @@ namespace BusinessLayer.Concrete
                 expressions.Add(i => i.PropertyTypeId == getByFiltersDTO.PropertyType);
 
             if (getByFiltersDTO.Status != "-1")
-                expressions.Add(i => i.Status == Convert.ToBoolean(Convert.ToInt16(getByFiltersDTO.Status)));
+                expressions.Add(i => i.DealStatus == Convert.ToBoolean(Convert.ToInt16(getByFiltersDTO.Status)));
 
             if(getByFiltersDTO.MinPrice != null && getByFiltersDTO.MinPrice.Length > 2)
             {
@@ -275,7 +158,7 @@ namespace BusinessLayer.Concrete
 
             expressions.Add(i => i.Client.Id != request.Client.Id);
 
-            expressions.Add(i => i.Status == false);
+            expressions.Add(i => i.DealStatus == false);
 
             return await _listingRepository.GetListingsForRequest(userId, expressions);
         }
@@ -285,165 +168,18 @@ namespace BusinessLayer.Concrete
             return await _listingRepository.GetEarningsOfMonth(userId);
         }
 
-        public async Task<(bool, string)> Update(string userId, string listingId, AddListingDTO listingModel)
+        public async Task<bool> Update(string userId, UpdateListingDto dto)
         {
-            var listing = await _listingRepository.GetWithClient(userId, listingId);
+            var listing = await _listingRepository.GetWithClient(userId, dto.ListingId).FirstOrDefaultAsync();
             if (listing == null)
-            {
-                return (false, "Listing not found.");
-            }
+                return false;
 
-            listing.Title = listingModel.ListingTitle;
-            listing.Price = listingModel.Price;
-            //listing.PropertyStatusId = listingModel.PropertyStatusId == "1" ? "For Sale" : "For Rent";
-            listing.City = listingModel.City;
-            listing.District = listingModel.District;
-            listing.Neighbourhood = listingModel.Neighbourhood;
-            listing.Details = listingModel.Details;
-
-            listing.PropertyTypeId = Convert.ToInt32(listingModel.PropertyType);
-            listing.PropertyType = await this.GetPropertyType(listing.PropertyTypeId);
-
-            if (listingModel.RadioForClient == "1")
-            {
-                bool phoneNumberCheck = _clientService.ControlUserPhoneNumber(userId, listingModel.ClientPhoneNumber);
-                if (!phoneNumberCheck)
-                {
-                    return (false, "A client with the same phone number already exists.");
-                }
-
-                var client = new Client()
-                {
-                    Id = listing.ClientId ?? Guid.NewGuid().ToString(),
-                    NameSurname = listingModel.ClientNameSurname,
-                    Email = listingModel.ClientEmail,
-                    PhoneNumber = listingModel.ClientPhoneNumber,
-                    UserId = userId
-                };
-
-                listing.ClientId = client.Id;
-                listing.Client = client;
-            }
-            else
-            {
-                listing.ClientId = listingModel.ClientId;
-                listing.Client = await _clientService.GetOne(listingModel.ClientId);
-            }
-
-            Property property = new Property();
-
-            switch (listing.PropertyTypeId)
-            {
-                case 1:
-                    var shop = listing.Shop;
-                    if (shop != null)
-                    {
-                        shop.Id = listing.Shop.Id;
-                        shop.Dues = Convert.ToInt32(listingModel.Dues);
-                        shop.HasElevator = Convert.ToBoolean(Convert.ToInt32(listingModel.Elevator));
-                        shop.HasParkingLot = Convert.ToBoolean(Convert.ToInt32(listingModel.ParkingLot));
-                        shop.AgeOfBuilding = listingModel.AgeOfBuilding;
-                        shop.Floor = Convert.ToInt32(listingModel.Floor);
-                        shop.IsFurnished = Convert.ToBoolean(Convert.ToInt32(listingModel.Furnished));
-                        shop.HeatingType = listingModel.HeatingType;
-                        shop.NumberOfFloors = Convert.ToInt32(listingModel.NumberOfFloor);
-                        shop.IsEligibleForLoan = Convert.ToBoolean(Convert.ToInt32(listingModel.IsEligibleForLoan));
-                        shop.UsageState = listingModel.UsageState;
-                        shop.SquareMeterSizeGross = Convert.ToInt32(listingModel.SquareMetersizeGross);
-                        shop.ParselNumber = listingModel.ParselNumber;
-                        shop.NumberOfRooms = listingModel.NumberOfRooms;
-                        property = shop;
-                    }
-                    break;
-                case 2:
-                    var land = listing.Land;
-                    if (land != null)
-                    {
-                        land.Id = listing.Land.Id;
-                        land.BlockNumber = listingModel.BlockNumber;
-                        land.ParselNumber = listingModel.ParselNumber;
-                        land.ZoningStatus = Convert.ToBoolean(Convert.ToInt32(listingModel.ZoningStatus));
-                        land.LandShareEligibility = Convert.ToBoolean(Convert.ToInt32(listingModel.IsEligibleForLoan));
-                        land.SheetNumber = listingModel.SheetNumber;
-                        land.TitleSheetState = Convert.ToBoolean(Convert.ToInt32(listingModel.TitleSheetState));
-                        property = land;
-                    }
-                    break;
-                case 3:
-                    var commercialUnit = listing.CommercialUnit;
-                    if (commercialUnit != null)
-                    {
-                        commercialUnit.Id = listing.CommercialUnit.Id;
-                        commercialUnit.BlockNumber = listingModel.BlockNumber;
-                        commercialUnit.ParselNumber = listingModel.ParselNumber;
-                        property = commercialUnit;
-                    }
-                    break;
-                case 4:
-                    var farmland = listing.Farmland;
-                    if (farmland != null)
-                    {
-                        farmland.Id = listing.Farmland.Id;
-                        farmland.BlockNumber = listingModel.BlockNumber;
-                        farmland.ParselNumber = listingModel.ParselNumber;
-                        farmland.SheetNumber = listingModel.SheetNumber;
-                        farmland.TitleDeedState = Convert.ToBoolean(Convert.ToInt32(listingModel.TitleSheetState));
-                        farmland.ZoningStatus = Convert.ToBoolean(Convert.ToInt32(listingModel.ZoningStatus));
-                        property = farmland;
-                    }
-                    break;
-                case 5:
-                    var apartment = listing.Apartment;
-                    if (apartment != null)
-                    {
-                        apartment.Id = listing.Apartment.Id;
-                        apartment.BlockNumber = listingModel.BlockNumber;
-                        apartment.Dues = Convert.ToInt32(listingModel.Dues);
-                        apartment.HasElevator = Convert.ToBoolean(Convert.ToInt32(listingModel.Elevator));
-                        apartment.HasParkingLot = Convert.ToBoolean(Convert.ToInt32(listingModel.ParkingLot));
-                        apartment.AgeOfBuilding = listingModel.AgeOfBuilding;
-                        apartment.Floor = Convert.ToInt32(listingModel.Floor);
-                        apartment.IsFurnished = Convert.ToBoolean(Convert.ToInt32(listingModel.Furnished));
-                        apartment.HeatingType = listingModel.HeatingType;
-                        apartment.NumberOfFloors = Convert.ToInt32(listingModel.NumberOfFloor);
-                        apartment.IsEligibleForLoan = Convert.ToBoolean(Convert.ToInt32(listingModel.IsEligibleForLoan));
-                        apartment.UsageState = listingModel.UsageState;
-                        apartment.SquareMeterSizeGross = Convert.ToInt32(listingModel.SquareMetersizeGross);
-                        apartment.ParselNumber = listingModel.ParselNumber;
-                        apartment.NumberOfRooms = listingModel.NumberOfRooms;
-                        apartment.IsInResidentalComplex = Convert.ToBoolean(Convert.ToInt32(listingModel.IsInResidentalComplex));
-                        apartment.NumberOfBalcony = Convert.ToInt32(listingModel.NumberOfBalcony);
-                        apartment.NumberOfBathRooms = Convert.ToInt32(listingModel.NumberOfBathrooms);
-                        property = apartment;
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            bool propertyResult = await _propertyService.UpdateProperty(property);
-            if (!propertyResult)
-            {
-                return (false, "An error occurred while updating the property.");
-            }
-
-            listing.Commission = Convert.ToDecimal(listingModel.Commission);
-            
-            //if (listingModel.RadioForCommission == "0")
-            //    listing.Commission = Convert.ToDecimal(listingModel.Commission);
-            //else
-            //    listing.Commission = listingModel.PropertyStatusId == "0" ? listingModel.Price : listingModel.Price * 4 / 100;
+            var updatedListing = ListingMapper.MapToPropertyListing(dto, listing, userId);
 
             var result = await _listingRepository.Update(listing);
             int saved = await _unitOfWork.SaveChanges();
 
-            if (result && saved > 0)
-            {
-                return (true, "Listing has been updated successfully.");
-            }
-
-            return (false, "An error occurred while updating the listing. Please try again later.");
+            return result && saved > 0;
         }
-
     }
 }

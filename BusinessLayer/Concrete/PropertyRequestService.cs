@@ -1,10 +1,12 @@
 ﻿using Azure;
 using BusinessLayer.Abstract;
+using BusinessLayer.Mapping;
 using DataAccessLayer;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using DTOLayer;
+using DTOLayer.Dtos;
 using EntityLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System;
@@ -68,33 +70,32 @@ namespace BusinessLayer.Concrete
 
         public async Task<PropertyRequest> GetWithClient(string userId, string id)
         {
-            return await _reqeustRepository.GetWithClient(userId, id);
+            return await _reqeustRepository.GetWithClient(userId, id).FirstOrDefaultAsync();
         }
 
-        public async Task<(bool, string)> Insert(string userId, RequestModelDTO requestModel)
+        public UpdateRequestDto? GetRequestForUpdate(string userId, string id)
+        {
+            return _reqeustRepository.GetRequestForUpdate(userId, id);
+        }
+
+        public async Task<bool> Insert(string userId, AddRequestDto requestModel)
         {
             PropertyRequest request = new PropertyRequest()
             {
                 Id = Guid.NewGuid().ToString(),
                 District = JsonConvert.SerializeObject(requestModel.District),
                 NumberOfRooms = JsonConvert.SerializeObject(requestModel.NumberOfRooms),
-                //PropertyStatusId = requestModel.PropertyStatusId,
+                PropertyStatusId = requestModel.PropertyStatusId,
                 UserId = userId,
                 MinimumPrice = requestModel.MinPrice ?? 0,
                 MaximumPrice = requestModel.MaxPrice ?? 0,
                 Title = requestModel.RequestTitle,
                 City = requestModel.City
             };
-            request.PropertyTypeId = Convert.ToInt32(requestModel.PropertyType);
+            request.PropertyTypeId = Convert.ToInt32(requestModel.PropertyTypeId);
             request.PropertyType = await this.GetPropertyType(request.PropertyTypeId);
             if (requestModel.RadioForClient == "1")
             {
-                bool phoneNumberCheck = _clientService.ControlUserPhoneNumber(userId, requestModel.ClientPhoneNumber);
-                if (!phoneNumberCheck)
-                {
-                    return (false, "A client with the same phone number already exists.");
-                }
-
                 var client = new Client()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -115,27 +116,18 @@ namespace BusinessLayer.Concrete
 
             request.AddedDate = DateTime.Now;
 
-            if (requestModel.PropertyStatusId == "0")
-                request.PropertyStatusId = 0;
-            else
-                request.PropertyStatusId = 1;
-
             request.Details = requestModel.Details ?? "";
             var result = await _reqeustRepository.Insert(request);
             int saved = await _unitOfWork.SaveChanges();
-            if (result && saved > 0)
-            {
-                return (true, "Request has been saved successfully.");
-            }
-            return (false, "An error occured while adding the request.");
+            return result && saved > 0;
         }
 
         public (IEnumerable<RequestPageDTO>, int) GetByFilters(string userId, RequestGetByFiltersDTO getByFilers)
         {
             var expressions = new List<Expression<Func<PropertyRequest, bool>>>();
 
-            //if (getByFilers.PropertyStatusId != "0")
-            //    expressions.Add(t => t.PropertyStatusId == getByFilers.PropertyStatusId);
+            if (getByFilers.PropertyStatusId != "0")
+                expressions.Add(t => t.PropertyStatusId == Convert.ToInt32(getByFilers.PropertyStatusId));
 
             if (getByFilers.PropertyType != 0)
                 expressions.Add(t => t.PropertyTypeId == getByFilers.PropertyType);
@@ -172,60 +164,20 @@ namespace BusinessLayer.Concrete
             return await _reqeustRepository.GetRequestsForListing(userId, expressions);
         }
 
-        public async Task<(bool, string)> Update(string userId, string requestId, RequestModelDTO requestModel)
+        public async Task<bool> Update(string userId, UpdateRequestDto dto)
         {
-            var request = await _reqeustRepository.GetWithClient(userId, requestId);
+            var request = await _reqeustRepository.GetWithClient(userId, dto.RequestId).FirstOrDefaultAsync();
             if (request == null)
             {
-                return (false, "Request not found.");
+                return false;
             }
 
-            request.Title = requestModel.RequestTitle;
-            request.MaximumPrice = requestModel.MaxPrice ?? 0;
-            //request.PropertyStatusId = requestModel.PropertyStatusId == "1" ? "For Sale" : "For Rent";
-            request.City = requestModel.City;
-            request.District = JsonConvert.SerializeObject(requestModel.District);
-            request.NumberOfRooms = JsonConvert.SerializeObject(requestModel.NumberOfRooms);
-            request.Details = requestModel.Details;
-
-            request.PropertyTypeId = Convert.ToInt32(requestModel.PropertyType);
-            request.PropertyType = await this.GetPropertyType(request.PropertyTypeId);
-
-            if (requestModel.RadioForClient == "1")
-            {
-                bool phoneNumberCheck = _clientService.ControlUserPhoneNumber(userId, requestModel.ClientPhoneNumber);
-                if (!phoneNumberCheck)
-                {
-                    return (false, "A client with the same phone number already exists.");
-                }
-
-                var client = new Client()
-                {
-                    Id = request.ClientId ?? Guid.NewGuid().ToString(),
-                    NameSurname = requestModel.ClientNameSurname,
-                    Email = requestModel.ClientEmail,
-                    PhoneNumber = requestModel.ClientPhoneNumber,
-                    UserId = userId
-                };
-
-                request.ClientId = client.Id;
-                request.Client = client;
-            }
-            else
-            {
-                request.ClientId = requestModel.ClientId;
-                request.Client = await _clientService.GetOne(requestModel.ClientId);
-            }
+            RequestMapper.MapToPropertyRequest(dto, request, userId);
 
             var result = await _reqeustRepository.Update(request);
             int saved = await _unitOfWork.SaveChanges();
 
-            if (result && saved > 0)
-            {
-                return (true, "Request has been updated successfully.");
-            }
-
-            return (false, "An error occurred while updating the request. Please try again later.");
+            return result && saved > 0;
         }
     }
 }

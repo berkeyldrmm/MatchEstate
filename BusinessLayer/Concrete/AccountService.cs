@@ -22,7 +22,7 @@ namespace BusinessLayer.Concrete
             _userManager = userManager;
             _unitOfWork = unitOfWork;
         }
-        public async Task<int> AddIncomeExpense(ClaimsPrincipal user_claim, IncomeExpenseModelDTO incomeExpenseModel)
+        public async Task<bool> AddIncomeExpense(ClaimsPrincipal user_claim, IncomeExpenseModelDTO incomeExpenseModel)
         {
             User? user = await _userManager.GetUserAsync(user_claim);
             List<IncomeExpenseModelDTO> incomeExpenseModelList = JsonConvert.DeserializeObject<List<IncomeExpenseModelDTO>>(user.IncomeExpenses);
@@ -31,11 +31,7 @@ namespace BusinessLayer.Concrete
             string incomeExpenseModelJson = JsonConvert.SerializeObject(incomeExpenseModelList);
             user.IncomeExpenses = incomeExpenseModelJson;
             var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-            {
-                return await _unitOfWork.SaveChanges();
-            }
-            return 0;
+            return result.Succeeded;
         }
     }
 }

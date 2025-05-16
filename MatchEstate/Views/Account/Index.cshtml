@@ -91,4 +91,16 @@
 </div>
 <script>
     $("#navAccounting").addClass("active");
+
+    var success = '@TempData["success"]';
+    if(success != null && success!="")
+    {
+        sendNotification("success", success);
+    }
+
+    var error = '@TempData["error"]';
+    if(error != null && error!="")
+    {
+        sendNotification("error", error);
+    }
 </script>

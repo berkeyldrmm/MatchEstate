@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "..\Busines
 		{F0FD2719-FB40-4C34-AF9A-66EB6573B857} = {F0FD2719-FB40-4C34-AF9A-66EB6573B857}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOLayer", "..\DTOLayer\DTOLayer.csproj", "{8232DD2D-732E-4A7D-8AC0-5D417CD570AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\DTOLayer\Shared.csproj", "{8232DD2D-732E-4A7D-8AC0-5D417CD570AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

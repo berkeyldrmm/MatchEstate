@@ -310,10 +310,10 @@
                     window.location.href = "/propertyrequest";
                 }
                 else {
-                    showStatusDiv("danger", data.message, 15000);
+                    sendNotification("error", data.message);
                 }
             }).fail((xhr, status, error)=>{
-                showStatusDiv("danger", `An error occured ${status} - ${error}`, 2000);
+                sendNotification("error", `An error occured ${status} - ${error}`);
             })
 
         });
@@ -328,44 +328,7 @@
         $('#select-client').selectize({
             sortField: 'text'
         });
-
-        // $("#propertyTypeInput").change(() => {
-        //     propertyForm();
-        // });
-
-        // var rooms=@Html.Raw(Json.Serialize(Model.NumberOfRooms));
-        // $("input[name=NumberOfRooms]").each((index, input) => {
-        //     if(rooms.includes(input.value)){
-        //         input.setAttribute("checked", true);
-        //     }
-        // });
     });
-
-    // function propertyForm() {
-        // let val = $("#propertyTypeInput").val();
-        // let rooms = $("#numberOfRooms");
-        // let dataProperty = JSON.parse(rooms.attr("data-property"));
-
-        // if (dataProperty.includes(parseInt(val))) {
-        //     rooms.css("display", "block");
-        // }
-        // else {
-        //     rooms.css("display", "none");
-        // }
-    // }
-
-    function showStatusDiv(status, message, displayTime) {
-        $("#statusDiv").html(`
-            <div class="alert-${status}" style="padding:20px;">
-                ${message}
-            </div>
-        `);
-        $("#statusDiv").fadeIn(2000, () => {
-            setTimeout(() => {
-                $("#statusDiv").fadeOut();
-            }, displayTime);
-        });
-    }
 
     function checkRadioForClient(){
         if ($('#newClient').is(':checked')){

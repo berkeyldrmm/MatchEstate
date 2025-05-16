@@ -24,14 +24,14 @@ namespace MatchEstate.Controllers
         [HttpPost]
         public async Task<IActionResult> AddIncomeExpense(IncomeExpenseModelDTO incomeExpenseModel)
         {
-            int result = await _accountService.AddIncomeExpense(User, incomeExpenseModel);
-            if (result > 0)
+            bool result = await _accountService.AddIncomeExpense(User, incomeExpenseModel);
+            if (result)
             {
-                TempData["success"] = "Income/Expense has been saved.";
+                TempData["success"] = incomeExpenseModel.IncomeExpense == "income" ? "Income has been saved." : "Expense has been saved.";
                 return RedirectToAction("Index");
             }
 
-            TempData["success"] = "An error occured.";
+            TempData["error"] = "An error occured.";
             return RedirectToAction("Index");
         }
     }

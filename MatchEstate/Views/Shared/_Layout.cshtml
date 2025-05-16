@@ -21,6 +21,7 @@
     <link href="~/css/style.css" rel="stylesheet">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap/bootstrap-bundle.js"></script>
+    <script src="~/js/sendNotification.js"></script>
 </head>
 
 <body>
@@ -50,6 +51,7 @@
                 </div>
             </nav>
         </div>
+        <div class="notification-box d-flex flex-column align-items-end justify-content-center position-fixed w-100 p-3" style="z-index: 50; margin-top: 65px;"></div>
         <div class="content">
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="height:64px;">
                 <a href="/" class="navbar-brand d-flex d-lg-none me-4">
@@ -75,11 +77,11 @@
 
                 </div> 
             </nav>
-            
+
             @RenderBody()
 
         </div>
-        
+
         <div class="modal" role="dialog" id="logOutModel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

@@ -286,3 +286,8 @@
 #addTask{
     width:130px;
 }
+
+.notification-box ul {
+    margin-top:16px;
+    list-style-type: none;
+}

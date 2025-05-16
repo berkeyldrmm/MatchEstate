@@ -30,12 +30,14 @@
     <link href="~/css/style.css" rel="stylesheet">
     <link href="~/css/LoginPage.css" rel="stylesheet">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/sendNotification.js"></script>
     <style>
-       
+
     </style>
 </head>
 
 <body>
+    <div class="notification-box d-flex flex-column align-items-end justify-content-center position-fixed w-100 p-5" style="z-index: 50;"></div>
     <div class="container-fluid position-relative d-flex p-0">
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -46,28 +48,6 @@
             <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3" style="opacity:0.9">
-                        @if (ViewBag.error != null || ViewBag.loginFail != null)
-                        {
-                            <div id="errorDiv" class="alert-danger">
-                                <ul>
-                                    @if(ViewBag.error != null){
-                                        @foreach (var error in ViewBag.error)
-                                        {
-                                            <li>@error</li>
-                                        }
-                                    }
-                                    @if (ViewBag.loginFail != null)
-                                    {
-                                        @ViewBag.loginFail
-                                    }
-                                </ul>
-                            </div>
-                            <script>
-                                setTimeout(()=>{
-                                    $("#errorDiv").fadeOut();
-                                },2000);
-                            </script>
-                        }
                         <div class="d-flex flex-column align-items-center justify-content-between mb-3">
                             <a href="/">
                                 <img width="270" src="~/img/logo.jpg" />
@@ -98,7 +78,13 @@
             </div>
         </div>
     </div>
-
+    <script>
+        if ("@ViewBag.error" != null && "@ViewBag.error" != "")
+        {
+            console.log("test");
+            sendNotification("error", "@Html.Raw(ViewBag.error)");
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/chart/chart.min.js"></script>
     <script src="~/lib/easing/easing.min.js"></script>

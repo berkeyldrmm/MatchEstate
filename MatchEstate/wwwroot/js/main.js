@@ -22,7 +22,6 @@
         return false;
     });
 
-
     $('.sidebar-toggler').click(function () {
         $('.sidebar, .content').toggleClass("open");
         return false;
@@ -34,12 +33,10 @@
         });
     }, {offset: '80%'});
 
-
     $('#calender').datetimepicker({
         inline: true,
         format: 'L'
     });
-
 
     $(".testimonial-carousel").owlCarousel({
         autoplay: true,
@@ -50,10 +47,8 @@
         nav : false
     });
 
-
     Chart.defaults.color = "#6C7293";
     Chart.defaults.borderColor = "#000000";
-
 
     $(".canvas").each((index, value) => {
         value.innerHTML = '<div class="show d-flex align-items-center justify-content-center w-100" > <div class="spinner-border text-primary text-center" style = "width: 3rem; height: 3rem;" role = "status" > <span class="sr-only" > Loading...</span></div > </div>';
@@ -62,7 +57,6 @@
 
     if (window.location.pathname == "/") {
         $.get("/getStatistics", (data, status) => {
-            console.log(data);
             if (status == "success") {
 
                 var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
@@ -150,5 +144,4 @@
             }
         });
     }
-    
 })(jQuery);

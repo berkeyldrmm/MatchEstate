@@ -85,13 +85,6 @@
 
 <form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="updatelisting" method="post">
     <input type="hidden" asp-for="ListingId" />
-    @if (ViewBag.error != null)
-    {
-        <div id="errorDiv" class="alert-danger" style="padding:20px;">
-            @Html.Raw(ViewBag.error)
-        </div>
-    }
-
     <h1>Update Listing</h1>
     <div class="form-group">
         <div class="wrapper">
@@ -328,5 +321,9 @@
         $("#selectNeighbourhood").html(options);
     }
 
+    if ("@ViewBag.error" != null && "@ViewBag.error" != "")
+    {
+        sendNotification("error", "@Html.Raw(ViewBag.error)");
+    }
 </script>
 <script src="~/lib/jquery-selectize/selectize.min.js"></script>

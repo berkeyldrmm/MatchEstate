@@ -86,12 +86,6 @@
 </style>
 
 <form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="AddListing" method="post">
-    @if (ViewBag.error != null)
-    {
-        <div id="errorDiv" class="alert-danger" style="padding:20px;">
-            @Html.Raw(ViewBag.error)
-        </div>
-    }
     <h1>Adding Listing</h1>
     <div class="form-group">
         <div class="wrapper">
@@ -460,6 +454,12 @@
             $("#newClientDiv").fadeOut();
             $("#savedClientDiv").fadeIn();
         }
+    }
+
+    if ("@ViewBag.error" != null && "@ViewBag.error" != "")
+    {
+        console.log("@Html.Raw(ViewBag.error)");
+        sendNotification("error", "@Html.Raw(ViewBag.error)");
     }
 
 </script>

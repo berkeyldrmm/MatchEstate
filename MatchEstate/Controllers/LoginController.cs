@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using BusinessLayer.Concrete;
 using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
@@ -38,7 +39,7 @@ public class LoginController : Controller
             User? user = await _userManager.Users.Where(u => u.Email == model.Mail || u.UserName == model.Mail).FirstOrDefaultAsync();
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                ViewBag.loginFail = "Email or password invalid.";
+                ViewBag.error = "Email or password invalid.";
                 return View();
             }
 
@@ -52,7 +53,7 @@ public class LoginController : Controller
         }
         else
         {
-            ViewBag.error = validateResult.Errors.Select(x => x.ErrorMessage);
+            ViewBag.error = ValidationMessageWriter.MessageWriter(validateResult.Errors.Select(x => x.ErrorMessage));
         }
 
         return View();

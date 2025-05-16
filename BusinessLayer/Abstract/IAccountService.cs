@@ -11,6 +11,6 @@ namespace BusinessLayer.Abstract
 {
     public interface IAccountService
     {
-        public Task<int> AddIncomeExpense(ClaimsPrincipal user_claim, IncomeExpenseModelDTO incomeExpenseModel);
+        public Task<bool> AddIncomeExpense(ClaimsPrincipal user_claim, IncomeExpenseModelDTO incomeExpenseModel);
     }
 }

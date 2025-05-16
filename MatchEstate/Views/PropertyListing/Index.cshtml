@@ -222,36 +222,36 @@
         if (listingIds.length != 0) {
             $.post("/propertylisting/deletelisting", { idsJson: JSON.stringify(listingIds) }, (data, status) => {
                 if (data.success) {
-                    showStatusDiv("success", data.message, 2000);
+                    sendNotification("success", data.message);
                     setTimeout(() => {
                         location.reload();
                     }, 2000);
                 }
                 else {
-                    showStatusDiv("danger", data.message, 2000);
+                    sendNotification("danger", data.message);
                 }
             });
         }
         else {
-            showStatusDiv("danger", "Please select listings to delete.", 2000);
+            sendNotification("danger", "Please select listings to delete.");
         }
     }
 
     function sellListingModal(id) {
-        $("#earning-footer").html(`<button type="button" style="color:#ffffff;" class="btn btn-success" data-dismiss="modal" onclick="sellListing('${id}')">Finalize</button>
+        $("#earning-footer").html(`<button type="button" style="color:#ffffff;" class="btn btn-success" data-dismiss="modal" onclick="finalizeListing('${id}')">Finalize</button>
                 <button type="button" style="color:#000000;" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>`)
     }
 
-    function sellListing(id) {
-        $.post("/propertylisting/selllisting/" + id + "?earning=" + $("#earning").val(), (data, status) => {
+    function finalizeListing(id) {
+        $.post("/propertylisting/finalizelisting/" + id + "?earning=" + $("#earning").val(), (data, status) => {
             if (data.success) {
-                showStatusDiv("success", data.message, 2000);
+                sendNotification("success", data.message);
                 setTimeout(() => {
                     location.reload();
                 }, 2000);
             }
             else {
-                showStatusDiv("danger", data.message, 2000);
+                sendNotification("danger", data.message);
             }
         });
     };
@@ -327,24 +327,11 @@
         };
     }
 
-    function showStatusDiv(status, message, displayTime) {
-        $("#statusDiv").html(`
-                <div class="alert-${status}" style="padding:20px;">
-                    ${message}
-                </div>
-            `);
-        $("#statusDiv").fadeIn(2000, () => {
-            setTimeout(() => {
-                $("#statusDiv").fadeOut();
-            }, displayTime);
-        })
-    }
-
     getByFilters(1);
 
     var message = '@TempData["success"]';
     if(message != null && message!="")
     {
-        showStatusDiv("success", message, 2000);
+        sendNotification("success", message);
     }
 </script>

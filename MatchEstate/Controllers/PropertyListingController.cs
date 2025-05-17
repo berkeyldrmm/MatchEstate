@@ -94,23 +94,25 @@ namespace MatchEstate.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateListing(UpdateListingDto listingModel)
+        public async Task<IActionResult> UpdateListing(UpdateListingDto dto)
         {
-            var validateResult = await _updateListingDtoValidator.ValidateAsync(listingModel);
+            var validateResult = await _updateListingDtoValidator.ValidateAsync(dto);
 
             if (validateResult.IsValid)
             {
-                var result = await _listingService.Update(UserId, listingModel);
+                var result = await _listingService.Update(UserId, dto);
                 if (!result)
                 {
                     ViewBag.error = "An error occured while updating listing.";
-                    return View();
+                    return View(dto);
                 }
                 TempData["success"] = "Listing updated successfully.";
                 return RedirectToAction("Index");
             }
-            
-            return RedirectToAction("Index");
+
+            IEnumerable<string> allErrors = validateResult.Errors.Select(x => x.ErrorMessage);
+            ViewBag.error = ValidationMessageWriter.MessageWriter(allErrors);
+            return View(dto);
         }
 
         public async Task<IActionResult> FinalizeListing(string id, [FromQuery] string earning)

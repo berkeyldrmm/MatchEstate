@@ -1,30 +1,29 @@
-﻿using DataAccessLayer.Abstract;
-using DataAccessLayer.Concrete;
-using DTOLayer.Dtos;
+﻿using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Validation
 {
-    public class AddListingDtoValidator : AbstractValidator<AddListingDTO>
+    public class ListingDtoValidator : AbstractValidator<AddListingDTO>
     {
-        public IClientRepository _clientRepository { get; set; }
-        public IHttpContextAccessor _httpContextAccessor { get; set; }
-        public AddListingDtoValidator(IClientRepository clientRepository, IHttpContextAccessor httpContextAccessor)
+        public UserManager<User> _userManager { get; set; }
+        public ListingDtoValidator(UserManager<User> userManager)
         {
-            _clientRepository = clientRepository;
-            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
 
             RuleFor(l => l.ClientNameSurname).NotEmpty().When(l => l.RadioForClient == "1").WithMessage("Please enter client name surname");
             RuleFor(l => l.ClientEmail).EmailAddress().When(l => l.RadioForClient == "1").WithMessage("Please enter a valid email address");
             RuleFor(l => l.ClientPhoneNumber)
                 .NotEmpty().When(l => l.RadioForClient == "1").WithMessage("Please enter client phone number")
                 .Length(10).When(l => l.RadioForClient == "1").WithMessage("Please enter a valid phone number (10 digits)")
-                .MustAsync(CheckPhoneNumberExists).When(l => l.RadioForClient == "1").WithMessage("There is an user with the same phone number.");
+                .MustAsync(CheckPhoneNumberExists).When(l => l.RadioForClient == "1").WithMessage("There is an user with this phone number.");
 
             RuleFor(l => l.ListingTitle).NotEmpty().WithMessage("Please enter a title for the listing");
             RuleFor(t => t.City).Must(c => c != "0").WithMessage("Please select a city");
@@ -55,9 +54,9 @@ namespace BusinessLayer.Validation
             RuleFor(l => l.Details).MaximumLength(1000).WithMessage("Details field is too long");
         }
 
-        public async Task<bool> CheckPhoneNumberExists(string phoneNumber, CancellationToken cancellationToken)
+        public Task<bool> CheckPhoneNumberExists(string phoneNumber, CancellationToken cancellationToken)
         {
-            return await _clientRepository.ControlUserPhoneNumber(_httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value, phoneNumber);
+            return _userManager.Users.AnyAsync(u => u.PhoneNumber == phoneNumber);
         }
     }
 }

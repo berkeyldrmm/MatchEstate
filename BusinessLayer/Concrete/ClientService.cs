@@ -20,12 +20,6 @@ namespace BusinessLayer.Concrete
         {
             _clientRepository = clientRepository;
         }
-
-        public bool ControlUserPhoneNumber(string userId, string phoneNumber)
-        {
-            return _clientRepository.ControlUserPhoneNumber(userId, phoneNumber);
-        }
-
         public void DeleteRange(string userId, IEnumerable<string> Ids)
         {
             var items = _clientRepository.GetRange(userId, Ids);

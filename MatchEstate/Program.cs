@@ -19,17 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.DependenciesContainer();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerDevelopment"],
-                sqlServerOptionsAction: sqlOptions =>
-                {
-                    sqlOptions.EnableRetryOnFailure(
-                            maxRetryCount: 10,
-                            maxRetryDelay: TimeSpan.FromSeconds(5),
-                            errorNumbersToAdd: null
-                       );
-                }));
-builder.Services.AddValidatorsFromAssemblyContaining<LoginValidation>();
-builder.Services.AddScoped<IValidator<AddListingDTO>, AddListingDtoValidator>();
+builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerDevelopment"]));
+builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -126,9 +117,6 @@ app.MapGet("/getStatistics", (IStatisticsRepository statisticsDal, ClaimsPrincip
 
         CountOfListingsPropertyStatuses = ForSaleOrRentOfListings,
         CountOfRequestsPropertyStatuses = ForSaleOrRentOfRequests,
-
-        //CountOfRequestsForRent = ForSaleOrRentOfRequests.Where(o => o.ForSaleOrRent == "For Rent").FirstOrDefault()?.Count ?? 0,
-        //CountOfRequestsForSale = ForSaleOrRentOfRequests.Where(o => o.ForSaleOrRent == "For Sale").FirstOrDefault()?.Count ?? 0
     };
 });
 

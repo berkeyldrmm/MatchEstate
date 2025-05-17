@@ -23,5 +23,5 @@ public partial class PropertyRequest
     public User User { get; set; }
     public int PropertyStatusId { get; set; }
     public PropertyStatus PropertyStatus { get; set; }
-    public string Details { get; set; }
+    public string? Details { get; set; }
 }

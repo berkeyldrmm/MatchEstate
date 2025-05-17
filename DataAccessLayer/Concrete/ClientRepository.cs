@@ -46,9 +46,9 @@ namespace DataAccessLayer.Concrete
             return clients;
         }
 
-        public bool ControlUserPhoneNumber(string userId, string phoneNumber)
+        public async Task<bool> ControlUserPhoneNumber(string userId, string phoneNumber)
         {
-            Client client = EntityOfUser(userId).FirstOrDefault(c=>c.PhoneNumber == phoneNumber);
+            Client? client = await EntityOfUser(userId).FirstOrDefaultAsync(c=>c.PhoneNumber == phoneNumber);
             return client == null;
         }
     }

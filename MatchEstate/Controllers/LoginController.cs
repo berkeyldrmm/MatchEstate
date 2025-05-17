@@ -36,10 +36,10 @@ public class LoginController : Controller
         var validateResult = await _validator.ValidateAsync(model);
         if (validateResult.IsValid)
         {
-            User? user = await _userManager.Users.Where(u => u.Email == model.Mail || u.UserName == model.Mail).FirstOrDefaultAsync();
+            User? user = await _userManager.Users.Where(u => u.Email == model.UsernameOrMail || u.UserName == model.UsernameOrMail).FirstOrDefaultAsync();
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                ViewBag.error = "Email or password invalid.";
+                ViewBag.error = "Username or password invalid.";
                 return View();
             }
 
@@ -97,20 +97,5 @@ public class LoginController : Controller
         }
 
         return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Signup()
-    {
-        var user = new User()
-        {
-            Id = "ccab2c66-00da-4833-86b9-8c2278f75c6e",
-            NameSurname = "Berke Yıldırım",
-            Email = "berke.yildirimm44@gmail.com",
-            UserName = "berkeyld44"
-        };
-        await _userManager.CreateAsync(user, "Berkeyld.44");
-
-        return Ok();
     }
 }

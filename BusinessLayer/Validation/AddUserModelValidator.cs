@@ -12,12 +12,12 @@ namespace BusinessLayer.Validation
     {
         public AddUserModelValidator()
         {
-            RuleFor(a => a.NameSurname).NotEmpty().WithMessage("Please enter user's name surname.");
-            RuleFor(a => a.Mail).NotEmpty().WithMessage("Please enter user's mail address.");
-            RuleFor(a => a.PhoneNumber).NotEmpty().WithMessage("Please enter user's phone number.");
-            RuleFor(a => a.Password).NotEmpty().WithMessage("Please enter a password.");
-            RuleFor(a => a.PasswordCheck).NotEmpty().WithMessage("Please enter password again.");
-            RuleFor(a => a.Password).Equal(a => a.PasswordCheck).WithMessage("Passwords does not match.");
+            RuleFor(a => a.NameSurname).NotEmpty().WithMessage("Please enter user's name surname");
+            RuleFor(a => a.Mail).NotEmpty().WithMessage("Please enter user's mail address");
+            RuleFor(a => a.PhoneNumber).NotEmpty().WithMessage("Please enter user's phone number");
+            RuleFor(a => a.Password).NotEmpty().WithMessage("Please enter a password");
+            RuleFor(a => a.PasswordCheck).NotEmpty().WithMessage("Please enter password again");
+            RuleFor(a => a.Password).Equal(a => a.PasswordCheck).WithMessage("Passwords does not match");
         }
     }
 }

@@ -71,7 +71,7 @@ namespace MatchEstate.Controllers
             var validateResult = await _validator.ValidateAsync(model);
             if (validateResult.IsValid)
             {
-                User? user = await _userManager.FindByNameAsync(model.Mail);
+                User? user = await _userManager.FindByNameAsync(model.UsernameOrMail);
                 if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password) || !await _userManager.IsInRoleAsync(user, "Admin"))
                 {
 

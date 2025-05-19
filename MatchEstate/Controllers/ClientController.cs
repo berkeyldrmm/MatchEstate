@@ -1,11 +1,7 @@
 ﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrete;
-using DTOLayer.Dtos;
-using EntityLayer.Entities;
-using MatchEstate.Wrappers;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Shared.Wrappers;
+using Shared.Dtos.Client;
 
 namespace MatchEstate.Controllers
 {

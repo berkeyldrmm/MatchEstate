@@ -1,6 +1,6 @@
-﻿using DTOLayer.Dtos;
-using EntityLayer.Entities;
+﻿using EntityLayer.Entities;
 using System.Linq.Expressions;
+using Shared.Dtos.PropertyListing;
 
 namespace DataAccessLayer.Abstract
 {

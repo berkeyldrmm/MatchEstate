@@ -21,5 +21,7 @@ namespace EntityLayer.Entities
         public IEnumerable<PropertyRequest> Requests { get; set; }
         public string Tasks { get; set; } = "[]";
         public string IncomeExpenses { get; set; } = "[]";
+        public DateTime? LastActiveDate { get; set; }
+        public bool IsOnline { get; set; }
     }
 }

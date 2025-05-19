@@ -1,12 +1,12 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Shared.Dtos.PropertyRequest;
 
 namespace BusinessLayer.Validation
 {

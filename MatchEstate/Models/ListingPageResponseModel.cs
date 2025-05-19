@@ -1,4 +1,4 @@
-﻿using DTOLayer.Dtos;
+﻿using Shared.Dtos.PropertyListing;
 
 namespace MatchEstate.Models
 {

@@ -1,4 +1,4 @@
-﻿@model DTOLayer.Dtos.AddListingDTO;
+﻿@model AddListingDTO;
 
 <link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
 <style>
@@ -89,8 +89,8 @@
     <h1>Adding Listing</h1>
     <div class="form-group">
         <div class="wrapper">
-            <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="1" id="newClient" checked>
-            <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="0" id="savedClient">
+            <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="1" id="newClient">
+            <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="0" id="savedClient" checked>
             <label for="newClient" class="option newClient">
                 <span>New Client</span>
             </label>
@@ -99,7 +99,8 @@
             </label>
         </div>
 
-        <div id="savedClientDiv" style="display:none;">
+        <div id="savedClientDiv">
+            <br />
             <label for="exampleFormControlInput1">Select Client</label>
             <select asp-for="ClientId" id="select-client" placeholder="Select Client">
                 @await Component.InvokeAsync("GetClientsComponent")

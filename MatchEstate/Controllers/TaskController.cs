@@ -1,6 +1,6 @@
 ﻿using BusinessLayer.Abstract;
-using MatchEstate.Wrappers;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Wrappers;
 
 namespace MatchEstate.Controllers
 {

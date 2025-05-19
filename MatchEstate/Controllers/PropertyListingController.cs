@@ -1,13 +1,11 @@
 ﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrete;
-using BusinessLayer.Mapping;
-using DTOLayer.Dtos;
-using EntityLayer.Entities;
 using FluentValidation;
 using MatchEstate.Models;
-using MatchEstate.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using BusinessLayer.Services;
+using Shared.Wrappers;
+using Shared.Dtos.PropertyListing;
 
 namespace MatchEstate.Controllers
 {

@@ -1,13 +1,13 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Mapping;
 using DataAccessLayer.Abstract;
-using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using Shared.Dtos.PropertyListing;
 
 namespace BusinessLayer.Concrete
 {

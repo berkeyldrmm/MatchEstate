@@ -27,12 +27,6 @@ namespace DataAccessLayer.Context
         {
 
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("Server=BERKE;Database=MatchEstateDB;Trusted_Connection=True;TrustServerCertificate=True;");
-        //}
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

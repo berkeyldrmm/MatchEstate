@@ -95,8 +95,8 @@
     <h1>Adding Request</h1>
     <div class="form-group">
         <div class="wrapper">
-            <input type="radio" name="radioForClient" value="1" id="newClient" checked>
-            <input type="radio" name="radioForClient" value="0" id="savedClient">
+            <input type="radio" name="radioForClient" value="1" id="newClient">
+            <input type="radio" name="radioForClient" value="0" id="savedClient" checked>
             <label for="newClient" class="option newClient">
                 <span>New Client</span>
             </label>
@@ -105,7 +105,8 @@
             </label>
         </div>
 
-        <div id="savedClientDiv" style="display:none;">
+        <div id="savedClientDiv">
+            <br />
             <label>Select client</label>
             <select name="ClientId" id="select-client" placeholder="Select client">
                 @await Component.InvokeAsync("GetClientsComponent")

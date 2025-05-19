@@ -39,11 +39,11 @@
         component.classList.add("opacity-0");
         component.style.margin = 0;
         component.style.padding = 0;
-    }, 74000);
+    }, 4000);
     setTimeout(() => {
         component.style.setProperty("height", "0", "important");
-    }, 74100);
+    }, 4100);
     setTimeout(() => {
         notificationBox.removeChild(component);
-    }, 74700);
+    }, 4700);
 }

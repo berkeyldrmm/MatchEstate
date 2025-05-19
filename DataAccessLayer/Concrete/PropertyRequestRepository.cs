@@ -1,16 +1,11 @@
 ﻿using BusinessLayer.Mapping;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.Services;
+using Shared.Dtos.PropertyRequest;
 
 namespace DataAccessLayer.Concrete
 {
@@ -107,7 +102,8 @@ namespace DataAccessLayer.Concrete
                 City = r.City,
                 PropertyStatus = r.PropertyStatus.Name,
                 MinPrice = r.MinimumPrice.ToString(),
-                MaxPrice = r.MaximumPrice.ToString()
+                MaxPrice = r.MaximumPrice.ToString(),
+                AddedDate = r.AddedDate.Write()
             });
 
             return (DTOQuery, totalRequestCount);

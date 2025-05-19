@@ -2,7 +2,7 @@
 using BusinessLayer.Concrete;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using DTOLayer;
+using Shared;
 
 namespace RealEstate.Extensions
 {

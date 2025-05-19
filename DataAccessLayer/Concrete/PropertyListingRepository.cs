@@ -1,10 +1,11 @@
 ﻿using BusinessLayer.Mapping;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using DTOLayer.Dtos;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Shared.Services;
+using Shared.Dtos.PropertyListing;
 
 namespace DataAccessLayer.Concrete;
 
@@ -129,7 +130,8 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
             PropertyStatusName = l.PropertyStatus.Name,
             Commission = l.Commission.ToString(),
             Earning = l.Earning.ToString(),
-            Status = l.DealStatus
+            Status = l.DealStatus,
+            AddedDate = l.AddedDate.Write()
         });
 
         return (listings, totalCountOfListings);

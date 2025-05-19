@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header text-white" style="background-color:#2A3335;">
+                <div class="card-header text-white" style="background-color: #FF2929;">
                     <h6 style="color:#ffffff;">Listings of User</h6>
                 </div>
                 <div class="card-body">
@@ -19,6 +19,7 @@
                             <tr>
                                 <th>Listing Title</th>
                                 <th>Listing Property Type</th>
+                                <th>Listing Property Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,16 +28,35 @@
                                 <tr @(listing.Status ? "style=background-color:#95d5b2;" : "")>
                                     <td>@listing.Title</td>
                                     <td>@listing.PropertyType</td>
+                                    <td>@listing.PropertyStatus</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Property Listing Types Chart</h6>
+
+                            <canvas class="canvas" id="doughnut-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">For Sale/Rent Listings Chart</h6>
+
+                            <canvas class="canvas" id="doughnut-chart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header text-white" style="background-color:#2A3335;">
+                <div class="card-header text-white" style="background-color:#FF2929;">
                     <h6 style="color:#ffffff;">Request of User</h6>
                 </div>
                 <div class="card-body">
@@ -45,6 +65,7 @@
                             <tr>
                                 <th>Request Title</th>
                                 <th>Request Property Type</th>
+                                <th>Request Property Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,12 +74,36 @@
                                 <tr>
                                     <td>@request.Title</td>
                                     <td>@request.PropertyType</td>
+                                    <td>@request.PropertyStatus</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Property Requests Types Chart</h6>
+
+                            <canvas class="canvas" id="doughnut-chart3"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">For Sale/Rent Request Chart</h6>
+
+                            <canvas class="canvas" id="doughnut-chart4"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script src="~/js/getStatistics.js"></script>
+<script>
+    getStatistics(`https://localhost:7191/admin/GetUserStatistics?userId=@Model.UserId`);
+</script>

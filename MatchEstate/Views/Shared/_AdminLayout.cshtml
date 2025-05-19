@@ -58,12 +58,13 @@
                         <h6 id="nameSurname" class="mb-0"></h6>
                     </div>
                 </div>
-                @* <div class="navbar-nav w-100" id="mainNavbar">
+                <div class="navbar-nav w-100" id="mainNavbar">
                     <a href="/admin" class="nav-item nav-link" id="navHome"><i class="fa fa-house"></i> Dashboard</a>
-                    <a href="/admin/users" class="nav-item nav-link" id="navListing"><i class="fa fa-user me-2"></i>Users</a>
-                </div> *@
+                    @* <a href="/admin/users" class="nav-item nav-link" id="navListing"><i class="fa fa-user me-2"></i>Users</a> *@
+                </div>
             </nav>
         </div>
+        <div class="notification-box d-flex flex-column align-items-end justify-content-center position-fixed w-100 p-3" style="z-index: 50; margin-top: 65px;"></div>
         <div class="content">
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="height:64px;">
                 <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -74,7 +75,7 @@
                 <div class="navbar-nav align-items-center ms-auto">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/login/changepassword" style="padding-top:19px;">
+                            <a class="nav-link" href="/admin/changepassword" style="padding-top:19px;">
                                 Change Password
                             </a>
                         </li>

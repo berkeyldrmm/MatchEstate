@@ -5,5 +5,6 @@
         public string Title { get; set; }
         public string PropertyType { get; set; }
         public bool Status { get; set; }
+        public string PropertyStatus { get; set; }
     }
 }

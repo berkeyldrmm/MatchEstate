@@ -1,5 +1,5 @@
-﻿using DTOLayer.Dtos;
-using EntityLayer.Entities;
+﻿using EntityLayer.Entities;
+using Shared.Dtos.Client;
 
 namespace BusinessLayer.Abstract
 {

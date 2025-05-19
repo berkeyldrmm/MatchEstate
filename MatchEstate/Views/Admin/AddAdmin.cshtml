@@ -1,4 +1,4 @@
-﻿@model DTOLayer.Dtos.AddUserDTO
+﻿@model AddUserDTO
 @{
     Layout = "_AdminLayout";
 }
@@ -8,27 +8,7 @@
         <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
             <div class="col-12 col-sm-8">
                 <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3" style="opacity:0.9">
-                    @if (ViewBag.error != null)
-                    {
-                        <div id="errorDiv" class="alert-danger" style="margin-bottom:10px;">
-                            <ul>
-                                @if (ViewBag.error != null)
-                                {
-                                    @foreach (var error in ViewBag.error)
-                                    {
-                                        <li>@error</li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                        <script>
-                            setTimeout(()=>{
-                                $("#errorDiv").fadeOut();
-                            },2000);
-                        </script>
-                    }
                     <div class="d-flex flex-column align-items-center justify-content-between mb-3">
-                        
                         <h3 class="mt-2">NEW ADMIN FORM</h3>
                     </div>
                     <form method="post">
@@ -59,3 +39,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    if ("@ViewBag.error" != null && "@ViewBag.error" != "")
+    {
+        sendNotification("error", "@Html.Raw(ViewBag.error)");
+    }
+</script>

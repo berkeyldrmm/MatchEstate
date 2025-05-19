@@ -1,4 +1,4 @@
-﻿using MatchEstate.Wrappers;
+﻿using Shared.Wrappers;
 using System.Text.Json;
 
 namespace RealEstate.Middlewares

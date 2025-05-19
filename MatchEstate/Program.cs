@@ -1,9 +1,11 @@
+using BusinessLayer.Concrete;
 using BusinessLayer.Validation;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using DTOLayer.Dtos;
+using Shared.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
+using MatchEstate.Middlewares;
 using MatchEstate.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using RealEstate.Extensions;
 using RealEstate.Middlewares;
 using System.Security.Claims;
+using Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +23,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.DependenciesContainer();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerDevelopment"]));
-builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -61,8 +64,9 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAuthenticatedUser()
         .AddAuthenticationSchemes("AdminScheme")
         .RequireClaim(ClaimTypes.Role, "Admin"));
-
 });
+
+builder.Services.AddHostedService<InactiveUserService>();
 
 var app = builder.Build();
 
@@ -81,6 +85,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<UserActivityMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllerRoute(

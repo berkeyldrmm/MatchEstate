@@ -1,4 +1,4 @@
-﻿using DTOLayer.Dtos;
+﻿using Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

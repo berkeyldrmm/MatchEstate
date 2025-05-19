@@ -1,4 +1,4 @@
-﻿using DTOLayer.Dtos;
+﻿using Shared.Dtos;
 using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,0 +1,40 @@
+﻿using EntityLayer.Entities;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+
+namespace MatchEstate.Middlewares
+{
+    public class UserActivityMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public UserActivityMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext context, UserManager<User> userManager)
+        {
+            if (context.User.Identity.IsAuthenticated)
+            {
+                var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await userManager.FindByIdAsync(userId);
+
+                if (user != null)
+                {
+                    var localeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));
+
+                    if (user.LastActiveDate == null || (localeNow - user.LastActiveDate.Value).TotalMinutes > 5)
+                    {
+                        user.LastActiveDate = localeNow;
+                        user.IsOnline = true;
+                        await userManager.UpdateAsync(user);
+                    }
+                }
+            }
+
+            await _next(context);
+        }
+    }
+
+}

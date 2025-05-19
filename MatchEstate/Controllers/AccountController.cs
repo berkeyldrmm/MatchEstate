@@ -1,5 +1,5 @@
 ﻿using BusinessLayer.Abstract;
-using DTOLayer.Dtos;
+using Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchEstate.Controllers

@@ -7,25 +7,15 @@
         margin-bottom:10px;
     }
 </style>
+<link href="~/css/table.css" rel="stylesheet">
 <div class="container-fluid pt-4">
-    @if (TempData["success"] != null)
-    {
-        <div id="statusDiv" class="alert-success" style="margin-bottom:10px;">
-            @TempData["success"]
-        </div>
-        <script>
-            setTimeout(()=>{
-                $("#statusDiv").fadeOut();
-            },2000);
-        </script>
-    }
     <div class="row">
         <div class="col-md-6">
             <div class="buttonDiv">
                 <a href="/admin/addAdmin" class="btn btn-success" style="color:#ffffff"><i class="fa-solid fa-plus"></i> Add new admin</a>
             </div>
             <div class="card">
-                <div class="card-header text-white" style="background-color:#2A3335;">
+                <div class="card-header text-white" style="background-color:#FF2929;">
                     <h6 style="color:#ffffff;">Admin users</h6>
                 </div>
                 <div class="card-body">
@@ -35,7 +25,7 @@
                                 <th>Name Surname</th>
                                 <th>Email Address</th>
                                 <th>Phone Number</th>
-                                <th>Details</th>
+                                <th>Activity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,7 +35,7 @@
                                     <td>@user.NameSurname</td>
                                     <td>@user.Email</td>
                                     <td>@user.PhoneNumber</td>
-                                    <td><a class="btn btn-sm btn-primary" href="/admin/userDetails/@user.Id">Details</a></td>
+                                    <td class="text-center" style="opacity: .75">@(user.Activity ? Html.Raw("<p class='bg-success text-white'>Active</p>") : user.LastActiveDate)</td>
                                 </tr>
                             }
                         </tbody>
@@ -58,7 +48,7 @@
                 <a href="/admin/addUser" class="btn btn-success" style="color:#ffffff"><i class="fa-solid fa-plus"></i> Add new user</a>
             </div>
             <div class="card">
-                <div class="card-header text-white" style="background-color:#2A3335;">
+                <div class="card-header text-white" style="background-color:#FF2929;">
                     <h6 style="color:#ffffff;">All users</h6>
                 </div>
                 <div class="card-body">
@@ -68,6 +58,8 @@
                                 <th>Name Surname</th>
                                 <th>Email Address</th>
                                 <th>Phone Number</th>
+                                <th>Activity</th>
+                                <th>Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,6 +69,7 @@
                                     <td>@user.NameSurname</td>
                                     <td>@user.Email</td>
                                     <td>@user.PhoneNumber</td>
+                                    <td class="text-center" style="opacity: .75">@(user.Activity ? Html.Raw("<p class='bg-success text-white'>Active</p>") : user.LastActiveDate)</td>
                                     <td><a class="btn btn-sm btn-primary" href="/admin/userDetails/@user.Id">Details</a></td>
                                 </tr>
                             }
@@ -91,5 +84,15 @@
 <script>
     if ('@TempData["adminNameSurname"]' != null && '@TempData["adminNameSurname"]' != '') {
         localStorage.setItem("adminNameSurname", '@TempData["adminNameSurname"]');
+    }
+
+    if ("@ViewBag.error" != null && "@ViewBag.error" != "")
+    {
+        sendNotification("error", "@Html.Raw(ViewBag.error)");
+    }
+
+    if ("@TempData["success"]" != null && "@TempData["success"]" != "")
+    {
+        sendNotification("success", "@Html.Raw(TempData["success"])");
     }
 </script>

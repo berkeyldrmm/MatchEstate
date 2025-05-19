@@ -1,6 +1,6 @@
 ﻿using BusinessLayer.Mapping;
-using DTOLayer.Dtos;
 using EntityLayer.Entities;
+using Shared.Dtos.PropertyListing;
 
 namespace BusinessLayer.Abstract
 {

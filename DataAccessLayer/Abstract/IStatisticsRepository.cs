@@ -1,4 +1,4 @@
-﻿using DTOLayer.Dtos;
+﻿using Shared.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

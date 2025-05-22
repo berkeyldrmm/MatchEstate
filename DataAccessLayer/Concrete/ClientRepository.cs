@@ -18,9 +18,15 @@ namespace DataAccessLayer.Concrete
         }
         public IQueryable<Client> EntityOfUser(string userId) => Entity.Where(d => d.UserId == userId);
 
-        public async Task<IEnumerable<Client>> GetClientsOfUser(string userId)
+        public async Task<IEnumerable<ClientPageDTO>> GetClientsOfUser(string userId)
         {
-            return await EntityOfUser(userId).ToListAsync();
+            return await EntityOfUser(userId).Select(c=>new ClientPageDTO
+            {
+                Id = c.Id,
+                Email = c.Email,
+                NameSurname = c.NameSurname,
+                PhoneNumber = c.PhoneNumber
+            }).ToListAsync();
         }
 
         public IEnumerable<Client> GetRange(string userId, IEnumerable<string> Ids)

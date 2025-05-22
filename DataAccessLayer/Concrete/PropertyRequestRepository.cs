@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Shared.Services;
 using Shared.Dtos.PropertyRequest;
+using Newtonsoft.Json;
 
 namespace DataAccessLayer.Concrete
 {
@@ -109,7 +110,7 @@ namespace DataAccessLayer.Concrete
             return (DTOQuery, totalRequestCount);
         }
 
-        public async Task<List<PropertyRequest>> GetRequestsForListing(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions)
+        public async Task<List<PropertyRequestCardDto>> GetRequestsForListing(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions)
         {
             IQueryable<PropertyRequest> query = EntityOfUser(userId).Include(t => t.Client).Include(t => t.PropertyType);
             foreach (var expression in expressions)
@@ -117,12 +118,46 @@ namespace DataAccessLayer.Concrete
                 query = query.Where(expression);
             }
 
-            return await query.ToListAsync();
+            return await query.Select(r => new PropertyRequestCardDto
+            {
+                Id = r.Id,
+                Title = r.Title,
+                AddedDate = r.AddedDate.Write(),
+                City = r.City,
+                ClientNameSurname = r.Client.NameSurname,
+                ClientPhoneNumber = r.Client.PhoneNumber,
+                PropertyStatus = r.PropertyStatus.Name,
+                MinPrice = r.MinimumPrice.ToString(),
+                MaxPrice = r.MaximumPrice.ToString(),
+                PropertyType = r.PropertyType.PropertyName
+            }).ToListAsync();
         }
 
         public int GetRequestCount(string userId)
         {
             return EntityOfUser(userId).Count();
+        }
+
+        public async Task<PropertyRequestDetailDto> GetRequestDetail(string userId, string id)
+        {
+            return await EntityOfUser(userId).Select(r => new PropertyRequestDetailDto
+            {
+                Id = r.Id,
+                Title = r.Title,
+                AddedDate = r.AddedDate.Write(),
+                City = r.City,
+                PropertyStatus = r.PropertyStatus.Name,
+                MinPrice = r.MinimumPrice.ToString(),
+                MaxPrice = r.MaximumPrice.ToString(),
+                ClientNameSurname = r.Client.NameSurname,
+                ClientEmailAddress = r.Client.Email ?? "-",
+                ClientPhoneNumber = r.Client.PhoneNumber,
+                Districts = string.Join(",", JsonConvert.DeserializeObject<IEnumerable<string>>(r.District)),
+                PropertyTypeId = r.PropertyTypeId,
+                PropertyType = r.PropertyType.PropertyName,
+                Details = r.Details,
+                NumberOfRooms = (r.PropertyTypeId == 5 || r.PropertyTypeId == 1) ? string.Join(",", JsonConvert.DeserializeObject<IEnumerable<string>>(r.NumberOfRooms)) : ""
+            }).FirstOrDefaultAsync(r => r.Id == id);
         }
     }
 }

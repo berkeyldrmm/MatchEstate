@@ -1,4 +1,6 @@
-﻿@model List<(PropertyRequest request, PropertyListing listing)>
+﻿@using Shared.Dtos.PropertyListing
+@using Shared.Dtos.PropertyRequest
+@model List<(PropertyRequestCardDto request, PropertyListingCardDto listing)>
 
 <div class="container-fluid pt-4 px-4">
     <h2>Current Matches</h2>
@@ -12,12 +14,12 @@
                 <div class="row">
                     <div class="col-4">
                         <h5><b>Request Title:</b> @listingRequestPair.request.Title</h5>
-                        <p><b>Client Name Surname:</b> @listingRequestPair.request.Client.NameSurname</p>
-                        <p><b>Property Type:</b> @listingRequestPair.request.PropertyType.PropertyName</p>
-                        <p><b>Property Status:</b> @listingRequestPair.request.PropertyStatus.Name</p>
+                        <p><b>Client Name Surname:</b> @listingRequestPair.request.ClientNameSurname</p>
+                        <p><b>Property Type:</b> @listingRequestPair.request.PropertyType</p>
+                        <p><b>Property Status:</b> @listingRequestPair.request.PropertyStatus</p>
                         <p><b>City:</b> @listingRequestPair.request.City</p>
-                        <p><b>Price Range:</b> @listingRequestPair.request.MinimumPrice $ - @listingRequestPair.request.MaximumPrice $</p>
-                        <p><b>Added Date:</b> @listingRequestPair.request.AddedDate.Day/@listingRequestPair.request.AddedDate.Month/@listingRequestPair.request.AddedDate.Year</p>
+                        <p><b>Price Range:</b> @listingRequestPair.request.MinPrice $ - @listingRequestPair.request.MaxPrice $</p>
+                        <p><b>Added Date:</b> @listingRequestPair.request.AddedDate</p>
                         <a href="/propertyrequest/detail/@listingRequestPair.request.Id" class="btn btn-primary">View the request</a>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">
@@ -25,12 +27,12 @@
                     </div>
                     <div class="col-4">
                         <h5><b>Listing Title:</b> @listingRequestPair.listing.Title</h5>
-                        <p><b>Client Name Surname:</b> @listingRequestPair.listing.Client.NameSurname</p>
-                        <p><b>Property Type:</b> @listingRequestPair.listing.PropertyType.PropertyName</p>
-                        <p><b>Property Status:</b> @listingRequestPair.listing.PropertyStatus.Name</p>
-                        <p><b>District/City:</b> @listingRequestPair.listing.District/@listingRequestPair.listing.City</p>
+                        <p><b>Client Name Surname:</b> @listingRequestPair.listing.ClientNameSurname</p>
+                        <p><b>Property Type:</b> @listingRequestPair.listing.PropertyType</p>
+                        <p><b>Property Status:</b> @listingRequestPair.listing.PropertyStatus</p>
+                        <p><b>District/City:</b> @listingRequestPair.listing.Address</p>
                         <p><b>Price:</b> @listingRequestPair.listing.Price $</p>
-                        <p><b>Added Date:</b> @listingRequestPair.listing.AddedDate.Day/@listingRequestPair.listing.AddedDate.Month/@listingRequestPair.listing.AddedDate.Year</p>
+                        <p><b>Added Date:</b> @listingRequestPair.listing.AddedDate</p>
                         <a href="/propertylisting/detail/@listingRequestPair.listing.Id" class="btn btn-primary">View the listing</a>
                     </div>
                 </div>

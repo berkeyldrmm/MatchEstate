@@ -15,7 +15,6 @@ namespace RealEstate.ViewComponents
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet]
         public async Task<IViewComponentResult> InvokeAsync(string clientId)
         {
             var clients = await _clientService.GetClientsOfUser(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);

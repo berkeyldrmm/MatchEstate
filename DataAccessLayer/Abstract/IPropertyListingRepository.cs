@@ -1,6 +1,8 @@
 ﻿using EntityLayer.Entities;
 using System.Linq.Expressions;
 using Shared.Dtos.PropertyListing;
+using Shared.Dtos.PropertyListing.Detail;
+using Shared.Dtos.Abstractions;
 
 namespace DataAccessLayer.Abstract
 {
@@ -13,10 +15,11 @@ namespace DataAccessLayer.Abstract
         public Task<bool> SellListing(string id, string earning);
         public object GetCountsOfListingTypes(string userId);
         public object GetForSaleOrRent(string userId);
-        public Task<List<PropertyListing>> GetListingsForRequest(string userId, List<Expression<Func<PropertyListing, bool>>> expressions);
+        public Task<List<PropertyListingCardDto>> GetListingsForRequest(string userId, List<Expression<Func<PropertyListing, bool>>> expressions);
         public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, List<Expression<Func<PropertyListing, bool>>> expressions, string sort, int pageNumber, int pageSize);
         public Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId);
         public int GetListingCount(string userId);
         public UpdateListingDto? GetListingForUpdate(string userId, string id);
+        public Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id);
     }
 }

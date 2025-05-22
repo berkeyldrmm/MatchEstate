@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Shared.Services;
 using Shared.Dtos.PropertyListing;
+using Shared.Dtos.PropertyListing.Detail;
+using Shared.Dtos.Abstractions;
 
 namespace DataAccessLayer.Concrete;
 
@@ -137,7 +139,7 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
         return (listings, totalCountOfListings);
     }
 
-    public async Task<List<PropertyListing>> GetListingsForRequest(string userId, List<Expression<Func<PropertyListing, bool>>> expressions)
+    public async Task<List<PropertyListingCardDto>> GetListingsForRequest(string userId, List<Expression<Func<PropertyListing, bool>>> expressions)
     {
         IQueryable<PropertyListing> query = EntityOfUser(userId).Include(i => i.Client).Include(i => i.Shop).Include(i => i.Apartment).Include(i => i.PropertyType);
         
@@ -146,7 +148,17 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
             query = query.Where(expression);
         }
 
-        return await query.ToListAsync();
+        return await query.Select(l=>new PropertyListingCardDto
+        {
+            Id = l.Id,
+            Title = l.Title,
+            AddedDate = l.AddedDate.Write(),
+            Address = $"{l.District} / {l.City}",
+            ClientNameSurname = l.Client.NameSurname,
+            Price = l.Price.ToString(),
+            PropertyStatus = l.PropertyStatus.Name,
+            PropertyType = l.PropertyType.PropertyName
+        }).ToListAsync();
     }
 
     public async Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId)
@@ -170,5 +182,173 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
     public int GetListingCount(string userId)
     {
         return EntityOfUser(userId).Count();
+    }
+
+    public async Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id)
+    {
+        var query = EntityOfUser(userId).Where(i => i.Id == id);
+        PropertyListingDetailDto dto = new();
+
+        var propertyId = await query.Select(l=>l.PropertyTypeId).FirstOrDefaultAsync();
+        switch (propertyId)
+        {
+            case 1:
+                dto = await query.Select(l => new ShopListingDetailDto
+                {
+                    Id = l.Id,
+                    AddedDate = l.AddedDate.Write(),
+                    Address = $"{l.Neighbourhood}, {l.District}, {l.City}",
+                    Title = l.Title,
+                    ClientNameSurname = l.Client.NameSurname,
+                    ClientEmailAddress = l.Client.Email,
+                    ClientPhoneNumber = l.Client.PhoneNumber,
+                    Price = l.Price.ToString(),
+                    PropertyStatus = l.PropertyStatus.Name,
+                    PropertyTypeId = l.PropertyTypeId,
+                    PropertyType = l.PropertyType.PropertyName,
+                    Details = l.Details,
+                    Commission = l.Commission.ToString(),
+                    DealStatus = l.DealStatus,
+                    Earning = l.Earning.ToString(),
+                    AgeOfBuilding = l.Shop.AgeOfBuilding,
+                    BlockNumber = l.Shop.BlockNumber,
+                    Dues = l.Shop.Dues.ToString(),
+                    Elevator = l.Shop.HasElevator,
+                    EligibityForLoan = l.Shop.IsEligibleForLoan,
+                    Floor = l.Shop.Floor.ToString(),
+                    Furnished = l.Shop.IsFurnished,
+                    GrossSquareMetersize = l.Shop.SquareMeterSizeGross.ToString(),
+                    HeatingType = l.Shop.HeatingType,
+                    NumberOfFloor = l.Shop.NumberOfFloors.ToString(),
+                    NumberOfRooms = l.Shop.NumberOfRooms,
+                    ParkingLot = l.Shop.HasParkingLot,
+                    ParselNumber = l.Shop.ParselNumber,
+                    PricePerSquareMetersize = l.Shop.PricePerSquareMeter.ToString(),
+                    SquareMetersize = l.Shop.SquareMeterSize,
+                    UsageState = l.Shop.UsageState
+                }).FirstOrDefaultAsync();
+                break;
+            case 2:
+                dto = await query.Select(l => new LandListingDetailDto
+                {
+                    Id = l.Id,
+                    AddedDate = l.AddedDate.Write(),
+                    Address = $"{l.Neighbourhood}, {l.District}, {l.City}",
+                    Title = l.Title,
+                    ClientNameSurname = l.Client.NameSurname,
+                    ClientEmailAddress = l.Client.Email,
+                    ClientPhoneNumber = l.Client.PhoneNumber,
+                    Price = l.Price.ToString(),
+                    PropertyStatus = l.PropertyStatus.Name,
+                    PropertyTypeId = l.PropertyTypeId,
+                    PropertyType = l.PropertyType.PropertyName,
+                    Details = l.Details,
+                    Commission = l.Commission.ToString(),
+                    Earning = l.Earning.ToString(),
+                    DealStatus = l.DealStatus,
+                    BlockNumber = l.Land.BlockNumber,
+                    LandShareEligibity = l.Land.LandShareEligibility,
+                    ParselNumber = l.Land.ParselNumber,
+                    PricePerSquareMetersize = l.Land.PricePerSquareMeter.ToString(),
+                    SheetNumber = l.Land.SheetNumber,
+                    SquareMetersize = l.Land.SquareMeterSize,
+                    ZoningStatus = l.Land.ZoningStatus
+                }).FirstOrDefaultAsync();
+                break;
+            case 3:
+                dto = await query.Select(l => new CommercialUnitListingDetailDto
+                {
+                    Id = l.Id,
+                    AddedDate = l.AddedDate.Write(),
+                    Address = $"{l.Neighbourhood}, {l.District}, {l.City}",
+                    Title = l.Title,
+                    ClientNameSurname = l.Client.NameSurname,
+                    ClientEmailAddress = l.Client.Email,
+                    ClientPhoneNumber = l.Client.PhoneNumber,
+                    Price = l.Price.ToString(),
+                    PropertyStatus = l.PropertyStatus.Name,
+                    PropertyTypeId = l.PropertyTypeId,
+                    PropertyType = l.PropertyType.PropertyName,
+                    Details = l.Details,
+                    Commission = l.Commission.ToString(),
+                    Earning = l.Earning.ToString(),
+                    DealStatus = l.DealStatus,
+                    BlockNumber = l.CommercialUnit.BlockNumber,
+                    ParselNumber = l.CommercialUnit.ParselNumber,
+                    SquareMetersize = l.CommercialUnit.SquareMeterSize,
+                    PricePerSquareMetersize = l.CommercialUnit.PricePerSquareMeter.ToString()
+                }).FirstOrDefaultAsync();
+                break;
+            case 4:
+                dto = await query.Select(l => new FarmlandListingDetailDto
+                {
+                    Id = l.Id,
+                    AddedDate = l.AddedDate.Write(),
+                    Address = $"{l.Neighbourhood}, {l.District}, {l.City}",
+                    Title = l.Title,
+                    ClientNameSurname = l.Client.NameSurname,
+                    ClientEmailAddress = l.Client.Email,
+                    ClientPhoneNumber = l.Client.PhoneNumber,
+                    Price = l.Price.ToString(),
+                    PropertyStatus = l.PropertyStatus.Name,
+                    PropertyTypeId = l.PropertyTypeId,
+                    PropertyType = l.PropertyType.PropertyName,
+                    Details = l.Details,
+                    Commission = l.Commission.ToString(),
+                    Earning = l.Earning.ToString(),
+                    DealStatus = l.DealStatus,
+                    BlockNumber = l.Farmland.BlockNumber,
+                    ParselNumber = l.Farmland.ParselNumber,
+                    PricePerSquareMetersize = l.Farmland.PricePerSquareMeter.ToString(),
+                    SheetNumber = l.Farmland.SheetNumber,
+                    SquareMetersize = l.Farmland.SquareMeterSize,
+                    TitleDeedState = l.Farmland.TitleDeedState,
+                    ZoningStatus = l.Farmland.ZoningStatus
+                }).FirstOrDefaultAsync();
+                break;
+            case 5:
+                dto = await query.Select(l => new ApartmentListingDetailDto
+                {
+                    Id = l.Id,
+                    AddedDate = l.AddedDate.Write(),
+                    Address = $"{l.Neighbourhood}, {l.District}, {l.City}",
+                    Title = l.Title,
+                    ClientNameSurname = l.Client.NameSurname,
+                    ClientEmailAddress = l.Client.Email,
+                    ClientPhoneNumber = l.Client.PhoneNumber,
+                    Price = l.Price.ToString(),
+                    PropertyStatus = l.PropertyStatus.Name,
+                    PropertyTypeId = l.PropertyTypeId,
+                    PropertyType = l.PropertyType.PropertyName,
+                    Commission = l.Commission.ToString(),
+                    Earning = l.Earning.ToString(),
+                    DealStatus = l.DealStatus,
+                    Details = l.Details,
+                    AgeOfBuilding = l.Apartment.AgeOfBuilding,
+                    BlockNumber = l.Apartment.BlockNumber,
+                    Dues = l.Apartment.Dues.ToString(),
+                    Elevator = l.Apartment.HasElevator,
+                    EligibityForLoan = l.Apartment.IsEligibleForLoan,
+                    Floor = l.Apartment.Floor.ToString(),
+                    Furnished = l.Apartment.IsFurnished,
+                    GrossSquareMetersize = l.Apartment.SquareMeterSizeGross.ToString(),
+                    HeatingType = l.Apartment.HeatingType,
+                    NumberOfFloor = l.Apartment.NumberOfFloors.ToString(),
+                    NumberOfRooms = l.Apartment.NumberOfRooms,
+                    ParkingLot = l.Apartment.HasParkingLot,
+                    ParselNumber = l.Apartment.ParselNumber,
+                    PricePerSquareMetersize = l.Apartment.PricePerSquareMeter.ToString(),
+                    SquareMetersize = l.Apartment.SquareMeterSize,
+                    IsResidentalComplex = l.Apartment.IsInResidentalComplex,
+                    NumberOfBalcony = l.Apartment.NumberOfBalcony.ToString(),
+                    NumberOfBathrooms = l.Apartment.NumberOfBathRooms.ToString(),
+                    UsageState = l.Apartment.UsageState
+                }).FirstOrDefaultAsync();
+                break;
+            default:
+                break;
+        }
+
+        return dto;
     }
 }

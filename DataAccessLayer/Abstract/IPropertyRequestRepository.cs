@@ -17,9 +17,10 @@ namespace DataAccessLayer.Abstract
         IEnumerable<PropertyRequest> GetRange(string userId, IEnumerable<string> Ids);
         public object GetCountsOfRequestTypes(string userId);
         public object GetForSaleOrRent(string userId);
-        public Task<List<PropertyRequest>> GetRequestsForListing(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions);
+        public Task<List<PropertyRequestCardDto>> GetRequestsForListing(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions);
         public (IEnumerable<RequestPageDTO>, int) GetByFilters(string userId, List<Expression<Func<PropertyRequest, bool>>> expressions, string sort, int PageNumber, int PageSize);
         public int GetRequestCount(string userId);
         public UpdateRequestDto? GetRequestForUpdate(string userId, string id);
+        public Task<PropertyRequestDetailDto> GetRequestDetail(string userId, string id);
     }
 }

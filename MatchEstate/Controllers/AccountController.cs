@@ -1,6 +1,6 @@
 ﻿using BusinessLayer.Abstract;
-using Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dtos.Account;
 
 namespace MatchEstate.Controllers
 {

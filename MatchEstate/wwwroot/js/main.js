@@ -54,8 +54,4 @@
         value.innerHTML = '<div class="show d-flex align-items-center justify-content-center w-100" > <div class="spinner-border text-primary text-center" style = "width: 3rem; height: 3rem;" role = "status" > <span class="sr-only" > Loading...</span></div > </div>';
 
     });
-
-    //if (window.location.pathname == "/") {
-        
-    //}
 })(jQuery);

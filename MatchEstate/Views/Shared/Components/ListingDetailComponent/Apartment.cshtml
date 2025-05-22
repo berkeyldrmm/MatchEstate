@@ -1,12 +1,13 @@
-﻿@model Apartment
+﻿@using Shared.Dtos.PropertyListing.Detail
+@model ApartmentListingDetailDto
 
 <div class="row">
     <div class="col-6"><span>Gross Square Metersize</span> </div>
-    <div class="col-6"><span>@Model.SquareMeterSizeGross</span></div>
+    <div class="col-6"><span>@Model.GrossSquareMetersize</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Square Metersize </span></div>
-    <div class="col-6"><span>@Model.SquareMeterSize</span></div>
+    <div class="col-6"><span>@Model.SquareMetersize</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Block Number</span> </div>
@@ -22,7 +23,7 @@
 </div>
 <div class="row">
     <div class="col-6"><span>Elevator</span> </div>
-    <div class="col-6"><span>@(Model.HasElevator ? "Yes" : "No")</span></div>
+    <div class="col-6"><span>@(Model.Elevator ? "Yes" : "No")</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Floor </span></div>
@@ -30,7 +31,7 @@
 </div>
 <div class="row">
     <div class="col-6"><span>Number of Floors </span></div>
-    <div class="col-6"><span>@Model.NumberOfFloors</span></div>
+    <div class="col-6"><span>@Model.NumberOfFloor</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Usage State </span></div>
@@ -50,15 +51,15 @@
 </div>
 <div class="row">
     <div class="col-6"><span>Eligibity for Loan</span> </div>
-    <div class="col-6"><span>@(Model.IsEligibleForLoan ? "Yes" : "No")</span></div>
+    <div class="col-6"><span>@(Model.EligibityForLoan ? "Yes" : "No")</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Parking Lot </span></div>
-    <div class="col-6"><span>@(Model.HasParkingLot ? "Yes" : "No")</span></div>
+    <div class="col-6"><span>@(Model.ParkingLot ? "Yes" : "No")</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Furnished </span></div>
-    <div class="col-6"><span>@(Model.IsFurnished ? "Yes" : "No")</span></div>
+    <div class="col-6"><span>@(Model.Furnished ? "Yes" : "No")</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Number of Balcony</span> </div>
@@ -66,13 +67,13 @@
 </div>
 <div class="row">
     <div class="col-6"><span>Number of Bathrooms </span></div>
-    <div class="col-6"><span>@Model.NumberOfBathRooms</span></div>
+    <div class="col-6"><span>@Model.NumberOfBathrooms</span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Price per Metersize </span></div>
-    <div class="col-6"><span>@Model.PricePerSquareMeter <i class="fa fa-dollar"></i></span></div>
+    <div class="col-6"><span>@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></span></div>
 </div>
 <div class="row">
     <div class="col-6"><span>Residental Complex </span></div>
-    <div class="col-6"><span>@(Model.IsInResidentalComplex ? "Yes" : "No")</span></div>
+    <div class="col-6"><span>@(Model.IsResidentalComplex ? "Yes" : "No")</span></div>
 </div>

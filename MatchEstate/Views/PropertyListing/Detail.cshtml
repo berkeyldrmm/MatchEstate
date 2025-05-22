@@ -1,4 +1,5 @@
-﻿@model PropertyListing
+﻿@using Shared.Dtos.Abstractions
+@model IPropertyListingDetailDto
 
 <style>
     .container{
@@ -40,7 +41,7 @@
 </style>
 <div class="container my-5">
     <div class="text-center">
-        <h1 class="display-5 fw-bold">@Model.Title</h1>
+        <h3 class="display-5 fw-bold">@Model.Title</h3>
     </div>
 
     <div class="card shadow-sm mt-4">
@@ -51,27 +52,27 @@
                     <tbody>
                         <tr>
                             <th scope="row" class="text-nowrap">Client Name Surname</th>
-                            <td>@Model.Client.NameSurname</td>
+                            <td>@Model.ClientNameSurname</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Client Phone Number</th>
-                            <td>@Model.Client.PhoneNumber</td>
+                            <td>@Model.ClientPhoneNumber</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Client Email Address</th>
-                            <td>@Model.Client.Email</td>
+                            <td>@Model.ClientEmailAddress</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Property Type</th>
-                            <td>@Model.PropertyType.PropertyName</td>
+                            <td>@Model.PropertyType</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Property Status</th>
-                            <td>@Model.PropertyStatus.Name</td>
+                            <td>@Model.PropertyStatus</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Address</th>
-                            <td>@Model.Neighbourhood, @Model.District, @Model.City</td>
+                            <td>@Model.Address</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Price</th>
@@ -83,7 +84,7 @@
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Status</th>
-                            <td>@(Model.DealStatus ? "Sold/Rented" : "Waiting for client")</td>
+                            <td>@(Model.DealStatus ? "Finalized" : "Waiting for client")</td>
                         </tr>
                         @if (Model.DealStatus)
                         {
@@ -108,26 +109,29 @@
             <div class="table-responsive">
                 <table class="table table-bordered align-middle">
                     <tbody>
-                        @if (Model.PropertyType.Id == 1)
+
+                        @await Component.InvokeAsync("ListingDetailComponent", new { dto = Model })
+                        
+                        @*  @if (Model.PropertyTypeId == 1)
                         {
-                            <partial name="../PartialViews/Shop" model=@Model.Shop></partial>
+                            <partial name="../PartialViews/Shop" model="@(Model as ShopListingDetailDto)"></partial>
                         }
-                        @if (Model.PropertyType.Id == 2)
+                        else if (Model.PropertyTypeId == 2)
                         {
-                            <partial name="../PartialViews/Land" model=@Model.Land></partial>
+                            <partial name="../PartialViews/Land" model="@(Model as LandListingDetailDto)"></partial>
                         }
-                        @if (Model.PropertyType.Id == 3)
+                        else if (Model.PropertyTypeId == 3)
                         {
-                            <partial name="../PartialViews/CommercialUnit" model=@Model.CommercialUnit></partial>
+                            <partial name="../PartialViews/CommercialUnit" model=@(Model as CommercialUnitListingDetailDto)></partial>
                         }
-                        @if (Model.PropertyType.Id == 4)
+                        else if (Model.PropertyTypeId == 4)
                         {
-                            <partial name="../PartialViews/Farmland" model=@Model.Farmland></partial>
+                            <partial name="../PartialViews/Farmland" model=@(Model as FarmlandListingDetailDto)></partial>
                         }
-                        @if (Model.PropertyType.Id == 5)
+                        else if (Model.PropertyTypeId == 5)
                         {
-                            <partial name="../PartialViews/Apartment" model=@Model.Apartment></partial>
-                        }
+                            <partial name="../PartialViews/Apartment" model=@(Model as ApartmentListingDetailDto)></partial>
+                        } *@
                     </tbody>
                 </table>
             </div>
@@ -137,7 +141,7 @@
     <div class="card shadow-sm mt-4">
         <div class="card-body">
             <h5 class="card-title">Additional Details</h5>
-            <p class="card-text">@Model.Details</p>
+            <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
         </div>
     </div>
 

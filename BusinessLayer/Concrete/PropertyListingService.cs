@@ -8,6 +8,8 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using Shared.Dtos.PropertyListing;
+using Shared.Dtos.PropertyListing.Detail;
+using Shared.Dtos.Abstractions;
 
 namespace BusinessLayer.Concrete
 {
@@ -130,7 +132,7 @@ namespace BusinessLayer.Concrete
             return _listingRepository.GetByFilters(userId, expressions, getByFiltersDTO.Sort, Convert.ToInt16(getByFiltersDTO.PageNumber), Convert.ToInt16(getByFiltersDTO.PageSize));
         }
 
-        public async Task<List<PropertyListing>> GetListingsForRequest(string userId, PropertyRequest request)
+        public async Task<List<PropertyListingCardDto>> GetListingsForRequest(string userId, PropertyRequest request)
         {
             List<Expression<Func<PropertyListing, bool>>> expressions = new List<Expression<Func<PropertyListing, bool>>>();
 
@@ -180,6 +182,11 @@ namespace BusinessLayer.Concrete
             int saved = await _unitOfWork.SaveChanges();
 
             return result && saved > 0;
+        }
+
+        public async Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id)
+        {
+            return await _listingRepository.GetListingDetail(userId, id);
         }
     }
 }

@@ -136,8 +136,8 @@ namespace MatchEstate.Controllers
         public async Task<IActionResult> Detail(string id)
         {
             ViewBag.title = "Listing Detail Page";
-            var listing = await _listingService.GetWithClient(UserId, id);
-            return View(listing);
+            var dto = await _listingService.GetListingDetail(UserId, id);
+            return View(dto);
         }
 
         public IActionResult GetByFilters(ListingGetByFiltersDTO getByFiltersDTO)

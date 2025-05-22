@@ -1,4 +1,5 @@
-﻿@model List<PropertyListing>
+﻿@using Shared.Dtos.PropertyListing
+@model List<PropertyListingCardDto>
 
 @if (Model.Count() == 0)
 {
@@ -9,25 +10,25 @@ else
     @foreach(var listing in Model){
         <div class="card mb-2 ml-4">
             <div class="card-header">
-                @listing.Title (@listing.PropertyType.PropertyName)
+                @listing.Title (@listing.PropertyType)
             </div>
             <div class="card-body">
                 <h5><b>Listing Title:</b> @listing.Title</h5>
-                <p><b>Client Name Surname:</b> @listing.Client.NameSurname</p>
-                <p><b>Property Type:</b> @listing.PropertyType.PropertyName</p>
-                <p><b>Property Status:</b> @listing.PropertyStatus.Name</p>
-                <p><b>District/City:</b> @listing.District/@listing.City</p>
+                <p><b>Client Name Surname:</b> @listing.ClientNameSurname</p>
+                <p><b>Property Type:</b> @listing.PropertyType</p>
+                <p><b>Property Status:</b> @listing.PropertyStatus</p>
+                <p><b>District/City:</b> @listing.Address</p>
                 <p><b>Price Range:</b> @listing.Price <i class="fa fa-dollar"></i></p>
-                <p><b>Added Date:</b> @listing.AddedDate.Day/@listing.AddedDate.Month/@listing.AddedDate.Year</p>
-                @if (listing.PropertyTypeId == 1)
+                <p><b>Added Date:</b> @listing.AddedDate</p>
+                @* @if (listing.PropertyType.ToLower() == "shop")
                 {
-                    <p class="card-text"><b>Number of Rooms:</b> @listing.Shop.NumberOfRooms</p>
+                    <p class="card-text"><b>Number of Rooms:</b> @listing.NumberOfRooms</p>
                 }
-                @if (listing.PropertyTypeId == 5)
+                @if (listing.PropertyType.ToLower() == "apartment")
                 {
-                    <p class="card-text"><b>Number of Rooms:</b> @listing.Apartment.NumberOfRooms</p>
-                }
-                <a href="/listing/detail/@listing.Id" class="btn btn-primary">View the listing</a>
+                    <p class="card-text"><b>Number of Rooms:</b> @listing.NumberOfRooms</p>
+                } *@
+                <a href="/propertylisting/detail/@listing.Id" class="btn btn-primary">View the listing</a>
             </div>
         </div>
     }

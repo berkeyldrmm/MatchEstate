@@ -1,8 +1,9 @@
-﻿@model Land
+﻿@using Shared.Dtos.PropertyListing.Detail
+@model LandListingDetailDto
 
 <tr>
     <td scope="row">Square Metersize </td>
-    <td>@Model.SquareMeterSize</td>
+    <td>@Model.SquareMetersize</td>
 </tr>
 <tr>
     <td scope ="row">Block Number </td>
@@ -17,12 +18,12 @@
     <td>@Model.SheetNumber</td>
 </tr>
 <tr>
-    <td scope="row">Zoning Status </td>
+    <td scope="row">Title Sheet State </td>
     <td>@(Model.TitleSheetState ? "Yes" : "No")</td>
 </tr>
 <tr>
     <td scope="row">Price per Metersize </td>
-    <td>@Model.PricePerSquareMeter <i class="fa fa-dollar"></i></td>
+    <td>@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></td>
 </tr>
 <tr>
     <td scope="row">Zoning Status </td>
@@ -30,5 +31,5 @@
 </tr>
 <tr>
     <td scope="row">Land Share Eligibity </td>
-    <td>@(Model.LandShareEligibility ? "Yes" : "No")</td>
+    <td>@(Model.LandShareEligibity ? "Yes" : "No")</td>
 </tr>

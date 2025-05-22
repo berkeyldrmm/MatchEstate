@@ -2,6 +2,7 @@
 using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dtos.PropertyListing;
 using System.Security.Claims;
 
 namespace RealEstate.ViewComponents
@@ -18,11 +19,11 @@ namespace RealEstate.ViewComponents
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet]
         public async Task<IViewComponentResult> InvokeAsync(string requestId)
         {
-            PropertyRequest request = await _requestService.GetOne(requestId);
-            List<PropertyListing> listings = await _listingService.GetListingsForRequest(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value, request);
+            string userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            PropertyRequest request = await _requestService.GetWithClient(userId, requestId);
+            List<PropertyListingCardDto> listings = await _listingService.GetListingsForRequest(userId, request);
             return View(listings);
         }
     }

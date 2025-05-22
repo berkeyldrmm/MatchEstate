@@ -96,7 +96,6 @@ namespace MatchEstate.Controllers
             return Ok(response);
         }
 
-        //[Route("PropertyRequest/UpdateRequest/{requestId}")]
         [HttpGet("[controller]/[action]/{requestId}")]
         public IActionResult UpdateRequest(string requestId)
         {
@@ -137,14 +136,7 @@ namespace MatchEstate.Controllers
         {
             ViewBag.title = "Request Detail Page";
 
-            var request = await _requestService.GetWithClient(UserId, id);
-            var districts = JsonConvert.DeserializeObject<List<string>>(request.District);
-            var rooms = JsonConvert.DeserializeObject<List<string>>(request.NumberOfRooms);
-            ViewBag.DistrictsAndRooms = new {
-                districts = districts,
-                rooms = rooms
-            };
-            ViewBag.UserId = UserId;
+            var request = await _requestService.GetRequestDetail(UserId, id);
             return View(request);
         }
 

@@ -1,6 +1,8 @@
 ﻿using BusinessLayer.Mapping;
 using EntityLayer.Entities;
+using Shared.Dtos.Abstractions;
 using Shared.Dtos.PropertyListing;
+using Shared.Dtos.PropertyListing.Detail;
 
 namespace BusinessLayer.Abstract
 {
@@ -15,9 +17,10 @@ namespace BusinessLayer.Abstract
         public Task<bool> SellListing(string id, string earning);
         public object GetCountsOfListingTypes(string userId);
         public object GetForSaleOrRent(string userId);
-        public Task<List<PropertyListing>> GetListingsForRequest(string userId, PropertyRequest request);
+        public Task<List<PropertyListingCardDto>> GetListingsForRequest(string userId, PropertyRequest request);
         public Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId);
         public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO);
         public UpdateListingDto? GetListingForUpdate(string userId, string id);
+        public Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id);
     }
 }

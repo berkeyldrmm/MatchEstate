@@ -1,8 +1,9 @@
-﻿@model CommercialUnit
+﻿@using Shared.Dtos.PropertyListing.Detail
+@model CommercialUnitListingDetailDto
 
 <tr>
     <td scope="row">Square Metersize </td>
-    <td>@Model.SquareMeterSize m2</td>
+    <td>@Model.SquareMetersize m2</td>
 </tr>
 <tr>
     <td scope="row">Block Number </td>
@@ -14,5 +15,5 @@
 </tr>
 <tr>
     <td scope="row">Price per Metersize </td>
-    <td>@Model.PricePerSquareMeter <i class="fa fa-dollar"></i></td>
+    <td>@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></td>
 </tr>

@@ -1,9 +1,9 @@
-﻿using Shared.Dtos;
-using EntityLayer.Entities;
+﻿using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using Shared.Dtos.Account;
 
 namespace RealEstate.ViewComponents
 {

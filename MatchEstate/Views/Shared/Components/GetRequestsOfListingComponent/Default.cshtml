@@ -1,4 +1,5 @@
-﻿@model List<PropertyRequest>
+﻿@using Shared.Dtos.PropertyRequest
+@model List<PropertyRequestCardDto>
 
 @if (Model.Count() == 0)
 {
@@ -9,19 +10,19 @@ else{
     {
         <div class="card mb-2 ml-4">
             <div class="card-header">
-                @request.Title (@request.PropertyType.PropertyName)
+                @request.Title (@request.PropertyType)
             </div>
             <div class="card-body">
                 <h5><b>Request Title:</b> @request.Title</h5>
-                <p><b>Client Name Surname:</b> @request.Client.NameSurname</p>
-                <p><b>Property Type:</b> @request.PropertyType.PropertyName</p>
-                <p><b>Property Status:</b> @request.PropertyStatus.Name</p>
+                <p><b>Client Name Surname:</b> @request.ClientNameSurname</p>
+                <p><b>Property Type:</b> @request.PropertyType</p>
+                <p><b>Property Status:</b> @request.PropertyStatus</p>
                 <p><b>City:</b> @request.City</p>
-                <p><b>Price Range:</b> @request.MinimumPrice <i class="fa fa-dollar"></i> - @request.MaximumPrice <i class="fa fa-dollar"></i></p>
-                <p><b>Added Date:</b> @request.AddedDate.Day/@request.AddedDate.Month/@request.AddedDate.Year</p>
-                <a href="/request/detail/@request.Id" class="btn btn-primary">View the request</a>
+                <p><b>Price Range:</b> @request.MinPrice - @request.MaxPrice <i class="fa fa-dollar"></i></p>
+                <p><b>Added Date:</b> @request.AddedDate</p>
+                <a href="/propertyrequest/detail/@request.Id" class="btn btn-primary">View the request</a>
 
-                <a class="btn btn-success text-white" href="https://api.whatsapp.com/send?phone=@($"90{request.Client.PhoneNumber}")" target="_blank"><i class="fa-brands fa-whatsapp"></i> Contact with client</a>
+                <a class="btn btn-success text-white" href="https://api.whatsapp.com/send?phone=@($"90{request.ClientPhoneNumber}")" target="_blank"><i class="fa-brands fa-whatsapp"></i> Contact with client</a>
 
             </div>
         </div>

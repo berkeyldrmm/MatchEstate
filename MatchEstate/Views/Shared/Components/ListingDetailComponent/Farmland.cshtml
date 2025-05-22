@@ -1,8 +1,9 @@
-﻿@model Farmland
+﻿@using Shared.Dtos.PropertyListing.Detail
+@model FarmlandListingDetailDto
 
 <tr>
     <td scope="row">Square Metersize </td>
-    <td>@Model.SquareMeterSize</td>
+    <td>@Model.SquareMetersize</td>
 </tr>
 <tr>
     <td scope="row">Block Number </td>
@@ -18,7 +19,7 @@
 </tr>
 <tr>
     <td scope="row">Price per Square Metersize </td>
-    <td>@Model.PricePerSquareMeter <i class="fa fa-dollar"></i></td>
+    <td>@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></td>
 </tr>
 <tr>
     <td scope="row">Title Deed State </td>

@@ -19,8 +19,9 @@ namespace BusinessLayer.Abstract
         void DeleteRange(string userId, IEnumerable<string> Ids);
         public object GetCountsOfRequestTypes(string userId);
         public object GetForSaleOrRent(string userId);
-        public Task<List<PropertyRequest>> GetRequestsForListing(string userId, PropertyListing listing);
+        public Task<List<PropertyRequestCardDto>> GetRequestsForListing(string userId, PropertyListing listing);
         public (IEnumerable<RequestPageDTO>, int) GetByFilters(string userId, RequestGetByFiltersDTO getByFilters);
         public UpdateRequestDto? GetRequestForUpdate(string userId, string id);
+        public Task<PropertyRequestDetailDto> GetRequestDetail(string userId, string id);
     }
 }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Client>
+﻿@using Shared.Dtos.Client
+@model IEnumerable<ClientPageDTO>
 
 @foreach(var item in Model){
     @if (ViewData["clientId"] is not null && ViewData["clientId"].ToString() == item.Id)

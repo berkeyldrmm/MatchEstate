@@ -1,12 +1,13 @@
-﻿@model Shop
+﻿@using Shared.Dtos.PropertyListing.Detail
+@model ShopListingDetailDto
 
 <tr>
     <td scope="row">Gross Square Metersize </td>
-    <td>@Model.SquareMeterSizeGross</td>
+    <td>@Model.GrossSquareMetersize</td>
 </tr>
 <tr>
     <td scope="row">Square Metersize </td>
-    <td>@Model.SquareMeterSize</td>
+    <td>@Model.SquareMetersize</td>
 </tr>
 <tr>
     <td scope="row">Block Number </td>
@@ -22,7 +23,7 @@
 </tr>
 <tr>
     <td scope="row">Elevator </td>
-    <td>@(Model.HasElevator ? "Yes" : "No")</td>
+    <td>@(Model.Elevator ? "Yes" : "No")</td>
 </tr>
 <tr>
     <td scope="row">Floor </td>
@@ -30,7 +31,7 @@
 </tr>
 <tr>
     <td scope="row">Number of Floors </td>
-    <td>@Model.NumberOfFloors</td>
+    <td>@Model.NumberOfFloor</td>
 </tr>
 <tr>
     <td scope="row">Usage State </td>
@@ -50,13 +51,13 @@
 </tr>
 <tr>
     <td scope="row">Eligibity for Loan </td>
-    <td>@(Model.IsEligibleForLoan ? "Yes" : "No")</td>
+    <td>@(Model.EligibityForLoan ? "Yes" : "No")</td>
 </tr>
 <tr>
     <td scope="row">Parking Lot </td>
-    <td>@(Model.HasParkingLot ? "Yes" : "No")</td>
+    <td>@(Model.ParkingLot ? "Yes" : "No")</td>
 </tr>
 <tr>
     <td scope="row">Furnished </td>
-    <td>@(Model.IsFurnished ? "Yes" : "No")</td>
+    <td>@(Model.Furnished ? "Yes" : "No")</td>
 </tr>

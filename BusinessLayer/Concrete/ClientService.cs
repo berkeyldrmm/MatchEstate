@@ -31,7 +31,7 @@ namespace BusinessLayer.Concrete
             return _clientRepository.ReadAll();
         }
 
-        public async Task<IEnumerable<Client>> GetClientsOfUser(string userId)
+        public async Task<IEnumerable<ClientPageDTO>> GetClientsOfUser(string userId)
         {
             return await _clientRepository.GetClientsOfUser(userId);
         }

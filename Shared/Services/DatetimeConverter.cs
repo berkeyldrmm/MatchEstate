@@ -53,4 +53,32 @@ public static class DatetimeConverter
 
         return $"{day} {month} {year}";
     }
+
+    public static string GetTimeSpan(this DateTime? dateTime)
+    {
+        var localeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));
+        var timespan = localeNow - dateTime;
+        var dif = timespan.Value;
+
+        List<string> parts = new List<string>();
+
+        if (dif.Days > 0)
+        {
+            parts.Add($"{dif.Days} day");
+        }
+        if (dif.Hours > 0)
+        {
+            parts.Add($"{dif.Hours} hours");
+        }
+        if (dif.Minutes > 0)
+        {
+            parts.Add($"{dif.Minutes} minutes");
+        }
+        if (dif.Seconds > 0)
+        {
+            parts.Add($"{dif.Seconds} seconds");
+        }
+
+        return string.Join(", ", parts);
+    }
 }

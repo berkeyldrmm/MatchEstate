@@ -140,7 +140,7 @@ namespace BusinessLayer.Concrete
             return _reqeustRepository.GetByFilters(userId, expressions, getByFilers.Sort, Convert.ToInt16(getByFilers.PageNumber), Convert.ToInt16(getByFilers.PageSize));
         }
 
-        public async Task<List<PropertyRequest>> GetRequestsForListing(string userId, PropertyListing ilan)
+        public async Task<List<PropertyRequestCardDto>> GetRequestsForListing(string userId, PropertyListing ilan)
         {
             List<Expression<Func<PropertyRequest, bool>>> expressions = new List<Expression<Func<PropertyRequest, bool>>>();
             expressions.Add(t => t.District.Contains("\""+ilan.District+"\"") && t.City == ilan.City);
@@ -178,6 +178,11 @@ namespace BusinessLayer.Concrete
             int saved = await _unitOfWork.SaveChanges();
 
             return result && saved > 0;
+        }
+
+        public async Task<PropertyRequestDetailDto> GetRequestDetail(string userId, string id)
+        {
+            return await _reqeustRepository.GetRequestDetail(userId, id);
         }
     }
 }

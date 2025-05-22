@@ -1,4 +1,5 @@
-﻿@model PropertyRequest
+﻿@using Shared.Dtos.PropertyRequest
+@model PropertyRequestDetailDto
 
 <style>
     .container{
@@ -41,7 +42,7 @@
 
 <div class="container my-5">
     <div class="text-center">
-        <h1 class="display-5 fw-bold">@Model.Title</h1>
+        <h3 class="display-5 fw-bold">@Model.Title</h3>
     </div>
 
     <div class="card shadow-sm mt-4">
@@ -52,48 +53,36 @@
                     <tbody>
                         <tr>
                             <th scope="row" class="text-nowrap">Client Name Surname</th>
-                            <td>@Model.Client.NameSurname</td>
+                            <td>@Model.ClientNameSurname</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Client Email Address</th>
-                            <td>@Model.Client.Email</td>
+                            <td>@Model.ClientEmailAddress</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Property Type</th>
-                            <td>@Model.PropertyType.PropertyName</td>
+                            <td>@Model.PropertyType</td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Property Status</th>
-                            <td>@Model.PropertyStatus.Name</td>
+                            <td>@Model.PropertyStatus</td>
                         </tr>
-                        @if (ViewBag.DistrictsAndRooms.districts.Count != 0)
-                        {
-                            <tr>
-                                <th scope="row" class="text-nowrap">Districts</th>
-                                <td>
-                                    @{
-                                        var districts = string.Join(", ", ViewBag.DistrictsAndRooms.districts);
-                                        @districts
-                                    }
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            <th scope="row" class="text-nowrap">City</th>
+                            <td>@Model.City</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-nowrap">Districts</th>
+                            <td>@Model.Districts</td>
+                        </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Price Range</th>
-                            <td>@Model.MinimumPrice <i class="fa fa-dollar"></i> - @Model.MaximumPrice <i class="fa fa-dollar"></i></td>
+                            <td>@Model.MinPrice <i class="fa fa-dollar"></i> - @Model.MaxPrice <i class="fa fa-dollar"></i></td>
                         </tr>
-                        @if (ViewBag.DistrictsAndRooms.rooms.Count != 0)
-                        {
-                            <tr>
-                                <th scope="row" class="text-nowrap">Number of Rooms</th>
-                                <td>
-                                    @{
-                                        var rooms = string.Join(", ", ViewBag.DistrictsAndRooms.rooms);
-                                        @rooms
-                                    }
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            <th scope="row" class="text-nowrap">Number of Rooms</th>
+                            <td>@Model.NumberOfRooms</td>
+                        </tr>
                         <tr>
                             <th scope="row" class="text-nowrap">Added Date</th>
                             <td>@Model.AddedDate</td>
@@ -107,7 +96,7 @@
     <div class="card shadow-sm mt-4">
         <div class="card-body">
             <h5 class="card-title">Details</h5>
-            <p class="card-text">@Model.Details</p>
+            <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
         </div>
     </div>
 

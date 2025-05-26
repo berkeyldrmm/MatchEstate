@@ -23,5 +23,6 @@ namespace Shared.Dtos.PropertyRequest
         public string MaxPrice { get; set; }
         public string AddedDate { get; set; }
         public string Details { get; set; }
+        public bool Status { get; set; }
     }
 }

@@ -1,79 +1,79 @@
 ﻿@using Shared.Dtos.PropertyListing.Detail
 @model ApartmentListingDetailDto
 
-<div class="row">
-    <div class="col-6"><span>Gross Square Metersize</span> </div>
-    <div class="col-6"><span>@Model.GrossSquareMetersize</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Square Metersize </span></div>
-    <div class="col-6"><span>@Model.SquareMetersize</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Block Number</span> </div>
-    <div class="col-6"><span>@Model.BlockNumber</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Parsel Number</span> </div>
-    <div class="col-6"><span>@Model.ParselNumber</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Number of Rooms</span> </div>
-    <div class="col-6"><span>@Model.NumberOfRooms</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Elevator</span> </div>
-    <div class="col-6"><span>@(Model.Elevator ? "Yes" : "No")</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Floor </span></div>
-    <div class="col-6"><span>@Model.Floor</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Number of Floors </span></div>
-    <div class="col-6"><span>@Model.NumberOfFloor</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Usage State </span></div>
-    <div class="col-6"><span>@Model.UsageState</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Dues </span></div>
-    <div class="col-6"><span>@Model.Dues</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Age of Building</span> </div>
-    <div class="col-6"><span>@Model.AgeOfBuilding</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Heating Type</span> </div>
-    <div class="col-6"><span>@Model.HeatingType</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Eligibity for Loan</span> </div>
-    <div class="col-6"><span>@(Model.EligibityForLoan ? "Yes" : "No")</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Parking Lot </span></div>
-    <div class="col-6"><span>@(Model.ParkingLot ? "Yes" : "No")</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Furnished </span></div>
-    <div class="col-6"><span>@(Model.Furnished ? "Yes" : "No")</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Number of Balcony</span> </div>
-    <div class="col-6"><span>@Model.NumberOfBalcony</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Number of Bathrooms </span></div>
-    <div class="col-6"><span>@Model.NumberOfBathrooms</span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Price per Metersize </span></div>
-    <div class="col-6"><span>@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></span></div>
-</div>
-<div class="row">
-    <div class="col-6"><span>Residental Complex </span></div>
-    <div class="col-6"><span>@(Model.IsResidentalComplex ? "Yes" : "No")</span></div>
-</div>
+<tr>
+    <td><span>Gross Square Metersize</span> </td>
+    <td><span>@Model.GrossSquareMetersize</span></td>
+</tr>
+<tr>
+    <td><span>Square Metersize </span></td>
+    <td><span>@Model.SquareMetersize</span></td>
+</tr>
+<tr>
+    <td><span>Block Number</span> </td>
+    <td><span>@Model.BlockNumber</span></td>
+</tr>
+<tr>
+    <td><span>Parsel Number</span> </td>
+    <td><span>@Model.ParselNumber</span></td>
+</tr>
+<tr>
+    <td><span>Number of Rooms</span> </td>
+    <td><span>@Model.NumberOfRooms</span></td>
+</tr>
+<tr>
+    <td><span>Elevator</span> </td>
+    <td><span>@(Model.Elevator ? "Yes" : "No")</span></td>
+</tr>
+<tr>
+    <td><span>Floor </span></td>
+    <td><span>@Model.Floor</span></td>
+</tr>
+<tr>
+    <td><span>Number of Floors </span></td>
+    <td><span>@Model.NumberOfFloor</span></td>
+</tr>
+<tr>
+    <td><span>Usage State </span></td>
+    <td><span>@Model.UsageState</span></td>
+</tr>
+<tr>
+    <td><span>Dues </span></td>
+    <td><span>@Model.Dues</span></td>
+</tr>
+<tr>
+    <td><span>Age of Building</span> </td>
+    <td><span>@Model.AgeOfBuilding</span></td>
+</tr>
+<tr>
+    <td><span>Heating Type</span> </td>
+    <td><span>@Model.HeatingType</span></td>
+</tr>
+<tr>
+    <td><span>Eligibity for Loan</span> </td>
+    <td><span>@(Model.EligibityForLoan ? "Yes" : "No")</span></td>
+</tr>
+<tr>
+    <td><span>Parking Lot </span></td>
+    <td><span>@(Model.ParkingLot ? "Yes" : "No")</span></td>
+</tr>
+<tr>
+    <td><span>Furnished </span></td>
+    <td><span>@(Model.Furnished ? "Yes" : "No")</span></td>
+</tr>
+<tr>
+    <td><span>Number of Balcony</span> </td>
+    <td><span>@Model.NumberOfBalcony</span></td>
+</tr>
+<tr>
+    <td><span>Number of Bathrooms </span></td>
+    <td><span>@Model.NumberOfBathrooms</span></td>
+</tr>
+<tr>
+    <td><span>Price per Metersize </span></td>
+    <td><span>@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></span></td>
+</tr>
+<tr>
+    <td><span>Residental Complex </span></td>
+    <td><span>@(Model.IsResidentalComplex ? "Yes" : "No")</span></td>
+</tr>

@@ -155,5 +155,17 @@ namespace MatchEstate.Controllers
             };
             return Ok(response);
         }
+
+        public async Task<IActionResult> GetRequestsByPropertyType(int propertyTypeId)
+        {
+            var requests = await _requestService.GetRequestsByPropertyType(UserId, propertyTypeId);
+
+            return Ok(new DataResponse<List<GetRequestsByPropertyTypeDto>>
+            {
+                Success = true,
+                Message = "Request received successfully",
+                Data = requests
+            });
+        }
     }
 }

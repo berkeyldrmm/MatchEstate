@@ -2,6 +2,7 @@
 @model UpdateRequestDto
 
 <link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.min.css" />
 <style>
     .wrapper {
         display: inline-flex;
@@ -156,51 +157,6 @@
                     <option value=3>Commercial unit</option>
                 </select>
             </div>
-           @*  <div class="form-group w-50" id="numberOfRooms" data-property="[1,5]">
-                <label for="numberOfRooms" style="font-size:20px;">Number of Rooms</label>
-                <div class="d-flex flex-wrap">
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="1+0" />1+0 (Studio)</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="1+1" />1+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2+0" />2+0</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2+1" />2+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2+2" />2+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="2.5+1" />2.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+0" />3+0</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+1" />3+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3.5+1" />3.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+2" />3+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="3+3" />3+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+0" />4+0</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+1" />4+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4.5+1" />4.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+2" />4+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+3" />4+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="4+4" />4+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+1" />5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5.5+1" />5.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+2" />5+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+3" />5+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="5+4" />5+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+1" />6+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+2" />6+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+3" />6+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="6+4" />6+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="7+1" />7+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="7+2" />7+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="7+3" />7+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+1" />8+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+2" />8+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+3" />8+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="8+4" />8+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+1" />9+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+2" />9+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+3" />9+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+4" />9+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+5" />9+5</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9+6" />9+6</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms"  value="9 or more" />9 or more</div>
-                </div>
-            </div> *@
         </div>
         <hr />
         <div class="row">
@@ -210,8 +166,14 @@
                 </select>
             </div>
 
-            <div class="form-group d-flex flex-wrap" id="selectTown">
+            <div class="form-group" id="select-district">
+                <label>District</label>
+                <select id="selectTown" data-property="[1,2,3,4,5]" class="form-select selectpicker" multiple data-live-search="true" title="Select districts" style="background-color: #ffffff">
+                </select>
             </div>
+
+           @*  <div class="form-group d-flex flex-wrap" id="selectTown">
+            </div> *@
         </div>
     </div>
     <hr />
@@ -275,22 +237,6 @@
         $("#updateRequest").on("click",(e)=>{
             e.preventDefault();
 
-            // var numberOfRooms = [];
-            // var numberOfRoomsOptions = $("input[name='numberOfRooms']");
-            // numberOfRoomsOptions.each((index, value) => {
-            //     if (value.checked) {
-            //         numberOfRooms.push(value.value);
-            //     }
-            // });
-
-            var districts = [];
-            var districtOptions = $("input[name='District']");
-            districtOptions.each((index, value) => {
-                if (value.checked) {
-                    districts.push(value.value);
-                }
-            });
-
             $.post("/propertyrequest/updaterequest?requestId=@Html.Raw(ViewBag.requestId)", {
                 requestId: $("input[name='RequestId']").val(),
                 requestTitle: $("input[name='RequestTitle']").val(),
@@ -301,7 +247,7 @@
                 clientEmail: $("input[name='ClientEmail']").val(),
                 propertyStatusId: $("input[name='PropertyStatusId']:checked").val(),
                 city: $("#selectCity").val(),
-                district: districts,
+                district: $("#selectTown").val(),
                 minPrice: $("#minPrice").val(),
                 maxPrice: $("#maxPrice").val(),
                 details: $("textarea#detail").val()
@@ -319,7 +265,6 @@
 
         });
 
-        // propertyForm();
         checkRadioForClient()
 
         $("input[name='radioForClient']").change(() => {
@@ -344,22 +289,19 @@
 
     function getDistricts(){
         let cityname = $("#selectCity").val();
-            let cityObject = turkiye.filter(city => city.name == cityname)[0];
-            let towns = cityObject.towns;
-            let townNames = towns.map(town => town.name);
-            let options = "<label style='font-size:20px;'>Distict</label><br/>";
-            townNames.forEach(townName => options += `<div><input type='checkbox' class="form-check-input" name='District' value='${townName}' data-property='[1,2,3,4,5]' />${townName}</div> `);
-            $("#selectTown").html(options);
+        let cityObject = turkiye.filter(city => city.name == cityname)[0];
+        let towns = cityObject.towns;
+        let townNames = towns.map(town => town.name);
+        let options = "";
+        townNames.forEach(townName => options += `<option value="${townName}">${townName}</option>`);
+        $("#selectTown").html(options);
+        $('.selectpicker').selectpicker('refresh');
     }
-
+    
     function setDistricts(){
-        var districts=@Html.Raw(Json.Serialize(Model.District));
-        $("input[name=District]").each((index, input) => {
-            if(districts.includes(input.value)){
-                input.setAttribute("checked", true);
-            }
-        });
+        var districts = @Html.Raw(Json.Serialize(Model.District));
+        $('.selectpicker').selectpicker('val', districts);
     }
-
 </script>
 <script src="~/lib/jquery-selectize/selectize.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js"></script>

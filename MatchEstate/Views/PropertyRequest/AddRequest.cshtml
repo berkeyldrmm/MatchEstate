@@ -1,4 +1,5 @@
 ﻿<link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.min.css" />
 <style>
 
     .wrapper {
@@ -203,8 +204,12 @@
                 </select>
             </div>
 
-            <div class="form-group d-flex flex-wrap" id="selectTown">
+            <div class="form-group" style="display: none;" id="select-district">
+                <label>District</label>
+                <select id="selectTown" data-property="[1,2,3,4,5]" class="form-select selectpicker" multiple data-live-search="true" title="Select districts" style="background-color: #ffffff">
+                </select>
             </div>
+
         </div>
     </div>
     <hr />
@@ -252,13 +257,15 @@
         })
 
         $("#selectCity").change(() => {
+            $("#select-district").css("display", "block");
             let cityname = $("#selectCity").val();
             let cityObject = turkiye.filter(city => city.name == cityname)[0];
             let towns = cityObject.towns;
             let townNames = towns.map(town => town.name);
-            let options = "<label style='font-size:20px;'>Distict</label><br/>";
-            townNames.forEach(townName => options += `<div><input type='checkbox' class="form-check-input" name='Semt' value='${townName}' data-property='[1,2,3,4,5]' />${townName}</div> `);
+            let options = "";
+            townNames.forEach(townName => options += `<option value="${townName}">${townName}</option>`);
             $("#selectTown").html(options);
+            $('.selectpicker').selectpicker('refresh');
         });
 
         $("#addRequest").on("click",(e)=>{
@@ -272,13 +279,13 @@
                 }
             });
 
-            var districts = [];
-            var districtOptions = $("input[name='Semt']");
-            districtOptions.each((index, value) => {
-                if (value.checked) {
-                    districts.push(value.value);
-                }
-            });
+            // var districts = [];
+            // var districtOptions = $("#selectTown").val();
+            // districtOptions.each((index, value) => {
+            //     if (value.checked) {
+            //         districts.push(value.value);
+            //     }
+            // });
 
             $.post("/propertyrequest/addrequest", {
                 requestTitle: $("input[name='RequestTitle']").val(),
@@ -290,7 +297,7 @@
                 propertyTypeId: $("#propertyTypeInput").val(),
                 PropertyStatusId: $("input[name='PropertyStatusId']:checked").val(),
                 city: $("#selectCity").val(),
-                district: districts,
+                district: $("#selectTown").val(),
                 numberOfRooms: numberOfRooms,
                 minPrice: $("#minPrice").val(),
                 maxPrice: $("#maxPrice").val(),
@@ -310,17 +317,11 @@
         });
 
         propertyForm();
-        $("input[name='radioForClient']").change(() => {
-            if ($('#newClient').is(':checked')) {
-                $("#newClientDiv").fadeIn();
-                $("#savedClientDiv").fadeOut();
-            }
-            else {
-                $("#newClientDiv").fadeOut();
-                $("#savedClientDiv").fadeIn();
-            }
-        });
+        checkRadioForClient();
 
+        $("input[name='radioForClient']").change(() => {
+            checkRadioForClient()
+        });
 
         $('#select-client').selectize({
             sortField: 'text'
@@ -344,5 +345,17 @@
             rooms.css("display", "none");
         }
     }
+
+    function checkRadioForClient() {
+        if ($('#newClient').is(':checked')) {
+            $("#newClientDiv").fadeIn();
+            $("#savedClientDiv").fadeOut();
+        }
+        else {
+            $("#newClientDiv").fadeOut();
+            $("#savedClientDiv").fadeIn();
+        }
+    }
 </script>
 <script src="~/lib/jquery-selectize/selectize.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js"></script>

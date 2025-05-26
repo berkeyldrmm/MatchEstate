@@ -12,12 +12,21 @@ namespace MatchEstate.Controllers
     public class PropertyListingController : BaseController
     {
         private readonly IPropertyListingService _listingService;
+        private readonly IPropertyRequestService _requestService;
         private readonly IClientService _clientService;
         private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<AddListingDTO> _addListingDtoValidator;
         private readonly IValidator<UpdateListingDto> _updateListingDtoValidator;
-        public PropertyListingController(IPropertyListingService listingService, IClientService clientService, IPropertyService propertyService, IUnitOfWork unitOfWork, IValidator<AddListingDTO> listingModelValidator, IValidator<UpdateListingDto> updateListingDtoValidator)
+        private readonly IValidator<FinalizeListingDto> _finalizeListingDtoValidator;
+        public PropertyListingController(IPropertyListingService listingService,
+            IClientService clientService,
+            IPropertyService propertyService,
+            IUnitOfWork unitOfWork,
+            IValidator<AddListingDTO> listingModelValidator,
+            IValidator<UpdateListingDto> updateListingDtoValidator,
+            IPropertyRequestService requestService,
+            IValidator<FinalizeListingDto> finalizeListingDtoValidator)
         {
             _listingService = listingService;
             _clientService = clientService;
@@ -25,6 +34,8 @@ namespace MatchEstate.Controllers
             _unitOfWork = unitOfWork;
             _addListingDtoValidator = listingModelValidator;
             _updateListingDtoValidator = updateListingDtoValidator;
+            _requestService = requestService;
+            _finalizeListingDtoValidator = finalizeListingDtoValidator;
         }
 
         public IActionResult Index()
@@ -113,22 +124,38 @@ namespace MatchEstate.Controllers
             return View(dto);
         }
 
-        public async Task<IActionResult> FinalizeListing(string id, [FromQuery] string earning)
+        [Route("/propertylisting/finalizelisting/{id}")]
+        public async Task<IActionResult> FinalizeListing(string id, FinalizeListingDto dto)
         {
-            bool result = await _listingService.SellListing(id, earning);
-            var saved = await _unitOfWork.SaveChanges();
+            var validateResult = await _finalizeListingDtoValidator.ValidateAsync(dto);
             var response = new BaseResponse();
-            
-            if (!result || saved<=0)
+
+            if (validateResult.IsValid)
             {
-                response.Success = false;
-                response.Message = "An error occured while marking listing as finalized.";
+                bool listingResult = await _listingService.FinalizeListing(UserId, id, dto.Earning, dto.RequestId);
+                bool requestResult = true;
+                if (dto.RequestId != "0")
+                    requestResult = await _requestService.FinalizeRequest(UserId, dto.RequestId);
+
+                var saved = await _unitOfWork.SaveChanges();
+
+                if (!listingResult || !requestResult || saved <= 0)
+                {
+                    response.Success = false;
+                    response.Message = "An error occured while marking listing as finalized.";
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "Listing has been marked as finalized successfully.";
+                }
+
+                return Ok(response);
             }
-            else
-            {
-                response.Success = true;
-                response.Message = "Listing has been marked as finalized successfully.";
-            }
+
+            response.Success = false;
+            IEnumerable<string> allErrors = validateResult.Errors.Select(x => x.ErrorMessage);
+            response.Message = ValidationMessageWriter.MessageWriter(allErrors);
 
             return Ok(response);
         }

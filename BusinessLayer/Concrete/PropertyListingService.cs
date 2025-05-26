@@ -82,9 +82,9 @@ namespace BusinessLayer.Concrete
             return _listingRepository.GetPropertyType(id);
         }
 
-        public Task<bool> SellListing(string id, string earning)
+        public Task<bool> FinalizeListing(string userId, string id, string earning, string requestId)
         {
-            return _listingRepository.SellListing(id, earning);
+            return _listingRepository.FinalizeListing(userId, id, earning, requestId);
         }
 
         public object GetCountsOfListingTypes(string userId)

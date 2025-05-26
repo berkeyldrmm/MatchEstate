@@ -104,7 +104,8 @@ namespace DataAccessLayer.Concrete
                 PropertyStatus = r.PropertyStatus.Name,
                 MinPrice = r.MinimumPrice.ToString(),
                 MaxPrice = r.MaximumPrice.ToString(),
-                AddedDate = r.AddedDate.Write()
+                AddedDate = r.AddedDate.Write(),
+                Status = r.DealStatus
             });
 
             return (DTOQuery, totalRequestCount);
@@ -152,12 +153,41 @@ namespace DataAccessLayer.Concrete
                 ClientNameSurname = r.Client.NameSurname,
                 ClientEmailAddress = r.Client.Email ?? "-",
                 ClientPhoneNumber = r.Client.PhoneNumber,
-                Districts = string.Join(",", JsonConvert.DeserializeObject<IEnumerable<string>>(r.District)),
+                Districts = string.Join(", ", JsonConvert.DeserializeObject<IEnumerable<string>>(r.District)),
                 PropertyTypeId = r.PropertyTypeId,
                 PropertyType = r.PropertyType.PropertyName,
                 Details = r.Details,
-                NumberOfRooms = (r.PropertyTypeId == 5 || r.PropertyTypeId == 1) ? string.Join(",", JsonConvert.DeserializeObject<IEnumerable<string>>(r.NumberOfRooms)) : ""
+                Status = r.DealStatus,
+                NumberOfRooms = (r.PropertyTypeId == 5 || r.PropertyTypeId == 1) ? string.Join(", ", JsonConvert.DeserializeObject<IEnumerable<string>>(r.NumberOfRooms)) : ""
             }).FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        public async Task<List<GetRequestsByPropertyTypeDto>> GetRequestsByPropertyType(string userId, int propertyTypeId)
+        {
+            return await EntityOfUser(userId)
+                .Where(r => !r.DealStatus)
+                .Where(r => r.PropertyTypeId == propertyTypeId).Select(r => new GetRequestsByPropertyTypeDto
+            {
+                Id = r.Id,
+                PropertyType = r.PropertyType.PropertyName,
+                Title = r.Title
+            }).ToListAsync();
+        }
+
+        public async Task<bool> FinalizeRequest(string userId, string requestId)
+        {
+            var request = await EntityOfUser(userId).FirstOrDefaultAsync(r => r.Id == requestId);
+            request.DealStatus = true;
+            request.DealDate = DateTime.Now;
+
+            var result = await Update(request);
+
+            return result;
+        }
+
+        public async Task<IEnumerable<PropertyRequest>> GetRequestsNotDeal(string userId)
+        {
+            return await EntityOfUser(userId).Include(r => r.Client).Include(r => r.PropertyType).Where(r => !r.DealStatus).ToListAsync();
         }
     }
 }

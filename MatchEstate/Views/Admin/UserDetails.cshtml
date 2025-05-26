@@ -71,7 +71,7 @@
                         <tbody>
                             @foreach (var request in Model.Requests)
                             {
-                                <tr>
+                                <tr @(request.Status ? "style=background-color:#95d5b2;" : "")>
                                     <td>@request.Title</td>
                                     <td>@request.PropertyType</td>
                                     <td>@request.PropertyStatus</td>

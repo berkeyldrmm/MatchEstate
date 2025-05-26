@@ -407,14 +407,6 @@
             checkRadioForClient()
         });
 
-        $("input[name='RadioForCommission']").change(() => {
-            setCommission();
-        });
-
-        $("input[name='PropertyStatusId']").change(() => {
-            setCommission();
-        });
-
         $('#select-client').selectize({
           sortField: 'text'
         });
@@ -424,8 +416,6 @@
         });
 
         $("#price").on("keyup", () => {
-            setCommission();
-            
             $("#pricePerMetersize").html(parseInt($("#price").val()) / parseInt($("#sqaureMetersize").val()));
         });
 

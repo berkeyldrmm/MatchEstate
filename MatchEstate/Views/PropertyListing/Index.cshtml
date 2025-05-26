@@ -6,6 +6,10 @@
     .filterDiv label {
         font-size: 13px;
     }
+
+    .selectize-input.items.not-full.has-options::after {
+        display: none;
+    }
 </style>
 
 <div class="container-fluid pt-4 px-4">
@@ -160,11 +164,20 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Listing will be marked as finalized.</p>
+                    <h5>Listing will be marked as finalized.</h5>
                     <div>
-                        <p>Please enter the earnings from this deal</p>
+                        <label>You can select the request if it is found among saved ones.</label>
+                        <br />
+                        <small class="text-warning">If not, do not select it</small>
+                        <br />
+                        <select id="select-request" placeholder="Select Request">
+                        </select>
+                    </div>
+                    <br />
+                    <div>
+                        <label>Please enter the earning from this deal</label>
                         <div class="form-group">
-                            <input class="form-control" type="number" id="earning" />
+                            <input class="form-control" placeholder="Enter earning" type="number" id="earning" />
                         </div>
                     </div>
                 </div>
@@ -176,40 +189,46 @@
 </div>
 
 <script>
-    $("#navListing").addClass("active");
+    $(document).ready(function () {
+        $("#navListing").addClass("active");
 
-    $("input:radio[name='PropertyStatusId']").change(() => {
-        getByFilters(1);
-    });
-
-    $("input:radio[name='PropertyType']").change(() => {
-        getByFilters(1);
-    });
-
-    $("input:radio[name='status']").change(() => {
-        getByFilters(1);
-    });
-
-    $("input:radio[name='sort']").change(() => {
-        getByFilters(1);
-    });
-
-    $("#search").keyup(() => {
-        if ($("#search").val().length > 2 || $("#search").val().length == 0) {
+        $("input:radio[name='PropertyStatusId']").change(() => {
             getByFilters(1);
-        }
-    });
+        });
 
-    $("#minPrice").keyup(() => {
-        if ($("#minPrice").val().length > 2 || $("#minPrice").val().length == 0) {
+        $("input:radio[name='PropertyType']").change(() => {
             getByFilters(1);
-        }
-    });
+        });
 
-    $("#maxPrice").keyup(() => {
-        if ($("#maxPrice").val().length > 2 || $("#maxPrice").val().length == 0) {
+        $("input:radio[name='status']").change(() => {
             getByFilters(1);
-        }
+        });
+
+        $("input:radio[name='sort']").change(() => {
+            getByFilters(1);
+        });
+
+        $("#search").keyup(() => {
+            if ($("#search").val().length > 2 || $("#search").val().length == 0) {
+                getByFilters(1);
+            }
+        });
+
+        $("#minPrice").keyup(() => {
+            if ($("#minPrice").val().length > 2 || $("#minPrice").val().length == 0) {
+                getByFilters(1);
+            }
+        });
+
+        $("#maxPrice").keyup(() => {
+            if ($("#maxPrice").val().length > 2 || $("#maxPrice").val().length == 0) {
+                getByFilters(1);
+            }
+        });
+
+        // $('#select-request').selectize({
+        //     sortField: 'text'
+        // });
     });
 
     function deleteListing() {
@@ -229,22 +248,41 @@
                     }, 2000);
                 }
                 else {
-                    sendNotification("danger", data.message);
+                    sendNotification("error", data.message);
                 }
             });
         }
         else {
-            sendNotification("danger", "Please select listings to delete.");
+            sendNotification("error", "Please select listings to delete.");
         }
     }
 
-    function sellListingModal(id) {
+    function sellListingModal(id, propertyTypeId) {
+        fetch(`/propertyrequest/GetRequestsByPropertyType?propertyTypeId=${propertyTypeId}`)
+        .then(res=>res.json())
+        .then(data=>{
+            requests = data.data;
+            console.log(requests);
+            if(requests.length != 0){
+                let html = "<option value='0' selected>Select property request</option>";
+                requests.forEach(request=>{
+                    html += `
+                        <option value='${request.id}'>${request.title} - ${request.propertyType}</option>
+                    `;
+                    $("#select-request").html(html)
+                })
+            }
+        })
+
         $("#earning-footer").html(`<button type="button" style="color:#ffffff;" class="btn btn-success" data-dismiss="modal" onclick="finalizeListing('${id}')">Finalize</button>
                 <button type="button" style="color:#000000;" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>`)
     }
 
     function finalizeListing(id) {
-        $.post("/propertylisting/finalizelisting/" + id + "?earning=" + $("#earning").val(), (data, status) => {
+        $.post("/propertylisting/finalizelisting/" + id, {
+            earning: $("#earning").val(),
+            requestId: $("#select-request").val()
+        }, (data, status) => {
             if (data.success) {
                 sendNotification("success", data.message);
                 setTimeout(() => {
@@ -252,7 +290,7 @@
                 }, 2000);
             }
             else {
-                sendNotification("danger", data.message);
+                sendNotification("error", data.message);
             }
         });
     };
@@ -316,7 +354,7 @@
                               <td><a class="btn btn-sm btn-primary" href="propertylisting/detail/${listings[i].id}">Details</a></td>
                               <td>
                                   <div class="d-flex justify-content-center align-items-center">
-                                       ${listings[i].status ? '<div>Finalized</div>' : `<button type="button" style="height:fit-content;margin-left:10px;color:#ffffff;" class="btn btn-sm btn-success"data-toggle="modal" data-target="#sellListingModal" onclick="sellListingModal('${listings[i].id}')">Finalize</button>`}
+                                       ${listings[i].status ? '<div>Finalized</div>' : `<button type="button" style="height:fit-content;margin-left:10px;color:#ffffff;" class="btn btn-sm btn-success"data-toggle="modal" data-target="#sellListingModal" onclick="sellListingModal('${listings[i].id}', '${listings[i].propertyTypeId}')">Finalize</button>`}
                                   </div>
                               </td>
                            </tr>
@@ -337,3 +375,4 @@
         sendNotification("success", message);
     }
 </script>
+<script src="~/lib/jquery-selectize/selectize.min.js"></script>

@@ -132,6 +132,9 @@ namespace BusinessLayer.Concrete
             if (getByFilers.PropertyType != 0)
                 expressions.Add(t => t.PropertyTypeId == getByFilers.PropertyType);
 
+            if (getByFilers.Status != "-1")
+                expressions.Add(r => r.DealStatus == Convert.ToBoolean(Convert.ToInt16(getByFilers.Status)));
+
             if (getByFilers.Search != null && getByFilers.Search.Length > 2)
             {
                 expressions.Add(t => t.Title.Contains(getByFilers.Search) || t.City.Contains(getByFilers.Search) || t.Client.NameSurname.Contains(getByFilers.Search));
@@ -161,6 +164,8 @@ namespace BusinessLayer.Concrete
 
             expressions.Add(t => t.Client.Id != ilan.Client.Id);
 
+            expressions.Add(i => !i.DealStatus);
+
             return await _reqeustRepository.GetRequestsForListing(userId, expressions);
         }
 
@@ -183,6 +188,21 @@ namespace BusinessLayer.Concrete
         public async Task<PropertyRequestDetailDto> GetRequestDetail(string userId, string id)
         {
             return await _reqeustRepository.GetRequestDetail(userId, id);
+        }
+
+        public async Task<List<GetRequestsByPropertyTypeDto>> GetRequestsByPropertyType(string userId, int propertyTypeId)
+        {
+            return await _reqeustRepository.GetRequestsByPropertyType(userId, propertyTypeId);
+        }
+
+        public async Task<bool> FinalizeRequest(string userId, string requestId)
+        {
+            return await _reqeustRepository.FinalizeRequest(userId, requestId);
+        }
+
+        public async Task<IEnumerable<PropertyRequest>> GetRequestsNotDeal(string userId)
+        {
+            return await _reqeustRepository.GetRequestsNotDeal(userId);
         }
     }
 }

@@ -18,7 +18,7 @@
                         <p><b>Property Type:</b> @listingRequestPair.request.PropertyType</p>
                         <p><b>Property Status:</b> @listingRequestPair.request.PropertyStatus</p>
                         <p><b>City:</b> @listingRequestPair.request.City</p>
-                        <p><b>Price Range:</b> @listingRequestPair.request.MinPrice $ - @listingRequestPair.request.MaxPrice $</p>
+                        <p><b>Price Range:</b> @listingRequestPair.request.MinPrice - @listingRequestPair.request.MaxPrice <i class="fa fa-dollar"></i></p>
                         <p><b>Added Date:</b> @listingRequestPair.request.AddedDate</p>
                         <a href="/propertyrequest/detail/@listingRequestPair.request.Id" class="btn btn-primary">View the request</a>
                     </div>
@@ -30,8 +30,8 @@
                         <p><b>Client Name Surname:</b> @listingRequestPair.listing.ClientNameSurname</p>
                         <p><b>Property Type:</b> @listingRequestPair.listing.PropertyType</p>
                         <p><b>Property Status:</b> @listingRequestPair.listing.PropertyStatus</p>
-                        <p><b>District/City:</b> @listingRequestPair.listing.Address</p>
-                        <p><b>Price:</b> @listingRequestPair.listing.Price $</p>
+                        <p><b>Address:</b> @listingRequestPair.listing.Address</p>
+                        <p><b>Price:</b> @listingRequestPair.listing.Price <i class="fa fa-dollar"></i></p>
                         <p><b>Added Date:</b> @listingRequestPair.listing.AddedDate</p>
                         <a href="/propertylisting/detail/@listingRequestPair.listing.Id" class="btn btn-primary">View the listing</a>
                     </div>

@@ -23,7 +23,7 @@ namespace BusinessLayer.Concrete
 
         public async Task<List<(PropertyRequestCardDto request, PropertyListingCardDto listing)>> FindMatches(string userId)
         {
-            IEnumerable<PropertyRequest> requests = await _requestService.GetAllWithClient(userId);
+            IEnumerable<PropertyRequest> requests = await _requestService.GetRequestsNotDeal(userId);
             var requestListingPairs = new List<(PropertyRequestCardDto request, PropertyListingCardDto listing)>();
 
             foreach (var request in requests)

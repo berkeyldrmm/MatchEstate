@@ -19,9 +19,12 @@ public partial class PropertyRequest
     public int PropertyTypeId { get; set; }
     public PropertyType PropertyType { get; set; }
     public DateTime AddedDate { get; set; }
+    public bool DealStatus { get; set; }
+    public DateTime? DealDate { get; set; }
     public string UserId { get; set; }
     public User User { get; set; }
     public int PropertyStatusId { get; set; }
     public PropertyStatus PropertyStatus { get; set; }
     public string? Details { get; set; }
+    public PropertyListing? PropertyListing { get; set; }
 }

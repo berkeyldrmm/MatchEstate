@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Shared.Dtos.PropertyListing;
 using Shared.Dtos.PropertyListing.Detail;
 using Shared.Dtos.Abstractions;
+using Azure.Core;
 
 namespace DataAccessLayer.Abstract
 {
@@ -12,7 +13,7 @@ namespace DataAccessLayer.Abstract
         public IQueryable<PropertyListing> GetWithClient(string userId, string id);
         public Task<PropertyType> GetPropertyType(int id);
         IEnumerable<PropertyListing> GetRange(IEnumerable<string> Ids);
-        public Task<bool> SellListing(string id, string earning);
+        public Task<bool> FinalizeListing(string userId, string id, string earning, string requestId);
         public object GetCountsOfListingTypes(string userId);
         public object GetForSaleOrRent(string userId);
         public Task<List<PropertyListingCardDto>> GetListingsForRequest(string userId, List<Expression<Func<PropertyListing, bool>>> expressions);

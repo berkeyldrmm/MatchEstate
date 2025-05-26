@@ -61,6 +61,6 @@
         <b>Net profit-loss :</b>
     </div>
     <div class="col-6">
-        <b>@((ViewBag.kazanc + Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum() - Model.Where(i => i.IncomeExpense.ToLower() == "gider").Select(i => Convert.ToInt32(i.Cost)).Sum()).ToString()) <i class="fa fa-dollar"></i></b>
+        <b>@((ViewBag.kazanc + Model.Where(i => i.IncomeExpense.ToLower() == "income").Select(i => Convert.ToInt32(i.Cost)).Sum() - Model.Where(i => i.IncomeExpense.ToLower() == "expense").Select(i => Convert.ToInt32(i.Cost)).Sum()).ToString()) <i class="fa fa-dollar"></i></b>
     </div>
 </div>

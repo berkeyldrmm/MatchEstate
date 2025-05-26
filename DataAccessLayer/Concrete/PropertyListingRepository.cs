@@ -55,14 +55,23 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
         return Entity.Where(listing => Ids.Contains(listing.Id)).ToList();
     }
 
-    public async Task<bool> SellListing(string id, string earning)
+    public async Task<bool> FinalizeListing(string userId, string id, string earning, string requestId)
     {
-        PropertyListing listing = await Read(id);
-        listing.DealStatus = true;
-        listing.Earning = Convert.ToDecimal(earning);
-        listing.DealDate = DateTime.Now;
-        bool result = await Update(listing);
-        return result;
+        PropertyListing listing = await EntityOfUser(userId).FirstOrDefaultAsync(l => l.Id == id);
+
+        if(listing is not null)
+        {
+            listing.DealStatus = true;
+            listing.Earning = Convert.ToDecimal(earning);
+            listing.DealDate = DateTime.Now;
+            if (requestId != null && requestId != "0")
+                listing.PropertyRequestId = requestId;
+
+            bool result = await Update(listing);
+            return result;
+        }
+
+        return false;
     }
 
     public object GetCountsOfListingTypes(string userId)
@@ -124,6 +133,7 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
         {
             Id = l.Id,
             ClientNameSurname = l.Client.NameSurname,
+            PropertyTypeId = l.PropertyTypeId,
             PropertyType = l.PropertyType.PropertyName,
             ListingTitle = l.Title,
             Price = l.Price.ToString(),
@@ -147,8 +157,8 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
         {
             query = query.Where(expression);
         }
-
-        return await query.Select(l=>new PropertyListingCardDto
+        
+        var listings = await query.Select(l => new PropertyListingCardDto
         {
             Id = l.Id,
             Title = l.Title,
@@ -159,6 +169,8 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
             PropertyStatus = l.PropertyStatus.Name,
             PropertyType = l.PropertyType.PropertyName
         }).ToListAsync();
+
+        return listings;
     }
 
     public async Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId)

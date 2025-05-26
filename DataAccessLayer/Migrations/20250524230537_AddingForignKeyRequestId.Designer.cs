@@ -4,6 +4,7 @@ using DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MatchEstateDbContext))]
-    partial class MatchEstateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250524230537_AddingForignKeyRequestId")]
+    partial class AddingForignKeyRequestId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,6 +312,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RequestId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -321,9 +327,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("PropertyRequestId")
-                        .IsUnique()
-                        .HasFilter("[PropertyRequestId] IS NOT NULL");
+                    b.HasIndex("PropertyRequestId");
 
                     b.HasIndex("PropertyStatusId");
 
@@ -795,8 +799,8 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("EntityLayer.Entities.PropertyRequest", "PropertyRequest")
-                        .WithOne("PropertyListing")
-                        .HasForeignKey("EntityLayer.Entities.PropertyListing", "PropertyRequestId");
+                        .WithMany()
+                        .HasForeignKey("PropertyRequestId");
 
                     b.HasOne("EntityLayer.Entities.PropertyStatus", "PropertyStatus")
                         .WithMany()
@@ -942,11 +946,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Land");
 
                     b.Navigation("Shop");
-                });
-
-            modelBuilder.Entity("EntityLayer.Entities.PropertyRequest", b =>
-                {
-                    b.Navigation("PropertyListing");
                 });
 
             modelBuilder.Entity("EntityLayer.Entities.PropertyType", b =>

@@ -4,6 +4,7 @@
     {
         public string Id { get; set; }
         public string ListingTitle { get; set; }
+        public int PropertyTypeId { get; set; }
         public string PropertyType { get; set; }
         public string ClientNameSurname { get; set; }
         public string Price { get; set; }

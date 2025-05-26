@@ -11,5 +11,6 @@
         public string MaxPrice { get; set; }
         public string PropertyStatus { get; set; }
         public string AddedDate { get; set; }
+        public bool Status { get; set; }
     }
 }

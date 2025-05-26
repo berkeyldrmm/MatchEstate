@@ -107,6 +107,10 @@ namespace DataAccessLayer.Context
                 .WithOne(a => a.Listing)
                 .HasForeignKey<Farmland>(f => f.ListingId);
 
+                entity.HasOne(l => l.PropertyRequest)
+                .WithOne(r => r.PropertyListing)
+                .HasForeignKey<PropertyListing>(l => l.PropertyRequestId);
+
             });
 
             modelBuilder.Entity<Client>(entity =>

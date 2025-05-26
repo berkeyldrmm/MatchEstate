@@ -3,6 +3,7 @@ using EntityLayer.Abstract;
 using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EntityLayer.Entities;
 
@@ -33,4 +34,7 @@ public partial class PropertyListing
     public string City { get; set; }
     public string District { get; set; }
     public string Neighbourhood { get; set; }
+    [ForeignKey(nameof(PropertyRequest))]
+    public string? PropertyRequestId { get; set; }
+    public PropertyRequest? PropertyRequest { get; set; }
 }

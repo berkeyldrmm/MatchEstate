@@ -23,5 +23,8 @@ namespace BusinessLayer.Abstract
         public (IEnumerable<RequestPageDTO>, int) GetByFilters(string userId, RequestGetByFiltersDTO getByFilters);
         public UpdateRequestDto? GetRequestForUpdate(string userId, string id);
         public Task<PropertyRequestDetailDto> GetRequestDetail(string userId, string id);
+        public Task<List<GetRequestsByPropertyTypeDto>> GetRequestsByPropertyType(string userId, int propertyTypeId);
+        public Task<bool> FinalizeRequest(string userId, string requestId);
+        public Task<IEnumerable<PropertyRequest>> GetRequestsNotDeal(string userId);
     }
 }

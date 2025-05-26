@@ -135,7 +135,7 @@ namespace MatchEstate.Controllers
                 UserId = id,
                 UserNameSurname = user,
                 Listings = _listingService.GetAllWithClient(id).Result.Select(l => new AdminPageListingModel { Title = l.Title, PropertyType = l.PropertyType.PropertyName, Status = l.DealStatus, PropertyStatus = l.PropertyStatus.Name }),
-                Requests = _requestService.GetAllWithClient(id).Result.Select(r => new AdminPageRequestModel { Title = r.Title, PropertyType = r.PropertyType.PropertyName, PropertyStatus = r.PropertyStatus.Name })
+                Requests = _requestService.GetAllWithClient(id).Result.Select(r => new AdminPageRequestModel { Title = r.Title, PropertyType = r.PropertyType.PropertyName, Status = r.DealStatus, PropertyStatus = r.PropertyStatus.Name })
             };
 
             return View(listingRequestModel);

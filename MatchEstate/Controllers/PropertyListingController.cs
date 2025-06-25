@@ -54,7 +54,7 @@ namespace MatchEstate.Controllers
         public async Task<IActionResult> DeleteListing(string idsJson)
         {
             var listingIds = JsonConvert.DeserializeObject<List<string>>(idsJson);
-            _listingService.DeleteRange(listingIds);
+            _listingService.DeleteRange(UserId, listingIds);
             var result = await _unitOfWork.SaveChanges();
             var response = new BaseResponse();
             
@@ -71,6 +71,7 @@ namespace MatchEstate.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddListing(AddListingDTO listingModel)
         {
             var validateResult = await _addListingDtoValidator.ValidateAsync(listingModel);

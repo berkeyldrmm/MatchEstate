@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MatchEstateDbContext))]
-    [Migration("20250525134322_FixingRequestIdSecond")]
-    partial class FixingRequestIdSecond
+    [Migration("20250527150019_InitDatabase")]
+    partial class InitDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -799,7 +799,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("EntityLayer.Entities.PropertyRequest", "PropertyRequest")
                         .WithOne("PropertyListing")
-                        .HasForeignKey("EntityLayer.Entities.PropertyListing", "PropertyRequestId");
+                        .HasForeignKey("EntityLayer.Entities.PropertyListing", "PropertyRequestId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("EntityLayer.Entities.PropertyStatus", "PropertyStatus")
                         .WithMany()

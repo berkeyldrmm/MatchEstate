@@ -12,7 +12,7 @@ namespace DataAccessLayer.Abstract
         public Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId);
         public IQueryable<PropertyListing> GetWithClient(string userId, string id);
         public Task<PropertyType> GetPropertyType(int id);
-        IEnumerable<PropertyListing> GetRange(IEnumerable<string> Ids);
+        IEnumerable<PropertyListing> GetRange(string userId, IEnumerable<string> Ids);
         public Task<bool> FinalizeListing(string userId, string id, string earning, string requestId);
         public object GetCountsOfListingTypes(string userId);
         public object GetForSaleOrRent(string userId);
@@ -22,5 +22,6 @@ namespace DataAccessLayer.Abstract
         public int GetListingCount(string userId);
         public UpdateListingDto? GetListingForUpdate(string userId, string id);
         public Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id);
+        public Task<IEnumerable<PropertyListing>> GetListingsByClient(string userId, string clientId);
     }
 }

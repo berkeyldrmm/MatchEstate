@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,8 @@ namespace DataAccessLayer.Migrations
                     NameSurname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Tasks = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IncomeExpenses = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastActiveDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsOnline = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -54,16 +56,17 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyStatus",
+                name: "PropertyStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RgbColorForStatistics = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyStatus", x => x.Id);
+                    table.PrimaryKey("PK_PropertyStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,7 +74,8 @@ namespace DataAccessLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    PropertyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    PropertyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RgbColorForStatistics = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,55 +210,6 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyListings",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PropertyTypeId = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Commission = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Earning = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
-                    SoldDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PropertyStatusId = table.Column<int>(type: "int", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Neighbourhood = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PropertyListings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PropertyListings_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PropertyListings_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PropertyListings_PropertyStatus_PropertyStatusId",
-                        column: x => x.PropertyStatusId,
-                        principalTable: "PropertyStatus",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PropertyListings_PropertyTypes_PropertyTypeId",
-                        column: x => x.PropertyTypeId,
-                        principalTable: "PropertyTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PropertyRequests",
                 columns: table => new
                 {
@@ -268,9 +223,11 @@ namespace DataAccessLayer.Migrations
                     District = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PropertyTypeId = table.Column<int>(type: "int", nullable: false),
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DealStatus = table.Column<bool>(type: "bit", nullable: false),
+                    DealDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PropertyStatusId = table.Column<int>(type: "int", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Details = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -287,13 +244,68 @@ namespace DataAccessLayer.Migrations
                         principalTable: "Clients",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PropertyRequests_PropertyStatus_PropertyStatusId",
+                        name: "FK_PropertyRequests_PropertyStatuses_PropertyStatusId",
                         column: x => x.PropertyStatusId,
-                        principalTable: "PropertyStatus",
+                        principalTable: "PropertyStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PropertyRequests_PropertyTypes_PropertyTypeId",
+                        column: x => x.PropertyTypeId,
+                        principalTable: "PropertyTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PropertyListings",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PropertyTypeId = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Commission = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Earning = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DealStatus = table.Column<bool>(type: "bit", nullable: false),
+                    DealDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PropertyStatusId = table.Column<int>(type: "int", nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Neighbourhood = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PropertyRequestId = table.Column<string>(type: "nvarchar(50)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyListings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PropertyListings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PropertyListings_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PropertyListings_PropertyRequests_PropertyRequestId",
+                        column: x => x.PropertyRequestId,
+                        principalTable: "PropertyRequests",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PropertyListings_PropertyStatuses_PropertyStatusId",
+                        column: x => x.PropertyStatusId,
+                        principalTable: "PropertyStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PropertyListings_PropertyTypes_PropertyTypeId",
                         column: x => x.PropertyTypeId,
                         principalTable: "PropertyTypes",
                         principalColumn: "Id",
@@ -525,6 +537,13 @@ namespace DataAccessLayer.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PropertyListings_PropertyRequestId",
+                table: "PropertyListings",
+                column: "PropertyRequestId",
+                unique: true,
+                filter: "[PropertyRequestId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PropertyListings_PropertyStatusId",
                 table: "PropertyListings",
                 column: "PropertyStatusId");
@@ -597,9 +616,6 @@ namespace DataAccessLayer.Migrations
                 name: "Lands");
 
             migrationBuilder.DropTable(
-                name: "PropertyRequests");
-
-            migrationBuilder.DropTable(
                 name: "Shops");
 
             migrationBuilder.DropTable(
@@ -609,10 +625,13 @@ namespace DataAccessLayer.Migrations
                 name: "PropertyListings");
 
             migrationBuilder.DropTable(
+                name: "PropertyRequests");
+
+            migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "PropertyStatus");
+                name: "PropertyStatuses");
 
             migrationBuilder.DropTable(
                 name: "PropertyTypes");

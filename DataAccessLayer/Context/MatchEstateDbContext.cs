@@ -109,7 +109,8 @@ namespace DataAccessLayer.Context
 
                 entity.HasOne(l => l.PropertyRequest)
                 .WithOne(r => r.PropertyListing)
-                .HasForeignKey<PropertyListing>(l => l.PropertyRequestId);
+                .HasForeignKey<PropertyListing>(l => l.PropertyRequestId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             });
 

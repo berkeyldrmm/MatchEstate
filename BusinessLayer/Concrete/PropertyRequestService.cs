@@ -35,7 +35,12 @@ namespace BusinessLayer.Concrete
         public void DeleteRange(string userId, IEnumerable<string> Ids)
         {
             var items = _reqeustRepository.GetRange(userId, Ids);
-            _reqeustRepository.DeleteRange(items);
+            this.DeleteRange(items);
+        }
+
+        public void DeleteRange(IEnumerable<PropertyRequest> requests)
+        {
+            _reqeustRepository.DeleteRange(requests);
         }
 
         public Task<IEnumerable<PropertyRequest>> GetAll()
@@ -203,6 +208,11 @@ namespace BusinessLayer.Concrete
         public async Task<IEnumerable<PropertyRequest>> GetRequestsNotDeal(string userId)
         {
             return await _reqeustRepository.GetRequestsNotDeal(userId);
+        }
+
+        public async Task<IEnumerable<PropertyRequest>> GetRequestsByClient(string userId, string clientId)
+        {
+            return await _reqeustRepository.GetRequestsByClient(userId, clientId);
         }
     }
 }

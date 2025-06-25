@@ -87,6 +87,7 @@
 </style>
 
 <form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="AddListing" method="post">
+    @Html.AntiForgeryToken()
     <h1>Adding Listing</h1>
     <div class="form-group">
         <div class="wrapper">

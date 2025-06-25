@@ -50,9 +50,9 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
         return await PropertyType.FirstOrDefaultAsync(i => i.Id == id);
     }
 
-    public IEnumerable<PropertyListing> GetRange(IEnumerable<string> Ids)
+    public IEnumerable<PropertyListing> GetRange(string userId, IEnumerable<string> Ids)
     {
-        return Entity.Where(listing => Ids.Contains(listing.Id)).ToList();
+        return EntityOfUser(userId).Where(listing => Ids.Contains(listing.Id)).ToList();
     }
 
     public async Task<bool> FinalizeListing(string userId, string id, string earning, string requestId)
@@ -151,7 +151,11 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
 
     public async Task<List<PropertyListingCardDto>> GetListingsForRequest(string userId, List<Expression<Func<PropertyListing, bool>>> expressions)
     {
-        IQueryable<PropertyListing> query = EntityOfUser(userId).Include(i => i.Client).Include(i => i.Shop).Include(i => i.Apartment).Include(i => i.PropertyType);
+        IQueryable<PropertyListing> query = EntityOfUser(userId)
+            .Include(i => i.Client)
+            .Include(i => i.Shop)
+            .Include(i => i.Apartment)
+            .Include(i => i.PropertyType);
         
         foreach (var expression in expressions)
         {
@@ -362,5 +366,10 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
         }
 
         return dto;
+    }
+
+    public async Task<IEnumerable<PropertyListing>> GetListingsByClient(string userId, string clientId)
+    {
+        return await EntityOfUser(userId).Where(l => l.ClientId == clientId).ToListAsync();
     }
 }

@@ -133,12 +133,6 @@ namespace DataAccessLayer.Concrete
                 PropertyType = r.PropertyType.PropertyName
             }).ToListAsync();
         }
-
-        public int GetRequestCount(string userId)
-        {
-            return EntityOfUser(userId).Count();
-        }
-
         public async Task<PropertyRequestDetailDto> GetRequestDetail(string userId, string id)
         {
             return await EntityOfUser(userId).Select(r => new PropertyRequestDetailDto
@@ -188,6 +182,11 @@ namespace DataAccessLayer.Concrete
         public async Task<IEnumerable<PropertyRequest>> GetRequestsNotDeal(string userId)
         {
             return await EntityOfUser(userId).Include(r => r.Client).Include(r => r.PropertyType).Where(r => !r.DealStatus).ToListAsync();
+        }
+
+        public async Task<IEnumerable<PropertyRequest>> GetRequestsByClient(string userId, string clientId)
+        {
+            return await EntityOfUser(userId).Where(r => r.ClientId == clientId).ToListAsync();
         }
     }
 }

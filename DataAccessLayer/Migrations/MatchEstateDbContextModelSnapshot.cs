@@ -796,7 +796,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("EntityLayer.Entities.PropertyRequest", "PropertyRequest")
                         .WithOne("PropertyListing")
-                        .HasForeignKey("EntityLayer.Entities.PropertyListing", "PropertyRequestId");
+                        .HasForeignKey("EntityLayer.Entities.PropertyListing", "PropertyRequestId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("EntityLayer.Entities.PropertyStatus", "PropertyStatus")
                         .WithMany()

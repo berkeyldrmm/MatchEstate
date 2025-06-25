@@ -26,10 +26,15 @@ namespace BusinessLayer.Concrete
             _unitOfWork = unitOfWork;
         }
 
-        public void DeleteRange(IEnumerable<string> Ids)
+        public void DeleteRange(string userId, IEnumerable<string> Ids)
         {
-            var items = _listingRepository.GetRange(Ids);
-            _listingRepository.DeleteRange(items);
+            var items = _listingRepository.GetRange(userId, Ids);
+            this.DeleteRange(items);
+        }
+
+        public void DeleteRange(IEnumerable<PropertyListing> listings)
+        {
+            _listingRepository.DeleteRange(listings);
         }
 
         public Task<IEnumerable<PropertyListing>> GetAll()
@@ -187,6 +192,11 @@ namespace BusinessLayer.Concrete
         public async Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id)
         {
             return await _listingRepository.GetListingDetail(userId, id);
+        }
+
+        public async Task<IEnumerable<PropertyListing>> GetListingsByClient(string userId, string clientId)
+        {
+            return await _listingRepository.GetListingsByClient(userId, clientId);
         }
     }
 }

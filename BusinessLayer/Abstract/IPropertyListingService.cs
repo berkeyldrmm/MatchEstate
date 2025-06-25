@@ -13,7 +13,8 @@ namespace BusinessLayer.Abstract
         public Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId);
         public Task<PropertyListing> GetWithClient(string userId, string id);
         public Task<PropertyType> GetPropertyType(int id);
-        void DeleteRange(IEnumerable<string> Ids);
+        void DeleteRange(string userId, IEnumerable<string> Ids);
+        void DeleteRange(IEnumerable<PropertyListing> listings);
         public Task<bool> FinalizeListing(string userId, string id, string earning, string requestId);
         public object GetCountsOfListingTypes(string userId);
         public object GetForSaleOrRent(string userId);
@@ -22,5 +23,6 @@ namespace BusinessLayer.Abstract
         public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO);
         public UpdateListingDto? GetListingForUpdate(string userId, string id);
         public Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id);
+        public Task<IEnumerable<PropertyListing>> GetListingsByClient(string userId, string clientId);
     }
 }

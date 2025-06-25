@@ -24,6 +24,7 @@ builder.Services.DependenciesContainer();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerDevelopment"]));
 builder.Services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
+builder.Services.AddAntiforgery();
 
 builder.Services.AddAuthentication(options =>
 {

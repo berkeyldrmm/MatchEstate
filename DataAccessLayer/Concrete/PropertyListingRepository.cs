@@ -87,15 +87,6 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
         
     }
 
-    public object GetForSaleOrRent(string userId)
-    {
-        return new
-        {
-            //ForSale = EntityOfUser(userId).Where(i => i.PropertyStatusId == "For Sale").Count(),
-            //ForRent = EntityOfUser(userId).Where(i => i.PropertyStatusId == "For Rent").Count()
-        };
-    }
-
     public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, List<Expression<Func<PropertyListing, bool>>> expressions, string sort, int pageNumber, int pageSize)
     {
         IQueryable<PropertyListing> query = EntityOfUser(userId).Include(i => i.Client).Include(i => i.PropertyType);
@@ -226,6 +217,7 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
                     Commission = l.Commission.ToString(),
                     DealStatus = l.DealStatus,
                     Earning = l.Earning.ToString(),
+                    ImageBase64 = l.ImageBase64,
                     AgeOfBuilding = l.Shop.AgeOfBuilding,
                     BlockNumber = l.Shop.BlockNumber,
                     Dues = l.Shop.Dues.ToString(),
@@ -262,6 +254,7 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
                     Commission = l.Commission.ToString(),
                     Earning = l.Earning.ToString(),
                     DealStatus = l.DealStatus,
+                    ImageBase64 = l.ImageBase64,
                     BlockNumber = l.Land.BlockNumber,
                     LandShareEligibity = l.Land.LandShareEligibility,
                     ParselNumber = l.Land.ParselNumber,
@@ -289,6 +282,7 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
                     Commission = l.Commission.ToString(),
                     Earning = l.Earning.ToString(),
                     DealStatus = l.DealStatus,
+                    ImageBase64 = l.ImageBase64,
                     BlockNumber = l.CommercialUnit.BlockNumber,
                     ParselNumber = l.CommercialUnit.ParselNumber,
                     SquareMetersize = l.CommercialUnit.SquareMeterSize,
@@ -313,6 +307,7 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
                     Commission = l.Commission.ToString(),
                     Earning = l.Earning.ToString(),
                     DealStatus = l.DealStatus,
+                    ImageBase64 = l.ImageBase64,
                     BlockNumber = l.Farmland.BlockNumber,
                     ParselNumber = l.Farmland.ParselNumber,
                     PricePerSquareMetersize = l.Farmland.PricePerSquareMeter.ToString(),
@@ -340,6 +335,7 @@ public class PropertyListingRepository : GenericRepository<PropertyListing, stri
                     Earning = l.Earning.ToString(),
                     DealStatus = l.DealStatus,
                     Details = l.Details,
+                    ImageBase64 = l.ImageBase64,
                     AgeOfBuilding = l.Apartment.AgeOfBuilding,
                     BlockNumber = l.Apartment.BlockNumber,
                     Dues = l.Apartment.Dues.ToString(),

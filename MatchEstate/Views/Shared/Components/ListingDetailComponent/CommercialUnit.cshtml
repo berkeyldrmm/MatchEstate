@@ -1,19 +1,19 @@
 ﻿@using Shared.Dtos.PropertyListing.Detail
 @model CommercialUnitListingDetailDto
 
-<tr>
-    <td scope="row">Square Metersize </td>
-    <td>@Model.SquareMetersize m2</td>
-</tr>
-<tr>
-    <td scope="row">Block Number </td>
-    <td>@Model.BlockNumber</td>
-</tr>
-<tr>
-    <td scope="row">Parsel Number </td>
-    <td>@Model.ParselNumber</td>
-</tr>
-<tr>
-    <td scope="row">Price per Metersize </td>
-    <td>@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></td>
-</tr>
+<li class="row">
+    <strong class="col-5">Square Metersize </strong>|
+    <span class="col-6">@Model.SquareMetersize m2</span>
+</li>
+<li class="row">
+    <strong class="col-5">Block Number </strong>|
+    <span class="col-6">@Model.BlockNumber</span>
+</li>
+<li class="row">
+    <strong class="col-5">Parsel Number </strong>|
+    <span class="col-6">@Model.ParselNumber</span>
+</li>
+<li class="row">
+    <strong class="col-5">Price per Metersize </strong>|
+    <span class="col-6">@Model.PricePerSquareMetersize <i class="fa fa-dollar"></i></span>
+</li>

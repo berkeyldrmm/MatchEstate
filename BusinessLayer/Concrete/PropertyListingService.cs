@@ -97,11 +97,6 @@ namespace BusinessLayer.Concrete
             return _listingRepository.GetCountsOfListingTypes(userId);
         }
 
-        public object GetForSaleOrRent(string userId)
-        {
-            return _listingRepository.GetForSaleOrRent(userId);
-        }
-
         public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO)
         {
             var expressions = new List<Expression<Func<PropertyListing, bool>>>();

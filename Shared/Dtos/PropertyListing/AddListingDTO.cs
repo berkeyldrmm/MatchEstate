@@ -45,5 +45,6 @@ namespace Shared.Dtos.PropertyListing
         public decimal Price { get; set; }
         public string? Commission { get; set; } = string.Empty;
         public string? Details { get; set; } = string.Empty;
+        public string? ImageBase64 { get; set; } = string.Empty;
     }
 }

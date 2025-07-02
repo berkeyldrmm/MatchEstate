@@ -2,118 +2,85 @@
 @model PropertyRequestDetailDto
 
 <style>
-    .container{
-        font-size: 1.1em;
-        color: #000000;
-        width: 65%;
+    h4 {
+        margin-right: 25px;
     }
 
-    .col-6{
-        display:flex;
-        align-items:center;
-        justify-content:end;
+    ul {
+        font-size: 14px;
     }
 
-    .row > .col-6:first-child{
-        justify-content: end;
-    }
-
-    .row > .col-6:last-child {
-        border-left:1px solid gray;
-        justify-content:start;
-    }
-
-    .row {
-        padding: 3px;
-        border-bottom: 1px solid gray;
-    }
-
-    .pt-4{
-        padding:0;
-        margin:0;
-        box-sizing:border-box;
-    }
-
-    footer .row{
-        padding:0;
-        border:none;
+    li {
+        padding: 5px;
     }
 </style>
 
-<div class="container my-5">
-    <div class="text-center">
-        <h3 class="display-5 fw-bold">@Model.Title</h3>
-    </div>
+<div class="container my-5 w-50" style="margin-left:50px; margin-top:50px;">
+    <h3 class="mb-3">@Model.Title</h3>
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h5 class="card-title text-center mb-4">Request Details</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Client Name Surname</th>
-                            <td>@Model.ClientNameSurname</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Client Email Address</th>
-                            <td>@Model.ClientEmailAddress</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Property Type</th>
-                            <td>@Model.PropertyType</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Property Status</th>
-                            <td>@Model.PropertyStatus</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">City</th>
-                            <td>@Model.City</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Districts</th>
-                            <td>@Model.Districts</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Price Range</th>
-                            <td>@Model.MinPrice <i class="fa fa-dollar"></i> - @Model.MaxPrice <i class="fa fa-dollar"></i></td>
-                        </tr>
-                        @if(Model.PropertyTypeId == 1 || Model.PropertyTypeId == 5)
-                        {
-                            <tr>
-                                <th scope="row" class="text-nowrap">Number of Rooms</th>
-                                <td>@Model.NumberOfRooms</td>
-                            </tr>
-                        }
-                        <tr>
-                            <th scope="row" class="text-nowrap">Deal Status</th>
-                            <td>@(Model.Status ? "Finalized" : "Still looking for property")</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Added Date</th>
-                            <td>@Model.AddedDate</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div>
+        <div class="info-table">
+            <ul class="d-grid">
+                <li class="row">
+                    <strong class="col-5">Client Name Surname</strong>|
+                    <span class="col-6">@Model.ClientNameSurname</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">Client Phone Number</strong>|
+                    <span class="col-6">@Model.ClientPhoneNumber</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">Client Email Address</strong>|
+                    <span class="col-6">@Model.ClientEmailAddress</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">Property Type</strong>|
+                    <span class="col-6">@Model.PropertyType</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">Property Status</strong>|
+                    <span class="col-6">@Model.PropertyStatus</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">City</strong>|
+                    <span class="col-6">@Model.City</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">Districts</strong>|
+                    <span class="col-6">@Model.Districts</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">Price Range</strong>|
+                    <span class="col-6">@Model.MinPrice <i class="fa fa-dollar"></i> - @Model.MaxPrice <i class="fa fa-dollar"></i></span>
+                </li>
+                @if(Model.PropertyTypeId == 1 || Model.PropertyTypeId == 5)
+                {
+                    <li class="row">
+                        <strong class="col-5">Number of Rooms</strong>|
+                        <span class="col-6">@Model.NumberOfRooms</span>
+                    </li>
+                }
+                <li class="row">
+                    <strong class="col-5">Deal Status</strong>|
+                    <span class="col-6">@(Model.Status ? "Finalized" : "Still looking for property")</span>
+                </li>
+                <li class="row">
+                    <strong class="col-5">Added Date</strong>|
+                    <span class="col-6">@Model.AddedDate</span>
+                </li>
+
+            </ul>
         </div>
     </div>
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h5 class="card-title">Details</h5>
-            <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
-        </div>
+    <div class="main-content mt-3">
+        <h4>Details</h4>
+        <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
     </div>
-
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h3 class="card-title">Suitable Listings</h3>
-            <div>
-                @await Component.InvokeAsync("GetListingsOfRequestComponent", new { requestId = Model.Id })
-            </div>
-        </div>
+    <hr style="margin-top:50px;" />
+    <h3 class="card-title" style="margin-top:50px;">Suitable Listings</h3>
+    <div>
+        @await Component.InvokeAsync("GetListingsOfRequestComponent", new { requestId = Model.Id })
     </div>
 </div>
 

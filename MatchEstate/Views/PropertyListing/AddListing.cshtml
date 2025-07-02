@@ -84,6 +84,106 @@
         display:none;
     }
 
+    .file-upload-btn {
+        width: 100%;
+        margin: 0;
+        color: #fff;
+        background: #4CB9E7;
+        border: none;
+        padding: 4px;
+        border-radius: 4px;
+        transition: all .2s ease;
+        outline: none;
+    }
+
+        .file-upload-btn:hover {
+            background: #4CB9E7;
+            color: #ffffff;
+            transition: all .2s ease;
+            cursor: pointer;
+        }
+
+        .file-upload-btn:active {
+            border: 0;
+            transition: all .2s ease;
+        }
+
+    .file-upload-content {
+        display: none;
+        text-align: center;
+    }
+
+    .file-upload-input {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .image-upload-wrap {
+        margin-top: 20px;
+        border: 4px dashed #4CB9E7;
+        position: relative;
+    }
+
+        /* .image-dropping,
+        .image-upload-wrap:hover {
+            background-color: #0069d9;
+            border: 4px dashed #ffffff;
+        } */
+
+    .image-title-wrap {
+        padding: 0 15px 15px 15px;
+        color: #222;
+    }
+
+    .drag-text {
+        text-align: center;
+    }
+
+        .drag-text h3 {
+            font-weight: 100;
+            color: #4CB9E7;
+            padding: 60px 0;
+        }
+
+    .file-upload-image {
+        max-height: 200px;
+        max-width: 200px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .remove-image {
+        width: 200px;
+        margin: 0;
+        color: #fff;
+        background: #cd4535;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        border-bottom: 4px solid #b02818;
+        transition: all .2s ease;
+        outline: none;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+        .remove-image:hover {
+            background: #c13b2a;
+            color: #ffffff;
+            transition: all .2s ease;
+            cursor: pointer;
+        }
+
+        .remove-image:active {
+            border: 0;
+            transition: all .2s ease;
+        }
 </style>
 
 <form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="AddListing" method="post">
@@ -337,9 +437,6 @@
             <span class="input-group-text"><i class="fa fa-dollar"></i></span>
         </div>
     </div>
-    <div>
-        Price per square metersize = <span id="pricePerMetersize"></span>
-    </div>
     @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#4CB9E7" })
     <div class="form-group">
         <label>Commission Fee</label>
@@ -354,6 +451,25 @@
         <textarea asp-for="Details" class="form-control" placeholder="Details..."></textarea>
     </div>
     <div class="form-group">
+        <div class="file-upload w-50">
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+            <div class="image-upload-wrap">
+                <input class="file-upload-input" id="image-upload" type='file' onchange="readURL(this);" accept="image/*" />
+                <div class="drag-text">
+                    <h3>Drag and drop image for listing</h3>
+                </div>
+            </div>
+            <div class="file-upload-content">
+                <img class="file-upload-image" src="#" alt="your image" />
+                <div class="image-title-wrap">
+                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                </div>
+            </div>
+            <input asp-for="ImageBase64" id="imageBase64" type="hidden" value="" />
+        </div>
+    </div>
+    <div class="form-group mt-5">
         <input type="submit" class="form-control btn w-25" style="background-color:#4CB9E7;color:#ffffff;" value="Save listing" />
     </div>
 
@@ -455,5 +571,54 @@
         sendNotification("error", "@Html.Raw(ViewBag.error)");
     }
 
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          $('.image-upload-wrap').hide();
+
+          $('.file-upload-image').attr('src', e.target.result);
+          $('.file-upload-content').show();
+
+          $('.image-title').html(input.files[0].name);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+
+      } else {
+        removeUpload();
+      }
+    }
+
+    async function imageToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+          reader.readAsDataURL(file);
+        });
+    }
+
+    function removeUpload() {
+      $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+      $('.file-upload-content').hide();
+      $('.image-upload-wrap').show();
+    }
+    $('.image-upload-wrap').bind('dragover', function () {
+        $('.image-upload-wrap').addClass('image-dropping');
+      });
+      $('.image-upload-wrap').bind('dragleave', function () {
+        $('.image-upload-wrap').removeClass('image-dropping');
+    });
+
+    $('#image-upload').on('change', async () => {
+      const fileInput = document.getElementById("image-upload");
+      const file = fileInput.files[0];
+      var base64 = await imageToBase64(file);
+      $('#imageBase64').val(base64);
+      console.log(base64);
+    });
 </script>
 <script src="~/lib/jquery-selectize/selectize.min.js"></script>

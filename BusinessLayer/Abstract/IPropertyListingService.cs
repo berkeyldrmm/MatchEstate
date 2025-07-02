@@ -17,7 +17,6 @@ namespace BusinessLayer.Abstract
         void DeleteRange(IEnumerable<PropertyListing> listings);
         public Task<bool> FinalizeListing(string userId, string id, string earning, string requestId);
         public object GetCountsOfListingTypes(string userId);
-        public object GetForSaleOrRent(string userId);
         public Task<List<PropertyListingCardDto>> GetListingsForRequest(string userId, PropertyRequest request);
         public Task<List<(string listingTitle, decimal earning)>> GetEarningsOfMonth(string userId);
         public (IEnumerable<ListingPageDTO>, int) GetByFilters(string userId, ListingGetByFiltersDTO getByFiltersDTO);

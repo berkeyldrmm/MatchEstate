@@ -17,7 +17,8 @@ namespace BusinessLayer.Mapping
                 UserId = userId,
                 City = dto.City,
                 District = dto.District,
-                Neighbourhood = dto.Neighbourhood 
+                Neighbourhood = dto.Neighbourhood,
+                ImageBase64 = dto.ImageBase64
             };
             listing.PropertyTypeId = Convert.ToInt32(dto.PropertyTypeId);
             if (dto.RadioForClient == "1")

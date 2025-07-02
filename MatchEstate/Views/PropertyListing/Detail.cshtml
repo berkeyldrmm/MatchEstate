@@ -1,160 +1,96 @@
-﻿@using Shared.Dtos.Abstractions
+﻿﻿@using Shared.Dtos.Abstractions
 @model IPropertyListingDetailDto
 
 <style>
-    .container{
-        font-size:1.1em;
-        color: #000000;
-        width: 65%;
+    h4{
+        margin-right:25px;
     }
 
-    .col-6{
-        display:flex;
-        align-items:center;
-        justify-content:end;
+    ul.d-grid{
+        font-size:14px;
     }
 
-    .row > .col-6:first-child{
-        justify-content: end;
-    }
-
-    .row > .col-6:last-child {
-        border-left:1px solid gray;
-        justify-content:start;
-    }
-
-    .row {
-        padding: 3px;
-        border-bottom: 1px solid gray;
-    }
-
-    .pt-4{
-        padding:0;
-        margin:0;
-        box-sizing:border-box;
-    }
-
-    footer .row{
-        padding:0;
-        border:none;
+    li{
+        padding:5px;
     }
 </style>
-<div class="container my-5">
-    <div class="text-center">
-        <h3 class="display-5 fw-bold">@Model.Title</h3>
-    </div>
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h5 class="card-title text-center mb-4">Listing Details</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Client Name Surname</th>
-                            <td>@Model.ClientNameSurname</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Client Phone Number</th>
-                            <td>@Model.ClientPhoneNumber</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Client Email Address</th>
-                            <td>@Model.ClientEmailAddress</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Property Type</th>
-                            <td>@Model.PropertyType</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Property Status</th>
-                            <td>@Model.PropertyStatus</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Address</th>
-                            <td>@Model.Address</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Price</th>
-                            <td>@Model.Price <i class="fa fa-dollar"></i></td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Commission</th>
-                            <td>@Model.Commission <i class="fa fa-dollar"></i></td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-nowrap">Status</th>
-                            <td>@(Model.DealStatus ? "Finalized" : "Waiting for client")</td>
-                        </tr>
+<div class="single-property section" style="margin-top:50px;margin-left:50px">
+    <div class="container">
+        <h3 class="mb-3">@Model.Title</h3>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="main-image text-center">
+                    <img src="@(Model.ImageBase64 ?? "/img/no-image2.png")" alt="Property Listing Image" width="700" />
+                </div>
+                <div class="main-content mt-3">
+                    <h4>Details</h4>
+                    <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
+                </div>
+                <hr style="margin-top:50px;" />
+                <h3 class="card-title" style="margin-top:50px;">Suitable Requests</h3>
+                <div>
+                    @await Component.InvokeAsync("GetRequestsOfListingComponent", new { listingId = Model.Id })
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="info-table">
+                    <ul class="d-grid">
+                        <li class="row">
+                            <strong class="col-5">Client Name Surname</strong>|
+                            <span class="col-6">@Model.ClientNameSurname</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Client Phone Number</strong>|
+                            <span class="col-6">@Model.ClientPhoneNumber</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Client Email Address</strong>|
+                            <span class="col-6">@Model.ClientEmailAddress</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Property Type</strong>|
+                            <span class="col-6">@Model.PropertyType</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Property Status</strong>|
+                            <span class="col-6">@Model.PropertyStatus</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Address</strong>|
+                            <span class="col-6">@Model.Address</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Price</strong>|
+                            <span class="col-6">@Model.Price</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Commission</strong>|
+                            <span class="col-6">@Model.Commission</span>
+                        </li>
+                        <li class="row">
+                            <strong class="col-5">Status</strong>|
+                            <span class="col-6">@(Model.DealStatus ? "Finalized" : "Waiting for client")</span>
+                        </li>
                         @if (Model.DealStatus)
                         {
-                            <tr>
-                                <th scope="row" class="text-nowrap">Earning</th>
-                                <td>@Model.Earning <i class="fa fa-dollar"></i></td>
-                            </tr>
+                            <li class="row">
+                                <strong class="col-5">Earning</strong>|
+                                <span class="col-6">@Model.Earning</span>
+                            </li>
                         }
-                        <tr>
-                            <th scope="row" class="text-nowrap">Added Date</th>
-                            <td>@Model.AddedDate</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h5 class="card-title">Property Details</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <tbody>
-
+                        <li class="row">
+                            <strong class="col-5">Added Date</strong>|
+                            <span class="col-6">@Model.AddedDate</span>
+                        </li>
                         @await Component.InvokeAsync("ListingDetailComponent", new { dto = Model })
-                        
-                        @*  @if (Model.PropertyTypeId == 1)
-                        {
-                            <partial name="../PartialViews/Shop" model="@(Model as ShopListingDetailDto)"></partial>
-                        }
-                        else if (Model.PropertyTypeId == 2)
-                        {
-                            <partial name="../PartialViews/Land" model="@(Model as LandListingDetailDto)"></partial>
-                        }
-                        else if (Model.PropertyTypeId == 3)
-                        {
-                            <partial name="../PartialViews/CommercialUnit" model=@(Model as CommercialUnitListingDetailDto)></partial>
-                        }
-                        else if (Model.PropertyTypeId == 4)
-                        {
-                            <partial name="../PartialViews/Farmland" model=@(Model as FarmlandListingDetailDto)></partial>
-                        }
-                        else if (Model.PropertyTypeId == 5)
-                        {
-                            <partial name="../PartialViews/Apartment" model=@(Model as ApartmentListingDetailDto)></partial>
-                        } *@
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h5 class="card-title">Additional Details</h5>
-            <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
-        </div>
-    </div>
-
-    <div class="card shadow-sm mt-4">
-        <div class="card-body">
-            <h3 class="card-title">Suitable Requests</h3>
-            <div>
-                @await Component.InvokeAsync("GetRequestsOfListingComponent", new { listingId = Model.Id })
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <script>
     $("#navListing").addClass("active");
-</script>
+</script> 

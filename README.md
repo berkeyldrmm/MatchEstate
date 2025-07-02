@@ -72,10 +72,10 @@ MatchEstate/
    ## Application is live
    You can try the application by visiting following link.
    
-   https://berkeyldrmm-001-site1.jtempurl.com/
+   https://berkeyld-001-site1.ntempurl.com/
    
    Demo Account:
    
-   Email: berke.yildirimm44@gmail.com
+   Email: berke.yildirim44@gmail.com
    
-   Password: Berkeyld34
+   Password: Berkeyld.44

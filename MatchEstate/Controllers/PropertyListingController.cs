@@ -14,14 +14,12 @@ namespace MatchEstate.Controllers
         private readonly IPropertyListingService _listingService;
         private readonly IPropertyRequestService _requestService;
         private readonly IClientService _clientService;
-        private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<AddListingDTO> _addListingDtoValidator;
         private readonly IValidator<UpdateListingDto> _updateListingDtoValidator;
         private readonly IValidator<FinalizeListingDto> _finalizeListingDtoValidator;
         public PropertyListingController(IPropertyListingService listingService,
             IClientService clientService,
-            IPropertyService propertyService,
             IUnitOfWork unitOfWork,
             IValidator<AddListingDTO> listingModelValidator,
             IValidator<UpdateListingDto> updateListingDtoValidator,
@@ -30,7 +28,6 @@ namespace MatchEstate.Controllers
         {
             _listingService = listingService;
             _clientService = clientService;
-            _propertyService = propertyService;
             _unitOfWork = unitOfWork;
             _addListingDtoValidator = listingModelValidator;
             _updateListingDtoValidator = updateListingDtoValidator;
@@ -57,7 +54,7 @@ namespace MatchEstate.Controllers
             _listingService.DeleteRange(UserId, listingIds);
             var result = await _unitOfWork.SaveChanges();
             var response = new BaseResponse();
-            
+
             if (result <= 0)
             {
                 response.Success = false;
@@ -66,7 +63,7 @@ namespace MatchEstate.Controllers
 
             response.Success = true;
             response.Message = "Selected listings have been deleted successfully.";
-            
+
             return Ok(response);
         }
 

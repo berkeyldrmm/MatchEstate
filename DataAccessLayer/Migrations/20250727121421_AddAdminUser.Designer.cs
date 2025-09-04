@@ -4,6 +4,7 @@ using DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MatchEstateDbContext))]
-    partial class MatchEstateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250727121421_AddAdminUser")]
+    partial class AddAdminUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -423,20 +426,6 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PropertyStatuses", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "For Sale",
-                            RgbColorForStatistics = "rgba(76, 185, 231, .7)"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "For Rent",
-                            RgbColorForStatistics = "rgba(76, 185, 231, .5)"
-                        });
                 });
 
             modelBuilder.Entity("EntityLayer.Entities.PropertyType", b =>
@@ -456,38 +445,6 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PropertyTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            PropertyName = "Shop",
-                            RgbColorForStatistics = "rgba(76, 185, 231, .9)"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            PropertyName = "Land",
-                            RgbColorForStatistics = "rgba(76, 185, 231, .7)"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            PropertyName = "Commercial Unit",
-                            RgbColorForStatistics = "rgba(76, 185, 231, .5)"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            PropertyName = "Apartment",
-                            RgbColorForStatistics = "rgba(76, 185, 231, .3)"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            PropertyName = "Farmland",
-                            RgbColorForStatistics = "rgba(76, 185, 231, .1)"
-                        });
                 });
 
             modelBuilder.Entity("EntityLayer.Entities.Role", b =>
@@ -676,9 +633,9 @@ namespace DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "727846b0-e54f-4b51-838f-0d20be6cbe28",
+                            Id = "a3037972-9ce1-4ff7-a564-62faaad7d64e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7eb35cbb-e9fb-4a42-b74b-8b000411f39e",
+                            ConcurrencyStamp = "9296c0b2-1ff6-4c8d-b9bd-3a4e182eb720",
                             Email = "berke.yildirimm44@gmail.com",
                             EmailConfirmed = false,
                             IncomeExpenses = "[]",
@@ -686,10 +643,9 @@ namespace DataAccessLayer.Migrations
                             LockoutEnabled = false,
                             NameSurname = "Berke Yıldırım",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDWdf2SpP2O/n+JpCLmgQApVJdNeFirZ++WUXAuMYnaHpsoI7moRLY3l1ZySYQFsHQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDIFDnrKUNWSiq4TrPwrlWdwjEAedYJvwg1g45yw5BEl0z0NjmyKWk2XcNhEgZZeTw==",
                             PhoneNumber = "5537531375",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4a53e751-815e-42fc-902a-0ea5286f0a4b",
                             Tasks = "[]",
                             TwoFactorEnabled = false,
                             UserName = "adminBerke"

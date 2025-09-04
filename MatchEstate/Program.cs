@@ -1,12 +1,9 @@
-using BusinessLayer.Concrete;
 using BusinessLayer.Validation;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
-using Shared.Dtos;
 using EntityLayer.Entities;
 using FluentValidation;
 using MatchEstate.Middlewares;
-using MatchEstate.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,8 +11,10 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Extensions;
 using RealEstate.Middlewares;
-using System.Security.Claims;
+using Shared.Dtos;
 using Shared.Services;
+using System;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +73,12 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<MatchEstateDbContext>();
+        db.Database.Migrate();
+    }
 }
 
 app.UseStatusCodePagesWithReExecute("/Error/ErrorPage", "?code={0}");

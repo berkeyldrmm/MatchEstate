@@ -10,20 +10,21 @@ using System.Text.RegularExpressions;
 using Shared.Dtos.PropertyListing;
 using Shared.Dtos.PropertyListing.Detail;
 using Shared.Dtos.Abstractions;
+using BusinessLayer.Abstract.Factory;
 
 namespace BusinessLayer.Concrete
 {
     public class PropertyListingService : IPropertyListingService
     {
         private readonly IPropertyListingRepository _listingRepository;
-        private readonly IPropertyService _propertyService;
+        private readonly IPropertyServiceFactory _propertyServiceFactory;
         private readonly IUnitOfWork _unitOfWork;
 
-        public PropertyListingService(IPropertyListingRepository listingRepository, IPropertyService propertyService, IUnitOfWork unitOfWork)
+        public PropertyListingService(IPropertyListingRepository listingRepository, IUnitOfWork unitOfWork, IPropertyServiceFactory propertyServiceFactory)
         {
             _listingRepository = listingRepository;
-            _propertyService = propertyService;
             _unitOfWork = unitOfWork;
+            _propertyServiceFactory = propertyServiceFactory;
         }
 
         public void DeleteRange(string userId, IEnumerable<string> Ids)
@@ -56,7 +57,26 @@ namespace BusinessLayer.Concrete
         {
             var property = ListingMapper.MapToProperty(dto);
 
-            var propertyResult = await _propertyService.AddProperty(property);
+            bool propertyResult = false;
+            switch (property)
+            {
+                case Shop shop:
+                    propertyResult = await _propertyServiceFactory.GetService<Shop>().AddProperty(shop);
+                    break;
+                case Apartment apartment:
+                    propertyResult = await _propertyServiceFactory.GetService<Apartment>().AddProperty(apartment);
+                    break;
+                case Land land:
+                    propertyResult = await _propertyServiceFactory.GetService<Land>().AddProperty(land);
+                    break;
+                case Farmland farmland:
+                    propertyResult = await _propertyServiceFactory.GetService<Farmland>().AddProperty(farmland);
+                    break;
+                case CommercialUnit commercialUnit:
+                    propertyResult = await _propertyServiceFactory.GetService<CommercialUnit>().AddProperty(commercialUnit);
+                    break;
+            }
+
             if (!propertyResult)
                 return false;
 

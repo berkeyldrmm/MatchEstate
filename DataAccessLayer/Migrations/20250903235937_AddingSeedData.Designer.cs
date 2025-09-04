@@ -4,6 +4,7 @@ using DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MatchEstateDbContext))]
-    partial class MatchEstateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250903235937_AddingSeedData")]
+    partial class AddingSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -676,9 +679,9 @@ namespace DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "727846b0-e54f-4b51-838f-0d20be6cbe28",
+                            Id = "bb7833de-220c-4376-b31c-8810bb68ab3c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7eb35cbb-e9fb-4a42-b74b-8b000411f39e",
+                            ConcurrencyStamp = "54c942fb-ab7d-4290-931e-bb2eb0ddbfcd",
                             Email = "berke.yildirimm44@gmail.com",
                             EmailConfirmed = false,
                             IncomeExpenses = "[]",
@@ -686,10 +689,9 @@ namespace DataAccessLayer.Migrations
                             LockoutEnabled = false,
                             NameSurname = "Berke Yıldırım",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDWdf2SpP2O/n+JpCLmgQApVJdNeFirZ++WUXAuMYnaHpsoI7moRLY3l1ZySYQFsHQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEExXlPReVU44e7h/VYTOLLRx680Mjpy6S4hx2ZvtmFfU85maW3XtW3Mi5+PsEEPZiQ==",
                             PhoneNumber = "5537531375",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4a53e751-815e-42fc-902a-0ea5286f0a4b",
                             Tasks = "[]",
                             TwoFactorEnabled = false,
                             UserName = "adminBerke"

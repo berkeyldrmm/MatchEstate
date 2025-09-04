@@ -1,7 +1,11 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Abstract.Factory;
 using BusinessLayer.Concrete;
+using BusinessLayer.Concrete.Factory;
+using BusinessLayer.Concrete.PropertyServices;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using EntityLayer.Entities;
 using Shared;
 
 namespace RealEstate.Extensions
@@ -13,11 +17,17 @@ namespace RealEstate.Extensions
             services.AddScoped<IPropertyListingService, PropertyListingService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IPropertyRequestService, PropertyRequestService>();
-            services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IMatchingService, MatchingService>();
             services.AddScoped<IPropertyStatusService, PropertyStatusService>();
+            services.AddScoped<IPropertyService<Shop>, ShopService>();
+            services.AddScoped<IPropertyService<Apartment>, ApartmentService>();
+            services.AddScoped<IPropertyService<CommercialUnit>, CommercialUnitService>();
+            services.AddScoped<IPropertyService<Farmland>, FarmlandService>();
+            services.AddScoped<IPropertyService<Land>, LandService>();
+            
+            services.AddScoped<IPropertyServiceFactory, PropertyServiceFactory>();
 
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ILandRepository, LandRepository>();

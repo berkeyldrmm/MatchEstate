@@ -22,13 +22,11 @@ namespace BusinessLayer.Concrete
     {
         private readonly IPropertyRequestRepository _reqeustRepository;
         private readonly IClientService _clientService;
-        private readonly IPropertyService _propertyService;
         private readonly IUnitOfWork _unitOfWork;
-        public PropertyRequestService(IPropertyRequestRepository reqeustRepository, IClientService clientService, IUnitOfWork unitOfWork, IPropertyService propertyService)
+        public PropertyRequestService(IPropertyRequestRepository reqeustRepository, IClientService clientService, IUnitOfWork unitOfWork)
         {
             _reqeustRepository = reqeustRepository;
             _clientService = clientService;
-            _propertyService = propertyService;
             _unitOfWork = unitOfWork;
         }
 

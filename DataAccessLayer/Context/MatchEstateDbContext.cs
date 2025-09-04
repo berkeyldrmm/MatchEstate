@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,6 +75,37 @@ namespace DataAccessLayer.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.PropertyName).HasMaxLength(50);
 
+                entity.HasData(
+                    new PropertyType
+                    {
+                        Id = 1,
+                        PropertyName = "Shop",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .9)"
+                    },
+                    new PropertyType
+                    {
+                        Id = 2,
+                        PropertyName = "Land",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .7)"
+                    },
+                    new PropertyType
+                    {
+                        Id = 3,
+                        PropertyName = "Commercial Unit",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .5)"
+                    },
+                    new PropertyType
+                    {
+                        Id = 4,
+                        PropertyName = "Apartment",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .3)"
+                    },
+                    new PropertyType
+                    {
+                        Id = 5,
+                        PropertyName = "Farmland",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .1)"
+                    });
             });
 
             modelBuilder.Entity<PropertyListing>(entity =>
@@ -122,7 +154,7 @@ namespace DataAccessLayer.Context
                 entity.Property(e => e.NameSurname).HasMaxLength(50);
                 entity.Property(e => e.Email).HasMaxLength(50);
                 entity.HasIndex(c => c.PhoneNumber).IsUnique();
-                entity.HasMany(c=>c.Listings)
+                entity.HasMany(c => c.Listings)
                 .WithOne(l => l.Client)
                 .HasForeignKey(l => l.ClientId)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -166,6 +198,21 @@ namespace DataAccessLayer.Context
                 entity.HasMany(u => u.Requests)
                 .WithOne(t => t.User)
                 .HasForeignKey(s => s.UserId);
+
+                var hash = new PasswordHasher<User>();
+
+                entity.HasData(
+                    new User
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserName = "adminBerke",
+                        NormalizedUserName = "ADMIN",
+                        Email = "berke.yildirimm44@gmail.com",
+                        PhoneNumber = "5537531375",
+                        NameSurname = "Berke Yıldırım",
+                        PasswordHash = hash.HashPassword(null, "Qwerty.123"),
+                        SecurityStamp = Guid.NewGuid().ToString("D")
+                    });
             });
 
             modelBuilder.Entity<PropertyStatus>(entity =>
@@ -174,6 +221,19 @@ namespace DataAccessLayer.Context
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 
+                entity.HasData(
+                    new PropertyStatus
+                    {
+                        Id = 1,
+                        Name = "For Sale",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .7)"
+                    },
+                    new PropertyStatus
+                    {
+                        Id = 2,
+                        Name = "For Rent",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .5)"
+                    });
             });
 
             OnModelCreatingPartial(modelBuilder);

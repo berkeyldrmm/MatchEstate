@@ -100,6 +100,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <div id="noRequestDiv" class="d-flex justify-content-center"></div>
                         </div>
                     </div>
                 </div>
@@ -225,7 +226,8 @@
     function showRequests(requests) {
         let html = "";
         if(requests.length == 0){
-            $("tbody").html(`<div class="text-warning text-center">There is no request.</div>`);
+            $("#noRequestDiv").html(`<div class="alert-warning text-center">There is no request.</div>`);
+            $("tbody").html("");
         }
         for (i = 0; i < requests.length; i++) {
             if (requests[i] != null || requests[i] != undefined) {

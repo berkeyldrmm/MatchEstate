@@ -1,7 +1,5 @@
 ﻿using Azure;
 using BusinessLayer.Abstract;
-using BusinessLayer.Concrete;
-using BusinessLayer.Validation;
 using DataAccessLayer.Abstract;
 using Shared.Dtos;
 using EntityLayer.Entities;
@@ -48,11 +46,11 @@ namespace MatchEstate.Controllers
             _statisticsRepository = statisticsRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewBag.title = "Admin Page";
 
-            IEnumerable<AdminPageUserModel> users = _userManager.Users.Select(u => new AdminPageUserModel
+            IEnumerable<AdminPageUserModel> users = await _userManager.Users.Select(u => new AdminPageUserModel
             {
                 Id = u.Id,
                 Email = u.Email,
@@ -60,7 +58,7 @@ namespace MatchEstate.Controllers
                 PhoneNumber = u.PhoneNumber,
                 Activity = u.IsOnline,
                 LastActiveDate = u.LastActiveDate
-            });
+            }).ToListAsync();
 
             IEnumerable<AdminPageUserModel> admins = _userManager.GetUsersInRoleAsync("Admin").Result.Select(u => new AdminPageUserModel
             {
@@ -70,7 +68,7 @@ namespace MatchEstate.Controllers
                 PhoneNumber = u.PhoneNumber,
                 Activity = u.IsOnline,
                 LastActiveDate = u.LastActiveDate
-            });
+            }).ToList();
 
             return View(new AdminUserViewModel { Users = users, Admins = admins });
         }
@@ -164,6 +162,12 @@ namespace MatchEstate.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var roleAddingResult = await _userManager.AddToRoleAsync(user, "User");
+                    if(!roleAddingResult.Succeeded)
+                    {
+                        ViewBag.error = roleAddingResult.Errors.Select(e => e.Description);
+                        return View();
+                    }
                     TempData["success"] = "New user has been added successfully.";
                     return RedirectToAction("Index");
                 }
@@ -201,7 +205,8 @@ namespace MatchEstate.Controllers
                 if (result.Succeeded)
                 {
                     var result2 = await _userManager.AddToRoleAsync(user, "Admin");
-                    if(result2.Succeeded)
+                    var result3 = await _userManager.AddToRoleAsync(user, "User");
+                    if(result2.Succeeded && result3.Succeeded)
                     {
                         TempData["success"] = "New admin has been added successfully.";
                         return RedirectToAction("Index");

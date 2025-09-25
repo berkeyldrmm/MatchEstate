@@ -56,6 +56,8 @@ public static class DatetimeConverter
 
     public static string GetTimeSpan(this DateTime? dateTime)
     {
+        if(dateTime == null)
+            return "";
         var localeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));
         var timespan = localeNow - dateTime;
         var dif = timespan.Value;

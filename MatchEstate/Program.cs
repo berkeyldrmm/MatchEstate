@@ -55,8 +55,8 @@ builder.Services.AddIdentity<User, Role>(x =>
 {
     x.Password.RequireNonAlphanumeric = false;
 })
-    .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider)
-    .AddEntityFrameworkStores<MatchEstateDbContext>();
+.AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider)
+.AddEntityFrameworkStores<MatchEstateDbContext>();
 
 builder.Services.AddAuthorization(options =>
 {

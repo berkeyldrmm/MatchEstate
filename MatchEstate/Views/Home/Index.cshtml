@@ -115,7 +115,7 @@
                 var html="";
                 var tasks = JSON.parse(data.data);
                 if (tasks.length == 0 || tasks == "" || tasks == null) {
-                    html = "<div>There is no task.</div>";
+                    html = "<div class='alert-warning text-center'>There is no task.</div>";
                 }
                 else {
                     tasks.forEach((data) => {

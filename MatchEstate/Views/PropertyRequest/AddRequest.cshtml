@@ -1,5 +1,6 @@
-﻿<link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.min.css" />
+﻿<link href="~/lib/selectize/css/selectize.min.css" rel="stylesheet" />
+<link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+
 <style>
 
     .wrapper {
@@ -213,22 +214,28 @@
         </div>
     </div>
     <hr />
-
-    <div class="form-group">
-        <label>Minimum Price</label>
-        <div class="input-group w-25">
-            <input name="MinPrice" type="number" class="form-control" id="minPrice" />
-            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+    <div class="d-grid">
+        <div class="row">
+            <div class="col-6">
+                <div>
+                    <label>Minimum Price</label>
+                    <div class="input-group">
+                        <input name="MinPrice" type="number" class="form-control" id="minPrice" />
+                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                    </div>
+                </div>
+                <div>
+                    <label>Maximum Price</label>
+                    <div class="input-group">
+                        <input name="MinPrice" type="number" class="form-control" id="maxPrice" />
+                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                    </div>
+                </div>
+            </div>
+            @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#0077b6" })
         </div>
     </div>
-    <div class="form-group">
-        <label>Maximum Price</label>
-        <div class="input-group w-25">
-            <input name="MinPrice" type="number" class="form-control" id="maxPrice" />
-            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
-        </div>
-    </div>
-    @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#0077b6" })
+    
     <div class="form-group">
         <label>Other details</label>
         <textarea name="Details" id="detail" class="form-control" placeholder="Details..."></textarea>
@@ -278,14 +285,6 @@
                     numberOfRooms.push(value.value);
                 }
             });
-
-            // var districts = [];
-            // var districtOptions = $("#selectTown").val();
-            // districtOptions.each((index, value) => {
-            //     if (value.checked) {
-            //         districts.push(value.value);
-            //     }
-            // });
 
             $.post("/propertyrequest/addrequest", {
                 requestTitle: $("input[name='RequestTitle']").val(),
@@ -357,5 +356,5 @@
         }
     }
 </script>
-<script src="~/lib/jquery-selectize/selectize.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js"></script>
+<script src="~/lib/selectize/js/selectize.min.js"></script>
+<script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>

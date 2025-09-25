@@ -117,6 +117,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <div id="noListingDiv" class="d-flex justify-content-center"></div>
                         </div>
                     </div>
                 </div>
@@ -226,9 +227,6 @@
             }
         });
 
-        // $('#select-request').selectize({
-        //     sortField: 'text'
-        // });
     });
 
     function deleteListing() {
@@ -334,7 +332,8 @@
     function showlistings(listings) {
         let html="";
         if(listings.length == 0){
-            $("tbody").html(`<div class='alert-warning text-center'>There is no listings.</div>`);
+            $("#noListingDiv").html(`<div class='alert-warning text-center'>There is no listing.</div>`);
+            $("tbody").html("");
         }
         for (i = 0; i < listings.length; i++) {
             if (listings[i] != null || listings[i] != undefined) {
@@ -375,4 +374,4 @@
         sendNotification("success", message);
     }
 </script>
-<script src="~/lib/jquery-selectize/selectize.min.js"></script>
+@* <script src="~/lib/selectize/js/selectize.min.js"></script> *@

@@ -14,13 +14,9 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\img\IlanGorseller\**" />
-    <Compile Remove="wwwroot\lib\bootstrap\**" />
     <Content Remove="wwwroot\img\IlanGorseller\**" />
-    <Content Remove="wwwroot\lib\bootstrap\**" />
     <EmbeddedResource Remove="wwwroot\img\IlanGorseller\**" />
-    <EmbeddedResource Remove="wwwroot\lib\bootstrap\**" />
     <None Remove="wwwroot\img\IlanGorseller\**" />
-    <None Remove="wwwroot\lib\bootstrap\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,10 +47,6 @@
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
     <ProjectReference Include="..\EntityLayer\EntityLayer.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\chart\" />
   </ItemGroup>
 
 </Project>

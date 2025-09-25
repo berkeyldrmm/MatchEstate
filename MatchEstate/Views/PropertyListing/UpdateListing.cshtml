@@ -1,7 +1,7 @@
 ﻿@using Shared.Dtos.PropertyListing
 @model UpdateListingDto;
 
-<link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
+<link href="~/lib/selectize/css/selectize.min.css" rel="stylesheet" />
 <style>
 
     .wrapper{
@@ -181,9 +181,6 @@
         </div>
 
     </div>
-    <div>
-        Price per square metersize = <span id="pricePerMetersize"></span>
-    </div>
 
     @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#4CB9E7", propertyStatusId = Model.PropertyStatusId })
 
@@ -327,4 +324,4 @@
         sendNotification("error", "@Html.Raw(ViewBag.error)");
     }
 </script>
-<script src="~/lib/jquery-selectize/selectize.min.js"></script>
+<script src="~/lib/selectize/js/selectize.min.js"></script>

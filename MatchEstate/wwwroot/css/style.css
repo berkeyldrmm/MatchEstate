@@ -5,6 +5,16 @@
     --dark: #000000;
 }
 
+body {
+    font-family: "Simonetta", serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+label{
+    margin-bottom:5px;
+}
+
 .back-to-top {
     position: fixed;
     display: none;
@@ -32,7 +42,7 @@
 }
 
 .form-group{
-    margin-top:10px;
+    padding-top:10px;
 }
 
 .btn {
@@ -178,7 +188,6 @@
 
 .content .navbar .navbar-nav .nav-link {
     margin-left: 25px;
-    padding: 12px 0;
     color: var(--dark);
     outline: none;
 }
@@ -290,4 +299,18 @@
 .notification-box ul {
     margin-top:16px;
     list-style-type: none;
+}
+
+.page-item button {
+    background-color: #e9ecef;
+    color: #000;
+
+}
+
+.page-item button:hover{
+    color: #4cb9e7;
+}
+
+.bs-ok-default {
+    color: #0077b6;
 }

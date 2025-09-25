@@ -233,12 +233,37 @@ namespace DataAccessLayer.Context
                         Id = 2,
                         Name = "For Rent",
                         RgbColorForStatistics = "rgba(76, 185, 231, .5)"
+                    },
+                    new PropertyStatus
+                    {
+                        Id = 3,
+                        Name = "Daily Rent",
+                        RgbColorForStatistics = "rgba(76, 185, 231, .5)"
                     });
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.HasData(
+                        new Role
+                        {
+                            Id = "B3F4CA26-0C00-41D3-B595-C3F6CEC3F4C1",
+                            Name = "User",
+                            NormalizedName = "USER",
+                            ConcurrencyStamp = "09E5C58F-F81B-45CC-A9F9-53AF119614F9"
+                        },
+                        new Role
+                        {
+                            Id = "7A903292-EE2C-448F-8F65-360C0B47262D",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN",
+                            ConcurrencyStamp = "DA95C9AF-5BC9-4EB6-A0CF-55C7280D9A24"
+                        }
+                    );
             });
 
             OnModelCreatingPartial(modelBuilder);
         }
-
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

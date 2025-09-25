@@ -1,7 +1,6 @@
 ﻿@using Shared.Dtos.PropertyListing
 @model AddListingDTO;
-
-<link rel="stylesheet" href="~/lib/bootstrap-selectize/selectize.min.css" />
+<link href="~/lib/selectize/css/selectize.min.css" rel="stylesheet" />
 <style>
 
     .wrapper{
@@ -130,12 +129,6 @@
         position: relative;
     }
 
-        /* .image-dropping,
-        .image-upload-wrap:hover {
-            background-color: #0069d9;
-            border: 4px dashed #ffffff;
-        } */
-
     .image-title-wrap {
         padding: 0 15px 15px 15px;
         color: #222;
@@ -230,7 +223,6 @@
     </div>
     <hr />
     <div class="form-group">
-        <br />
         <label>Listing title</label>
         <input asp-for="ListingTitle" type="text" class="form-control" placeholder="Title">
     </div>
@@ -430,22 +422,26 @@
         </div>
     </div>
     <hr />
-    <div class="form-group">
-        <label>Price</label>
-        <div class="input-group w-25">
-            <input asp-for="Price" type="number" class="form-control" id="price" />
-            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+    <div class="d-grid">
+        <div class="row">
+            <div class="col-4">
+                <label>Price</label>
+                <div class="input-group">
+                    <input asp-for="Price" type="number" placeholder="Price" class="form-control" id="price" />
+                    <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                </div>
+            </div>
+            @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#4CB9E7" })
+            <div class="col-4">
+                <label>Commission Fee</label>
+                <div class="input-group">
+                    <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="commission" />
+                    <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                </div>
+            </div>
         </div>
     </div>
-    @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#4CB9E7" })
-    <div class="form-group">
-        <label>Commission Fee</label>
-        <div class="input-group w-25">
-            <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="commission" />
-            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
-        </div>
-    </div>
-    
+
     <div class="form-group">
         <label>Other Details</label>
         <textarea asp-for="Details" class="form-control" placeholder="Details..."></textarea>
@@ -469,7 +465,7 @@
             <input asp-for="ImageBase64" id="imageBase64" type="hidden" value="" />
         </div>
     </div>
-    <div class="form-group mt-5">
+    <div class="form-group mt-3">
         <input type="submit" class="form-control btn w-25" style="background-color:#4CB9E7;color:#ffffff;" value="Save listing" />
     </div>
 
@@ -545,11 +541,13 @@
         var val = $("#propertyTypeInput").val();
         $(".d-grid .form-control").each((index, element) => {
             var dataProperty = JSON.parse(element.getAttribute("data-property"));
-            if (dataProperty.includes(parseInt(val))) {
-                element.parentElement.style.display = "block";
-            }
-            else {
-                element.parentElement.style.display = "none";
+            if(dataProperty != null){
+                if (dataProperty.includes(parseInt(val))) {
+                    element.parentElement.style.display = "block";
+                }
+                else {
+                    element.parentElement.style.display = "none";
+                }
             }
         });
     }
@@ -621,4 +619,4 @@
       console.log(base64);
     });
 </script>
-<script src="~/lib/jquery-selectize/selectize.min.js"></script>
+<script src="~/lib/selectize/js/selectize.min.js"></script>

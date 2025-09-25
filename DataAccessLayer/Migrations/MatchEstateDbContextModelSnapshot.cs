@@ -436,6 +436,12 @@ namespace DataAccessLayer.Migrations
                             Id = 2,
                             Name = "For Rent",
                             RgbColorForStatistics = "rgba(76, 185, 231, .5)"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Daily Rent",
+                            RgbColorForStatistics = "rgba(76, 185, 231, .5)"
                         });
                 });
 
@@ -515,6 +521,22 @@ namespace DataAccessLayer.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "B3F4CA26-0C00-41D3-B595-C3F6CEC3F4C1",
+                            ConcurrencyStamp = "09E5C58F-F81B-45CC-A9F9-53AF119614F9",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "7A903292-EE2C-448F-8F65-360C0B47262D",
+                            ConcurrencyStamp = "DA95C9AF-5BC9-4EB6-A0CF-55C7280D9A24",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("EntityLayer.Entities.Shop", b =>
@@ -676,9 +698,9 @@ namespace DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "727846b0-e54f-4b51-838f-0d20be6cbe28",
+                            Id = "114f5b27-bb41-4f69-a0ef-58a949b036db",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7eb35cbb-e9fb-4a42-b74b-8b000411f39e",
+                            ConcurrencyStamp = "591c16f7-bde7-4c73-9a29-cb384cb89646",
                             Email = "berke.yildirimm44@gmail.com",
                             EmailConfirmed = false,
                             IncomeExpenses = "[]",
@@ -686,10 +708,10 @@ namespace DataAccessLayer.Migrations
                             LockoutEnabled = false,
                             NameSurname = "Berke Yıldırım",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDWdf2SpP2O/n+JpCLmgQApVJdNeFirZ++WUXAuMYnaHpsoI7moRLY3l1ZySYQFsHQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPHfwI9gMMv4ztJPZyLbqZpzZQb88ybszn0uDESFQjFRyztC2KP71AHHvuCuDIYWlA==",
                             PhoneNumber = "5537531375",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4a53e751-815e-42fc-902a-0ea5286f0a4b",
+                            SecurityStamp = "e20c28e6-b765-40d4-8216-d602df20ec8c",
                             Tasks = "[]",
                             TwoFactorEnabled = false,
                             UserName = "adminBerke"

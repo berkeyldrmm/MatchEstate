@@ -6,17 +6,21 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-    <link href="img/favicon.ico" rel="icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Coustard:wght@400;900&display=swap" rel="stylesheet">
+
+    @* <link href="img/favicon.ico" rel="icon"> *@
 
     <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
     <link href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-
     <link href="~/css/style.css" rel="stylesheet">
-    <link href="~/css/loginpage.css" rel="stylesheet" />
+
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/js/sendNotification.js"></script>
 </head>
@@ -39,7 +43,7 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100" id="mainNavbar">
-                    <a href="/" class="nav-item nav-link" id="navHome"><i class="fa fa-house me-2"></i>Home</a>
+                    <a href="/" class="nav-item nav-link" id="navHome"><i class="fa-regular fa-house me-2"></i>Home</a>
                     <a href="/propertylisting" class="nav-item nav-link" id="navListing"><i class="fa fa-laptop me-2"></i>Property Listings</a>
                     <a href="/propertyrequest" class="nav-item nav-link" id="navRequest"><i class="fa fa-th me-2"></i>Property Requests</a>
                     <a href="/matching" class="nav-item nav-link" id="navMatch"><i class="fa fa-equals me-2"></i><span style="font-size:13px;">Listing-Request Matches</span></a>

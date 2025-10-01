@@ -21,6 +21,8 @@ namespace RealEstate.Extensions
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IMatchingService, MatchingService>();
             services.AddScoped<IPropertyStatusService, PropertyStatusService>();
+            services.AddScoped<IImageService, ImageService>();
+
             services.AddScoped<IPropertyService<Shop>, ShopService>();
             services.AddScoped<IPropertyService<Apartment>, ApartmentService>();
             services.AddScoped<IPropertyService<CommercialUnit>, CommercialUnitService>();

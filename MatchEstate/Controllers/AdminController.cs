@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using BusinessLayer.Services;
 using Shared.Dtos.Auth;
+using Shared.Dtos.Statistics;
 
 namespace MatchEstate.Controllers
 {

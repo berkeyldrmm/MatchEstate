@@ -19,12 +19,17 @@ namespace BusinessLayer.Concrete
         private readonly IPropertyListingRepository _listingRepository;
         private readonly IPropertyServiceFactory _propertyServiceFactory;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IImageService _imageService;
 
-        public PropertyListingService(IPropertyListingRepository listingRepository, IUnitOfWork unitOfWork, IPropertyServiceFactory propertyServiceFactory)
+        public PropertyListingService(IPropertyListingRepository listingRepository,
+            IUnitOfWork unitOfWork,
+            IPropertyServiceFactory propertyServiceFactory,
+            IImageService imageService)
         {
             _listingRepository = listingRepository;
             _unitOfWork = unitOfWork;
             _propertyServiceFactory = propertyServiceFactory;
+            _imageService = imageService;
         }
 
         public void DeleteRange(string userId, IEnumerable<string> Ids)
@@ -80,7 +85,8 @@ namespace BusinessLayer.Concrete
             if (!propertyResult)
                 return false;
 
-            var listing = ListingMapper.MapToListingEntity(dto, userId, property.ListingId);
+            List<string> images = await _imageService.UploadImages(property.ListingId, dto.Images);
+            var listing = ListingMapper.MapToListingEntity(dto, userId, property.ListingId, images);
 
             var listingResult = await _listingRepository.Insert(listing);
             if (!listingResult)

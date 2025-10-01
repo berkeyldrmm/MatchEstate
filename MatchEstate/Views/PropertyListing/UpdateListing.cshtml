@@ -84,9 +84,11 @@
     }
 </style>
 
+<div class="hero-title">
+    <h2>Update Listing (@Model.ListingTitle)</h2>
+</div>
 <form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="updatelisting" method="post">
     <input type="hidden" asp-for="ListingId" />
-    <h1>Update Listing</h1>
     <div class="form-group">
         <div class="wrapper">
             <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="1" id="newClient" checked>

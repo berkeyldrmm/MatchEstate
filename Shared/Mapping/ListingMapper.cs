@@ -1,15 +1,16 @@
 ﻿using EntityLayer.Entities;
+using Newtonsoft.Json;
 using Shared.Dtos.PropertyListing;
 
 namespace BusinessLayer.Mapping
 {
     public static class ListingMapper
     {
-        public static PropertyListing MapToListingEntity(AddListingDTO dto, string userId, string propertyId)
+        public static PropertyListing MapToListingEntity(AddListingDTO dto, string userId, string listingId, List<string> images)
         {
             PropertyListing listing = new PropertyListing()
             {
-                Id = propertyId,
+                Id = listingId,
                 Title = dto.ListingTitle,
                 Price = dto.Price,
                 PropertyStatusId = Convert.ToInt32(dto.PropertyStatusId),
@@ -18,7 +19,7 @@ namespace BusinessLayer.Mapping
                 City = dto.City,
                 District = dto.District,
                 Neighbourhood = dto.Neighbourhood,
-                ImageBase64 = dto.ImageBase64
+                Images = JsonConvert.SerializeObject(images)
             };
             listing.PropertyTypeId = Convert.ToInt32(dto.PropertyTypeId);
             if (dto.RadioForClient == "1")

@@ -85,6 +85,42 @@
                 }
             });
 
+            var ctx10 = $("#doughnut-chart5").get(0).getContext("2d");
+            var myChart10 = new Chart(ctx10, {
+                type: "doughnut",
+                data: {
+                    labels: ["Finalized", "Not finalized"],
+                    datasets: [{
+                        backgroundColor: [
+                            "rgba(76, 185, 231, .7)",
+                            "rgba(76, 185, 231, .5)"
+                        ],
+                        data: [data.countOfFinalizedListings.finalized, data.countOfFinalizedListings.notFinalized]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+            var ctx11 = $("#doughnut-chart6").get(0).getContext("2d");
+            var myChart11 = new Chart(ctx11, {
+                type: "doughnut",
+                data: {
+                    labels: ["Finalized", "Not finalized"],
+                    datasets: [{
+                        backgroundColor: [
+                            "rgba(76, 185, 231, .7)",
+                            "rgba(76, 185, 231, .5)"
+                        ],
+                        data: [data.countOfFinalizedRequests.finalized, data.countOfFinalizedRequests.notFinalized]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
         }
     });
 }

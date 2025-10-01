@@ -1,4 +1,4 @@
-﻿using Shared.Dtos;
+﻿using Shared.Dtos.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +13,7 @@ namespace DataAccessLayer.Abstract
         public List<PropertyStatusCountDto> GetPropertyStatusesOfRequests(string userId);
         public List<TypeCountModelDTO> GetPropertyTypesOfListings(string userId);
         public List<TypeCountModelDTO> GetPropertyTypesOfRequests(string userId);
+        public FinalizedDto GetFinalizedListings(string userId);
+        public FinalizedDto GetFinalizedRequests(string userId);
     }
 }

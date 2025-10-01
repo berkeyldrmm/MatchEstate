@@ -40,7 +40,7 @@
         left: 4px;
         width: 12px;
         height: 12px;
-        background: #0069d9;
+        background: #4cb9e7;
         border-radius: 50%;
         opacity: 0;
         transform: scale(1.5);
@@ -53,8 +53,8 @@
 
     #newClient:checked ~ .newClient,
     #savedClient:checked ~ .savedClient{
-        border-color: #0077b6;
-        background: #0077b6;
+        border-color: #4cb9e7;
+        background: #4cb9e7;
     }
 
     #newClient:checked ~ .newClient .dot,
@@ -93,8 +93,11 @@
     }
 </style>
 
+<div class="hero-title">
+    <h2>Add Request</h2>
+</div>
+
 <form class="mt-4 mb-4 mx-4">
-    <h1>Adding Request</h1>
     <div class="form-group">
         <div class="wrapper">
             <input type="radio" name="radioForClient" value="1" id="newClient">
@@ -137,75 +140,75 @@
     <hr />
     <div class="d-grid">
         <div class="row w-100">
-            <div class="form-group w-25">
+            <div class="col-4">
                 <label>Property Title</label>
                 <input name="RequestTitle" type="text" class="form-control" placeholder="Title">
             </div>
-            <div class="form-group w-25">
+            <div class="col-4">
                 <label>Property Type</label>
                 <select name="PropertyTypeId" class="form-control" id="propertyTypeInput" data-property="[1,2,3,4,5]">
                     <option value=2>Land</option>
-                    <option value=4>Farmland</option>
+                    <option value=5>Farmland</option>
                     <option value=1>Shop</option>
-                    <option value=5>Apartment</option>
+                    <option value=4>Apartment</option>
                     <option value=3>Commercial unit</option>
                 </select>
             </div>
-            <div class="form-group w-50" id="numberOfRooms" data-property="[1,5]">
-                <label for="numberOfRooms" style="font-size:20px;">Number of Rooms</label>
-                <div class="d-flex flex-wrap">
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="1+0" />1+0 (Studio)</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="1+1" />1+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="2+0" />2+0</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="2+1" />2+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="2+2" />2+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="2.5+1" />2.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="3+0" />3+0</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="3+1" />3+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="3.5+1" />3.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="3+2" />3+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="3+3" />3+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="4+0" />4+0</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="4+1" />4+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="4.5+1" />4.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="4+2" />4+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="4+3" />4+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="4+4" />4+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="5+1" />5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="5.5+1" />5.5+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="5+2" />5+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="5+3" />5+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="5+4" />5+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="6+1" />6+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="6+2" />6+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="6+3" />6+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="6+4" />6+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="7+1" />7+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="7+2" />7+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="7+3" />7+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="8+1" />8+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="8+2" />8+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="8+3" />8+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="8+4" />8+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="9+1" />9+1</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="9+2" />9+2</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="9+3" />9+3</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="9+4" />9+4</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="9+5" />9+5</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="9+6" />9+6</div>
-                    <div><input type="checkbox" class="form-check-input" name="NumberOfRooms" value="9 or more" />9 or more</div>
-                </div>
+            <div class="col-4" id="numberOfRooms" data-property="[1,4]">
+                <label>Number of Rooms</label>
+                <select id="selectNumberOfRooms" class="form-select selectpicker" multiple data-live-search="true" title="Select number of rooms" style="background-color: #ffffff;">
+                    <option value="1+0">1+0 (Studio)</option>
+                    <option value="1+1">1+1</option>
+                    <option value="2+0">2+0</option>
+                    <option value="2+1">2+1</option>
+                    <option value="2+2">2+2</option>
+                    <option value="2.5+1">2.5+1</option>
+                    <option value="3+0">3+0</option>
+                    <option value="3+1">3+1</option>
+                    <option value="3.5+1">3.5+1</option>
+                    <option value="3+2">3+2</option>
+                    <option value="3+3">3+3</option>
+                    <option value="4+0">4+0</option>
+                    <option value="4+1">4+1</option>
+                    <option value="4.5+1">4.5+1</option>
+                    <option value="4+2">4+2</option>
+                    <option value="4+3">4+3</option>
+                    <option value="4+4">4+4</option>
+                    <option value="5+1">5+1</option>
+                    <option value="5.5+1">5.5+1</option>
+                    <option value="5+2">5+2</option>
+                    <option value="5+3">5+3</option>
+                    <option value="5+4">5+4</option>
+                    <option value="6+1">6+1</option>
+                    <option value="6+2">6+2</option>
+                    <option value="6+3">6+3</option>
+                    <option value="6+4">6+4</option>
+                    <option value="7+1">7+1</option>
+                    <option value="7+2">7+2</option>
+                    <option value="7+3">7+3</option>
+                    <option value="8+1">8+1</option>
+                    <option value="8+2">8+2</option>
+                    <option value="8+3">8+3</option>
+                    <option value="8+4">8+4</option>
+                    <option value="9+1">9+1</option>
+                    <option value="9+2">9+2</option>
+                    <option value="9+3">9+3</option>
+                    <option value="9+4">9+4</option>
+                    <option value="9+5">9+5</option>
+                    <option value="9+6">9+6</option>
+                    <option value="9 or more">9 or more</option>
+                </select>
             </div>
         </div>
         <hr />
         <div class="row">
-            <div class="form-group">
+            <div class="col-3">
                 <label>City</label>
                 <select name="City" class="form-control" id="selectCity" data-property="[1,2,3,4,5]">
                 </select>
             </div>
 
-            <div class="form-group" style="display: none;" id="select-district">
+            <div class="col-9" style="display: none;" id="select-district">
                 <label>District</label>
                 <select id="selectTown" data-property="[1,2,3,4,5]" class="form-select selectpicker" multiple data-live-search="true" title="Select districts" style="background-color: #ffffff">
                 </select>
@@ -216,7 +219,8 @@
     <hr />
     <div class="d-grid">
         <div class="row">
-            <div class="col-6">
+            @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default" })
+            <div class="col-4">
                 <div>
                     <label>Minimum Price</label>
                     <div class="input-group">
@@ -224,6 +228,8 @@
                         <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                     </div>
                 </div>
+            </div>
+            <div class="col-4">
                 <div>
                     <label>Maximum Price</label>
                     <div class="input-group">
@@ -232,7 +238,6 @@
                     </div>
                 </div>
             </div>
-            @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#0077b6" })
         </div>
     </div>
     
@@ -241,7 +246,7 @@
         <textarea name="Details" id="detail" class="form-control" placeholder="Details..."></textarea>
     </div>
     <div class="form-group">
-        <input type="submit" id="addRequest" class="form-control btn w-25" style="background-color:#0077b6;color:#ffffff;" value="Save request" />
+        <input type="submit" id="addRequest" class="form-control btn w-25" style="background-color:#4cb9e7;color:#ffffff;" value="Save request" />
     </div>
     <div id="statusDiv" style="display:none;margin-top:10px;"></div>
 
@@ -278,14 +283,6 @@
         $("#addRequest").on("click",(e)=>{
             e.preventDefault();
 
-            var numberOfRooms = [];
-            var numberOfRoomsOptions = $("input[name='NumberOfRooms']");
-            numberOfRoomsOptions.each((index, value) => {
-                if (value.checked) {
-                    numberOfRooms.push(value.value);
-                }
-            });
-
             $.post("/propertyrequest/addrequest", {
                 requestTitle: $("input[name='RequestTitle']").val(),
                 radioForClient: $("input[name='radioForClient']:checked").val(),
@@ -297,7 +294,7 @@
                 PropertyStatusId: $("input[name='PropertyStatusId']:checked").val(),
                 city: $("#selectCity").val(),
                 district: $("#selectTown").val(),
-                numberOfRooms: numberOfRooms,
+                numberOfRooms: $("#selectNumberOfRooms").val(),
                 minPrice: $("#minPrice").val(),
                 maxPrice: $("#maxPrice").val(),
                 details: $("textarea#detail").val()
@@ -315,7 +312,7 @@
 
         });
 
-        propertyForm();
+        setDisplayOfRoomInput();
         checkRadioForClient();
 
         $("input[name='radioForClient']").change(() => {
@@ -327,17 +324,16 @@
         });
 
         $("#propertyTypeInput").change(() => {
-            propertyForm();
+            setDisplayOfRoomInput();
         });
 
     });
 
-    function propertyForm() {
+    function setDisplayOfRoomInput() {
         let val = $("#propertyTypeInput").val();
         let rooms = $("#numberOfRooms");
-        let dataProperty = JSON.parse(rooms.attr("data-property"));
         
-        if (dataProperty.includes(parseInt(val))) {
+        if (val == "1" || val == "4") {
             rooms.css("display", "block");
         }
         else {

@@ -1,7 +1,7 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
-using Shared.Dtos;
+using Shared.Dtos.Statistics;
 
 namespace DataAccessLayer.Concrete
 {
@@ -73,6 +73,36 @@ namespace DataAccessLayer.Concrete
                     Count = l.Count()
                 })
                 .ToList();
+        }
+
+        public FinalizedDto GetFinalizedListings(string userId)
+        {
+            var finalized = _context.PropertyListings
+                .Where(l=>l.UserId == userId)
+                .Where(l => l.DealStatus)
+                .Count();
+
+            var notFinalized = _context.PropertyListings
+                .Where(l => l.UserId == userId)
+                .Where(l => !l.DealStatus)
+                .Count();
+
+            return new(finalized, notFinalized);
+        }
+
+        public FinalizedDto GetFinalizedRequests(string userId)
+        {
+            var finalized = _context.PropertyRequests
+                .Where(l => l.UserId == userId)
+                .Where(r => r.DealStatus)
+                .Count();
+
+            var notFinalized = _context.PropertyRequests
+                .Where(l => l.UserId == userId)
+                .Where(r => !r.DealStatus)
+                .Count();
+
+            return new(finalized, notFinalized);
         }
     }
 }

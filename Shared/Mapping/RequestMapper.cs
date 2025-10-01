@@ -36,6 +36,7 @@ namespace BusinessLayer.Mapping
             request.PropertyStatusId = dto.PropertyStatusId;
             request.City = dto.City;
             request.District = JsonConvert.SerializeObject(dto.District);
+            request.NumberOfRooms = JsonConvert.SerializeObject(dto.NumberOfRooms);
             request.Details = dto.Details;
 
             if (dto.RadioForClient == "1")

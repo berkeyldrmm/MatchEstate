@@ -1,4 +1,5 @@
-﻿﻿@using Shared.Dtos.Abstractions
+﻿@using Newtonsoft.Json
+﻿@using Shared.Dtos.Abstractions
 @model IPropertyListingDetailDto
 
 <style>
@@ -13,15 +14,46 @@
     li{
         padding:5px;
     }
+
+    .carousel-inner img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
 </style>
 
+<div class="hero-title">
+    <h2>@Model.Title</h2>
+</div>
 <div class="single-property section" style="margin-top:50px;margin-left:50px">
     <div class="container">
-        <h3 class="mb-3">@Model.Title</h3>
         <div class="row">
             <div class="col-lg-7">
                 <div class="main-image text-center">
-                    <img src="@(Model.ImageBase64 ?? "/img/no-image2.png")" alt="Property Listing Image" width="700" />
+                    @{
+                        var images = JsonConvert.DeserializeObject<List<string>>(Model.Images) ?? new List<string>();
+                    }
+                    <div id="image-carousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < images.Count; i++)
+                            {
+                                <div class="carousel-item@(i == 0 ? " active" : "")">
+                                    <img class="d-block w-100" 
+                                        src="@($"https://res.cloudinary.com/dzn0ydj19/image/upload/{images[i]}")" 
+                                        alt="Product image @(i+1)">
+                                </div>
+                            }
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#image-carousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#image-carousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="main-content mt-3">
                     <h4>Details</h4>
@@ -91,6 +123,16 @@
         </div>
     </div>
 </div>
+<script src="~/lib/owlcarousel2/owl.carousel.min.js"></script>
 <script>
     $("#navListing").addClass("active");
-</script> 
+
+    $(document).ready(function(){
+      $(".owl-carousel").owlCarousel({
+        items:1,
+        loop:true,
+        autoplay:true,
+        autoplayTimeout:3000
+      });
+    });
+</script>

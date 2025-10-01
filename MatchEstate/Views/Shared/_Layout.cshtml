@@ -21,6 +21,7 @@
     <link href="~/css/style.css" rel="stylesheet">
 
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @* <script src="~/lib/owlcarousel/owl.carousel.min.js"></script> *@
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/js/sendNotification.js"></script>
 </head>
@@ -70,7 +71,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="modal" data-target="#logOutModel" style="cursor:pointer">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logOutModel" style="cursor:pointer">
                                 <i class="fa fa-sign-out-alt me-1"></i>Logout
                             </a>
                         </li>
@@ -86,7 +87,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -95,7 +96,7 @@
                     </div>
                     <div class="modal-footer">
                         <a type="button" href="/login/logout" class="btn btn-danger" onclick="deleteNameSurname()">Logout</a>
-                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -115,7 +116,6 @@
     <script src="~/lib/chart/chart.min.js"></script>
     <script src="~/lib/easing/easing.min.js"></script>
     <script src="~/lib/waypoints/waypoints.min.js"></script>
-    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="~/lib/tempusdominus/js/moment.min.js"></script>
     <script src="~/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="~/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>

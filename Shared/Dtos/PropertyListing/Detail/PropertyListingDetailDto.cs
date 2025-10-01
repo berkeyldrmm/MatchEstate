@@ -24,6 +24,6 @@ namespace Shared.Dtos.PropertyListing.Detail
         public bool DealStatus { get; set; }
         public string AddedDate { get; set; }
         public string Details { get; set; }
-        public string ImageBase64 { get; set; }
+        public string? Images { get; set; }
     }
 }

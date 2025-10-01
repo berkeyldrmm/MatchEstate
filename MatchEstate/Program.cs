@@ -1,4 +1,6 @@
 using BusinessLayer.Validation;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
 using EntityLayer.Entities;
@@ -9,12 +11,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using RealEstate.Extensions;
 using RealEstate.Middlewares;
-using Shared.Dtos;
+using Shared.Dtos.Statistics;
 using Shared.Services;
-using System;
 using System.Security.Claims;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<MatchEstateDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerDevelopment"]));
 builder.Services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
 builder.Services.AddAntiforgery();
+builder.Services.AddSingleton<Cloudinary>(c =>
+{
+    return new Cloudinary(builder.Configuration["CLOUDINARY_URL"]);
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -51,7 +58,7 @@ builder.Services.AddMvc(config =>
     config.Filters.Add(new AuthorizeFilter(policy));
 });
 
-builder.Services.AddIdentity<User, Role>(x =>
+builder.Services.AddIdentity<User, EntityLayer.Entities.Role>(x =>
 {
     x.Password.RequireNonAlphanumeric = false;
 })
@@ -67,6 +74,9 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddHostedService<InactiveUserService>();
+
+//Cloudinary cloudinary = new Cloudinary(builder.Configuration["CLOUDINARY_URL"]);
+//cloudinary.Api.Secure = true;
 
 var app = builder.Build();
 
@@ -111,6 +121,8 @@ app.MapGet("/getStatistics", (IStatisticsRepository statisticsDal, ClaimsPrincip
     var propertyTypesOfRequests = statisticsDal.GetPropertyTypesOfRequests(userId);
     var ForSaleOrRentOfListings = statisticsDal.GetPropertyStatusesOfListings(userId);
     var ForSaleOrRentOfRequests = statisticsDal.GetPropertyStatusesOfRequests(userId);
+    var CountOfFinalizedListings = statisticsDal.GetFinalizedListings(userId);
+    var CountOfFinalizedRequests = statisticsDal.GetFinalizedRequests(userId);
 
     return new StatisticsModelDTO()
     {
@@ -128,7 +140,25 @@ app.MapGet("/getStatistics", (IStatisticsRepository statisticsDal, ClaimsPrincip
 
         CountOfListingsPropertyStatuses = ForSaleOrRentOfListings,
         CountOfRequestsPropertyStatuses = ForSaleOrRentOfRequests,
+
+        CountOfFinalizedListings = CountOfFinalizedListings,
+        CountOfFinalizedRequests = CountOfFinalizedRequests
     };
 });
+
+//app.MapGet("/cloudinary-test", () =>
+//{
+//    var env = app.Services.GetRequiredService<IWebHostEnvironment>();
+//    string wwwrootPath = env.WebRootPath;
+//    var uploadParams = new ImageUploadParams()
+//    {
+//        File = new FileDescription(Path.Combine(wwwrootPath, "img", "bg.png")),
+//        UseFilename = true,
+//        UniqueFilename = false,
+//        Overwrite = true
+//    };
+//    var uploadResult = cloudinary.Upload(uploadParams);
+//    Console.WriteLine(uploadResult.JsonObj);
+//});
 
 app.Run();

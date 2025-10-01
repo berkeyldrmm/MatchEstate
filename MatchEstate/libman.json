@@ -9,6 +9,13 @@
         "js/bootstrap-select.min.js",
         "css/bootstrap-select.min.css"
       ]
+    },
+    {
+      "library": "OwlCarousel2@2.3.4",
+      "destination": "wwwroot/lib/OwlCarousel2/",
+      "files": [
+        "owl.carousel.min.js"
+      ]
     }
   ]
 }

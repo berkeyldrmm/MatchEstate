@@ -38,19 +38,19 @@ namespace BusinessLayer.Validation
                 .NotNull().WithMessage("Please enter a valid sheet number");
 
             RuleFor(l => l.SheetNumber)
-                .NotNull().When(l => l.PropertyTypeId == 2 || l.PropertyTypeId == 4).WithMessage("Please enter a valid block number");
+                .NotNull().When(l => l.PropertyTypeId == 2 || l.PropertyTypeId == 5).WithMessage("Please enter a valid block number");
             RuleFor(l => l.AgeOfBuilding)
-                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 5).WithMessage("Please enter age of building");
+                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 4).WithMessage("Please enter age of building");
             RuleFor(l => l.Floor)
-                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 5).WithMessage("Please enter floor information");
+                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 4).WithMessage("Please enter floor information");
             RuleFor(l => l.NumberOfFloor)
-                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 5).WithMessage("Please enter number of floor information");
+                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 4).WithMessage("Please enter number of floor information");
             RuleFor(l => l.NumberOfBathrooms)
-                .NotNull().When(l => l.PropertyTypeId == 5).WithMessage("Please enter number of bathrooms");
+                .NotNull().When(l => l.PropertyTypeId == 4).WithMessage("Please enter number of bathrooms");
             RuleFor(l => l.NumberOfBalcony)
-                .NotNull().When(l => l.PropertyTypeId == 5).WithMessage("Please enter number of balcony");
+                .NotNull().When(l => l.PropertyTypeId == 4).WithMessage("Please enter number of balcony");
             RuleFor(l => l.Dues)
-                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 5).WithMessage("Please enter dues");
+                .NotNull().When(l => l.PropertyTypeId == 1 || l.PropertyTypeId == 4).WithMessage("Please enter dues");
 
             RuleFor(l => l.Details).MaximumLength(1000).WithMessage("Details field is too long");
         }

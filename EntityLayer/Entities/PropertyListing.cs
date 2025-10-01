@@ -37,5 +37,5 @@ public partial class PropertyListing
     [ForeignKey(nameof(PropertyRequest))]
     public string? PropertyRequestId { get; set; }
     public PropertyRequest? PropertyRequest { get; set; }
-    public string? ImageBase64 { get; set; }
+    public string? Images { get; set; }
 }

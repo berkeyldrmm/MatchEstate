@@ -2,8 +2,11 @@
 @using Shared.Dtos.PropertyRequest
 @model List<(PropertyRequestCardDto request, PropertyListingCardDto listing)>
 
-<div class="container-fluid pt-4 px-4">
+<div class="hero-title">
     <h2>Current Matches</h2>
+</div>
+
+<div class="container-fluid pt-4 px-4">
     @foreach (var listingRequestPair in Model)
     {
         <div class="card mb-2 ml-4">

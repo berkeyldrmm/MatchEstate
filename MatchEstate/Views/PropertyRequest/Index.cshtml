@@ -85,8 +85,8 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Client Name Surname</th>
                                         <th scope="col">Title</th>
+                                        <th scope="col">Client</th>
                                         <th scope="col">Property Type</th>
                                         <th scope="col">City</th>
                                         <th scope="col">Price Range</th>
@@ -108,7 +108,7 @@
 
         </div>
         <div class="d-flex justify-content-end mt-3">
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteRequestModal">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRequestModal">
                 <i class="fa-solid fa-trash"></i> Delete Requests
             </button>
         </div>
@@ -124,7 +124,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -132,8 +132,8 @@
                     <p>Delete selected requests?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteRequest()">Delete</button>
-                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteRequest()">Delete</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -234,8 +234,8 @@
                 html += `
                          <tr ${requests[i].status ? "style=background-color:#95d5b2;" : ""}>
                                      <td><input name="request" class="form-check-input" type="checkbox" value=${requests[i].id}></td>
-                                     <td>${requests[i].nameSurname}</td>
                                      <td>${requests[i].title}</td>
+                                     <td>${requests[i].nameSurname}</td>
                                      <td>${requests[i].type}</td>
                                      <td>${requests[i].city}</td>
                                      <td>${requests[i].minPrice} - ${requests[i].maxPrice} <i class="fa fa-dollar"></i></td>

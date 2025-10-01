@@ -83,105 +83,83 @@
         display:none;
     }
 
-    .file-upload-btn {
-        width: 100%;
-        margin: 0;
-        color: #fff;
-        background: #4CB9E7;
-        border: none;
-        padding: 4px;
-        border-radius: 4px;
-        transition: all .2s ease;
-        outline: none;
-    }
-
-        .file-upload-btn:hover {
-            background: #4CB9E7;
-            color: #ffffff;
-            transition: all .2s ease;
-            cursor: pointer;
-        }
-
-        .file-upload-btn:active {
-            border: 0;
-            transition: all .2s ease;
-        }
-
-    .file-upload-content {
-        display: none;
-        text-align: center;
-    }
-
-    .file-upload-input {
-        position: absolute;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        outline: none;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .image-upload-wrap {
-        margin-top: 20px;
-        border: 4px dashed #4CB9E7;
-        position: relative;
-    }
-
-    .image-title-wrap {
-        padding: 0 15px 15px 15px;
-        color: #222;
-    }
-
     .drag-text {
         text-align: center;
     }
 
-        .drag-text h3 {
-            font-weight: 100;
-            color: #4CB9E7;
-            padding: 60px 0;
-        }
-
-    .file-upload-image {
-        max-height: 200px;
-        max-width: 200px;
-        margin: auto;
-        padding: 20px;
+    .drag-text h3 {
+        font-weight: 100;
+        color: #4CB9E7;
+        padding: 60px 0;
     }
 
-    .remove-image {
-        width: 200px;
-        margin: 0;
-        color: #fff;
-        background: #cd4535;
-        border: none;
-        padding: 10px;
-        border-radius: 4px;
-        border-bottom: 4px solid #b02818;
-        transition: all .2s ease;
-        outline: none;
-        text-transform: uppercase;
-        font-weight: 700;
+    .preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .preview-item {
+      position: relative;
+      display: inline-block;
+    }
+    .preview-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .remove-btn {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 18px;
+      padding: 0;
+    }
+    #images {
+      display: none;
+    }
+    .upload-btn {
+      display: block;
+      padding: 10px 20px;
+      background-color: #4CB9E7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .upload-btn:hover, input[type="submit"]:hover {
+        opacity: 0.8;
+        transition: all 0.3s;
+        color: #fff !important;
+    }
+    .error {
+      color: red;
+      margin-top: 5px;
+      font-size: 14px;
     }
 
-        .remove-image:hover {
-            background: #c13b2a;
-            color: #ffffff;
-            transition: all .2s ease;
-            cursor: pointer;
-        }
-
-        .remove-image:active {
-            border: 0;
-            transition: all .2s ease;
-        }
+    input[type="submit"]{
+        background-color: #4CB9E7 !important;
+        color: #ffffff;
+    }
 </style>
 
-<form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="AddListing" method="post">
+<div class="hero-title">
+    <h2>Add Listing</h2>
+</div>
+
+<form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="AddListing" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
-    <h1>Adding Listing</h1>
     <div class="form-group">
         <div class="wrapper">
             <input asp-for="RadioForClient" type="radio" name="RadioForClient" value="1" id="newClient">
@@ -234,9 +212,9 @@
                 <label>Property Type</label>
                 <select asp-for="PropertyTypeId" class="form-control" id="propertyTypeInput" data-property="[1,2,3,4,5]">
                     <option value=2>Land</option>
-                    <option value=4>Farmland</option>
+                    <option value=5>Farmland</option>
                     <option value=1>Shop</option>
-                    <option value=5>Apartment</option>
+                    <option value=4>Apartment</option>
                     <option value=3>Commercial Unit</option>
                 </select>
             </div>
@@ -246,7 +224,7 @@
             </div>
             <div class="form-group">
                 <label>Gross Square Metersize</label>
-                <input asp-for="SquareMetersizeGross" type="number" class="form-control" data-property="[1,5]">
+                <input asp-for="SquareMetersizeGross" type="number" class="form-control" data-property="[1,4]">
             </div>
             <div class="form-group">
                 <label>Block Number</label>
@@ -254,7 +232,7 @@
             </div>
             <div class="form-group">
                 <label>Sheet Number</label>
-                <input asp-for="SheetNumber" type="number" class="form-control" data-property="[2,4]">
+                <input asp-for="SheetNumber" type="number" class="form-control" data-property="[2,5]">
             </div>
             <div class="form-group">
                 <label>Parsel Number</label>
@@ -262,7 +240,7 @@
             </div>
             <div class="form-group">
                 <label>Zoning Status</label>
-                <select asp-for="ZoningStatus" class="form-control" data-property="[2,4]">
+                <select asp-for="ZoningStatus" class="form-control" data-property="[2,5]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
@@ -276,7 +254,7 @@
             </div>
             <div class="form-group">
                 <label>Number of Rooms</label>
-                <select asp-for="NumberOfRooms" class="form-control" data-property="[1,5]">
+                <select asp-for="NumberOfRooms" class="form-control" data-property="[1,4]">
                     <option value="1+0">1+0 (Studio)</option>
                     <option value="1+1">1+1</option>
                     <option value="2+0">2+0</option>
@@ -320,19 +298,19 @@
             </div>
             <div class="form-group">
                 <label>Age of Building</label>
-                <input asp-for="AgeOfBuilding" type="number" class="form-control" data-property="[1,5]">
+                <input asp-for="AgeOfBuilding" type="number" class="form-control" data-property="[1,4]">
             </div>
             <div class="form-group">
                 <label>Floor</label>
-                <input asp-for="Floor" type="number" class="form-control" data-property="[1,5]">
+                <input asp-for="Floor" type="number" class="form-control" data-property="[1,4]">
             </div>
             <div class="form-group">
                 <label>Number of Floor</label>
-                <input asp-for="NumberOfFloor" type="number" class="form-control" data-property="[1,5]">
+                <input asp-for="NumberOfFloor" type="number" class="form-control" data-property="[1,4]">
             </div>
             <div class="form-group">
                 <label>Heating Type</label>
-                <select asp-for="HeatingType" class="form-control" data-property="[1,5]">
+                <select asp-for="HeatingType" class="form-control" data-property="[1,4]">
                     <option value="Natural gas">Natural gas</option>
                     <option value="Central">Central</option>
                     <option value="Stove">Stove</option>
@@ -340,57 +318,57 @@
             </div>
             <div class="form-group">
                 <label>Number of Bathrooms</label>
-                <input asp-for="NumberOfBathrooms" type="number" class="form-control" data-property="[5]">
+                <input asp-for="NumberOfBathrooms" type="number" class="form-control" data-property="[4]">
             </div>
             <div class="form-group">
                 <label>Number of Balconies</label>
-                <input asp-for="NumberOfBalcony" type="number" class="form-control" data-property="[5]">
+                <input asp-for="NumberOfBalcony" type="number" class="form-control" data-property="[4]">
             </div>
             <div class="form-group">
                 <label>Elevator</label>
-                <select asp-for="Elevator" class="form-control" data-property="[1,5]">
+                <select asp-for="Elevator" class="form-control" data-property="[1,4]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Parking Lot</label>
-                <select asp-for="ParkingLot" class="form-control" data-property="[1,5]">
+                <select asp-for="ParkingLot" class="form-control" data-property="[1,4]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Furnished</label>
-                <select asp-for="Furnished" class="form-control" data-property="[1,5]">
+                <select asp-for="Furnished" class="form-control" data-property="[1,4]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Usage State</label>
-                <select asp-for="UsageState" class="form-control" data-property="[1,5]">
+                <select asp-for="UsageState" class="form-control" data-property="[1,4]">
                     <option value="In User">In Use</option>
                     <option value="Not In Use">Not in Use</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Residental Complex</label>
-                <select asp-for="IsInResidentalComplex" class="form-control" data-property="[5]">
+                <select asp-for="IsInResidentalComplex" class="form-control" data-property="[4]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Eligible for Loan</label>
-                <select asp-for="IsEligibleForLoan" class="form-control" data-property="[1,5]">
+                <select asp-for="IsEligibleForLoan" class="form-control" data-property="[1,4]">
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Dues</label>
-                <input asp-for="Dues" type="number" class="form-control" data-property="[1,5]" />
+                <input asp-for="Dues" type="number" class="form-control" data-property="[1,4]" />
             </div>
             <div class="form-group">
                 <label>Title Sheet State</label>
@@ -424,6 +402,7 @@
     <hr />
     <div class="d-grid">
         <div class="row">
+            @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default" })
             <div class="col-4">
                 <label>Price</label>
                 <div class="input-group">
@@ -431,7 +410,6 @@
                     <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                 </div>
             </div>
-            @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#4CB9E7" })
             <div class="col-4">
                 <label>Commission Fee</label>
                 <div class="input-group">
@@ -446,27 +424,20 @@
         <label>Other Details</label>
         <textarea asp-for="Details" class="form-control" placeholder="Details..."></textarea>
     </div>
-    <div class="form-group">
-        <div class="file-upload w-50">
-            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
 
-            <div class="image-upload-wrap">
-                <input class="file-upload-input" id="image-upload" type='file' onchange="readURL(this);" accept="image/*" />
-                <div class="drag-text">
-                    <h3>Drag and drop image for listing</h3>
-                </div>
-            </div>
-            <div class="file-upload-content">
-                <img class="file-upload-image" src="#" alt="your image" />
-                <div class="image-title-wrap">
-                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
-                </div>
-            </div>
-            <input asp-for="ImageBase64" id="imageBase64" type="hidden" value="" />
-        </div>
+    <hr />
+
+    <div class="form-group mt-4">
+        <label for="images">Listing images</label>
+        <input type="file" id="images" asp-for="Images" multiple>
+        <button type="button" class="upload-btn" id="uploadTrigger">Select images</button>
+        <div class="error" id="errorMsg"></div>
+
+        <div class="preview-container" id="preview"></div>
     </div>
+
     <div class="form-group mt-3">
-        <input type="submit" class="form-control btn w-25" style="background-color:#4CB9E7;color:#ffffff;" value="Save listing" />
+        <input type="submit" class="form-control btn w-25" value="Save listing" />
     </div>
 
 </form>
@@ -569,54 +540,181 @@
         sendNotification("error", "@Html.Raw(ViewBag.error)");
     }
 
-    function readURL(input) {
-      if (input.files && input.files[0]) {
+    const imagesInput = document.getElementById('images');
+    const trigger = document.getElementById('uploadTrigger');
+    const previewContainer = document.getElementById('preview');
+    const errorMsg = document.getElementById('errorMsg');
+    let selectedFiles = [];
 
-        var reader = new FileReader();
+    trigger.addEventListener('click', () => imagesInput.click());
 
-        reader.onload = function(e) {
-          $('.image-upload-wrap').hide();
+    imagesInput.addEventListener('change', (event) => {
+        const files = Array.from(event.target.files);
 
-          $('.file-upload-image').attr('src', e.target.result);
-          $('.file-upload-content').show();
+        // Maksimum 15 sınırı
+        if (selectedFiles.length + files.length > 15) {
+            errorMsg.textContent = "En fazla 15 görsel yükleyebilirsiniz.";
+            return;
+        }
 
-          $('.image-title').html(input.files[0].name);
-        };
+        files.forEach(file => {
+            selectedFiles.push(file);
 
-        reader.readAsDataURL(input.files[0]);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('preview-item');
+                wrapper.style.display = "inline-block";
+                wrapper.style.position = "relative";
+                wrapper.style.margin = "5px";
 
-      } else {
-        removeUpload();
-      }
-    }
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = "100px";
+                img.style.height = "100px";
+                img.style.objectFit = "cover";
 
-    async function imageToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file);
+                const removeBtn = document.createElement('button');
+                removeBtn.type = "button";
+                removeBtn.textContent = "X";
+                removeBtn.style.position = "absolute";
+                removeBtn.style.top = "0";
+                removeBtn.style.right = "0";
+                removeBtn.style.background = "red";
+                removeBtn.style.color = "white";
+                removeBtn.style.border = "none";
+                removeBtn.style.borderRadius = "50%";
+                removeBtn.style.cursor = "pointer";
+
+                removeBtn.addEventListener('click', () => {
+                    previewContainer.removeChild(wrapper);
+                    selectedFiles = selectedFiles.filter(f => f !== file);
+
+                    // Input'u senkronize et
+                    const dataTransfer = new DataTransfer();
+                    selectedFiles.forEach(f => dataTransfer.items.add(f));
+                    imagesInput.files = dataTransfer.files;
+                });
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(removeBtn);
+                previewContainer.appendChild(wrapper);
+            };
+            reader.readAsDataURL(file);
         });
-    }
 
-    function removeUpload() {
-      $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-      $('.file-upload-content').hide();
-      $('.image-upload-wrap').show();
-    }
-    $('.image-upload-wrap').bind('dragover', function () {
-        $('.image-upload-wrap').addClass('image-dropping');
-      });
-      $('.image-upload-wrap').bind('dragleave', function () {
-        $('.image-upload-wrap').removeClass('image-dropping');
+        // Input’u senkronize et
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(f => dataTransfer.items.add(f));
+        imagesInput.files = dataTransfer.files;
+
+        errorMsg.textContent = "";
+        console.log(imagesInput.files); // ✅ Artık tüm dosyaları görebilirsin
     });
 
-    $('#image-upload').on('change', async () => {
-      const fileInput = document.getElementById("image-upload");
-      const file = fileInput.files[0];
-      var base64 = await imageToBase64(file);
-      $('#imageBase64').val(base64);
-      console.log(base64);
-    });
+
+    // const input = document.getElementById('images');
+    // const preview = document.getElementById('preview');
+    // const trigger = document.getElementById('uploadTrigger');
+    // const errorMsg = document.getElementById('errorMsg');
+
+    // trigger.addEventListener('click', () => input.click());
+
+    // input.addEventListener('change', () => {
+    //   errorMsg.textContent = "";
+
+    //   if (input.files.length + preview.childElementCount > 5) {
+    //     errorMsg.textContent = "En fazla 15 görsel yükleyebilirsiniz.";
+    //     input.value = "";
+    //     return;
+    //   }
+
+    //   Array.from(input.files).forEach(file => {
+    //     const reader = new FileReader();
+    //     reader.onload = e => {
+    //       const item = document.createElement('div');
+    //       item.classList.add('preview-item');
+
+    //       const img = document.createElement('img');
+    //       img.src = e.target.result;
+
+    //       const removeBtn = document.createElement('button');
+    //       removeBtn.innerHTML = "×";
+    //       removeBtn.classList.add('remove-btn');
+
+    //       removeBtn.addEventListener('click', () => {
+    //         preview.removeChild(item);
+
+    //         // Input'u senkronize et
+    //         const dataTransfer = new DataTransfer();
+    //         selectedFiles.forEach(f => dataTransfer.items.add(f));
+    //         imagesInput.files = dataTransfer.files;
+    //       });
+
+    //       item.appendChild(img);
+    //       item.appendChild(removeBtn);
+    //       preview.appendChild(item);
+    //     };
+    //     reader.readAsDataURL(file);
+    //   });
+    //   // Input’u senkronize et
+    //   const dataTransfer = new DataTransfer();
+    //   selectedFiles.forEach(f => dataTransfer.items.add(f));
+    //   imagesInput.files = dataTransfer.files;
+
+    //   errorMsg.textContent = "";
+    //   console.log(imagesInput.files);
+
+    // });
+
+    // const input = document.getElementById('images');
+    // const preview = document.getElementById('preview');
+    // const trigger = document.getElementById('uploadTrigger');
+    // const errorMsg = document.getElementById('errorMsg');
+    // let selectedFiles = [];
+
+    // trigger.addEventListener('click', () => {
+    //     input.click();
+    //     input.value = "";
+    // });
+
+    // input.addEventListener('change', () => {
+    //   errorMsg.textContent = "";
+
+    //   if (selectedFiles.length + input.files.length > 5) {
+    //     errorMsg.textContent = "En fazla 15 görsel yükleyebilirsiniz.";
+    //     return;
+    //   }
+
+    //   Array.from(input.files).forEach(file => {
+    //     selectedFiles.push(file);
+
+    //     const reader = new FileReader();
+    //     reader.onload = e => {
+    //       const item = document.createElement('div');
+    //       item.classList.add('preview-item');
+
+    //       const img = document.createElement('img');
+    //       img.src = e.target.result;
+
+    //       const removeBtn = document.createElement('button');
+    //       removeBtn.innerHTML = "×";
+    //       removeBtn.classList.add('remove-btn');
+
+    //       removeBtn.addEventListener('click', () => {
+    //         preview.removeChild(item);
+    //         selectedFiles = selectedFiles.filter(f => f !== file);
+    //       });
+
+    //       item.appendChild(img);
+    //       item.appendChild(removeBtn);
+    //       preview.appendChild(item);
+    //     };
+    //     reader.readAsDataURL(file);
+    //   });
+
+    //   console.log(input.value);
+    // });
+
 </script>
 <script src="~/lib/selectize/js/selectize.min.js"></script>

@@ -1,4 +1,4 @@
-﻿namespace Shared.Dtos
+﻿namespace Shared.Dtos.Statistics
 {
     public class StatisticsModelDTO
     {
@@ -14,5 +14,7 @@
         public int? CountOfShopRequests { get; set; }
         public List<PropertyStatusCountDto>? CountOfListingsPropertyStatuses { get; set; }
         public List<PropertyStatusCountDto>? CountOfRequestsPropertyStatuses { get; set; }
+        public FinalizedDto CountOfFinalizedListings { get; set; }
+        public FinalizedDto CountOfFinalizedRequests { get; set; }
     }
 }

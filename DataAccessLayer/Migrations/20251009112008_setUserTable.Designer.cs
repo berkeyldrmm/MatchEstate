@@ -4,6 +4,7 @@ using DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MatchEstateDbContext))]
-    partial class MatchEstateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251009112008_setUserTable")]
+    partial class setUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -706,7 +709,7 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = "7ccbcb73-1a84-40bc-8361-0ec4dacc26ad",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3F80B602-7C9B-476D-A1B4-8746974528D9",
+                            ConcurrencyStamp = "e09e8e8b-1ed7-4a2f-b2fd-92e47228fa45",
                             Email = "berke.yildirimm44@gmail.com",
                             EmailConfirmed = false,
                             IncomeExpenses = "[]",

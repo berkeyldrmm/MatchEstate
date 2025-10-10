@@ -204,14 +204,15 @@ namespace DataAccessLayer.Context
                 entity.HasData(
                     new User
                     {
-                        Id = Guid.NewGuid().ToString(),
+                        Id = "7ccbcb73-1a84-40bc-8361-0ec4dacc26ad",
                         UserName = "adminBerke",
                         NormalizedUserName = "ADMIN",
                         Email = "berke.yildirimm44@gmail.com",
                         PhoneNumber = "5537531375",
                         NameSurname = "Berke Yıldırım",
-                        PasswordHash = hash.HashPassword(null, "Qwerty.123"),
-                        SecurityStamp = Guid.NewGuid().ToString("D")
+                        PasswordHash = "AQAAAAIAAYagAAAAEPwZZFryFv96B2o0ftzaEM8gLstcedFD1pQZD5GUDi/LcS+v4Ejpk0In1C61ox+/Xg==",
+                        SecurityStamp = "8da61664-d01e-420f-b884-b2fbb4ffdb4d",
+                        ConcurrencyStamp = "3F80B602-7C9B-476D-A1B4-8746974528D9"
                     });
             });
 

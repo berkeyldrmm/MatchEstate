@@ -8,33 +8,27 @@ namespace MatchEstate.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync(IPropertyListingDetailDto dto)
         {
-            string view = "";
             switch (dto.PropertyTypeId)
             {
                 case 1:
-                    view = "Shop";
                     if(dto is ShopListingDetailDto)
-                        return View(view, dto);
+                        return View("Shop", dto);
                     break;
                 case 2:
-                    view = "Land";
                     if (dto is LandListingDetailDto)
-                        return View(view, dto);
+                        return View("Land", dto);
                     break;
                 case 3:
-                    view = "CommercialUnit";
                     if (dto is CommercialUnitListingDetailDto)
-                        return View(view, dto);
+                        return View("CommercialUnit", dto);
                     break;
                 case 4:
-                    view = "Farmland";
-                    if (dto is FarmlandListingDetailDto)
-                        return View(view, dto);
+                    if (dto is ApartmentListingDetailDto)
+                        return View("Apartment", dto);
                     break;
                 case 5:
-                    view = "Apartment";
-                    if (dto is ApartmentListingDetailDto)
-                        return View(view, dto);
+                    if (dto is FarmlandListingDetailDto)
+                        return View("Farmland", dto);
                     break;
                 default:
                     break;

@@ -82,12 +82,64 @@
     .selectize-input.items.not-full.has-options::after{
         display:none;
     }
+
+    .preview-item {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        margin: 5px;
+    }
+
+    .preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        z-index: 10;
+        
+        background-color: rgba(255, 0, 0);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        padding: 0;
+    }
+
+    .remove-btn:hover {
+        background-color: rgba(255, 0, 0, 0.8);
+    }
+
+    .upload-btn {
+      display: block;
+      padding: 10px 20px;
+      background-color: #4CB9E7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .upload-btn:hover, input[type="submit"]:hover {
+        opacity: 0.8;
+        transition: all 0.3s;
+        color: #fff !important;
+    }
 </style>
 
 <div class="hero-title">
     <h2>Update Listing (@Model.ListingTitle)</h2>
 </div>
-<form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="updatelisting" method="post">
+<form class="mt-4 mb-4 mx-4" asp-controller="propertylisting" asp-action="updatelisting" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="ListingId" />
     <div class="form-group">
         <div class="wrapper">
@@ -132,7 +184,6 @@
     </div>
     <hr />
     <div class="form-group">
-        <br />
         <label>Listing title</label>
         <input asp-for="ListingTitle" type="text" class="form-control" placeholder="Title">
     </div>
@@ -175,31 +226,54 @@
     </div>
     <hr />
 
-    <div class="form-group">
-        <label>Price</label>
-        <div class="input-group w-25">
-            <input asp-for="Price" type="number" class="form-control" id="price" />
-            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+    <div class="d-grid">
+        <div class="row">
+            @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default" })
+            <div class="col-4">
+                <label>Price</label>
+                <div class="input-group">
+                    <input asp-for="Price" type="number" placeholder="Price" class="form-control" id="price" />
+                    <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                </div>
+            </div>
+            <div class="col-4">
+                <label>Commission Fee</label>
+                <div class="input-group">
+                    <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="commission" />
+                    <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                </div>
+            </div>
         </div>
-
     </div>
-
-    @await Component.InvokeAsync("GetPropertyStatusesComponent", new { view = "Default", bgColor = "#4CB9E7", propertyStatusId = Model.PropertyStatusId })
-
-    <div class="form-group">
-        <label>Commission Fee</label>
-        <div class="input-group w-25">
-            <input asp-for="Commission" type="number" placeholder="Commission fee" class="form-control w-25" id="commission" />
-            <span class="input-group-text"><i class="fa fa-dollar"></i></span>
-        </div>
-    </div>
-
+    
     <div class="form-group">
         <label>Other Details</label>
         <textarea asp-for="Details" class="form-control" placeholder="Details..."></textarea>
     </div>
-    <div class="form-group">
+    <hr />
+
+    <label>Listing Images</label>
+    <input type="file" id="newImages" asp-for="NewImages" multiple accept="image/*" style="display:none;">
+    <button type="button" id="addNewImages" class="upload-btn">Select images</button>
+
+    <div>
+        <div id="allPreview" style="display:flex; gap:10px; flex-wrap:wrap;">
+            @foreach (var img in Model.ExistingImages)
+            {
+                <div class="preview-item" data-publicid="@img">
+                    <img src="https://res.cloudinary.com/dzn0ydj19/image/upload/@Model.ListingId/@img" />
+                    <button type="button" class="remove-btn">×</button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="deletedIdsContainer"></div>
+
+    <div class="form-group d-flex">
         <input type="submit" class="form-control btn w-25" style="background-color:#4CB9E7;color:#ffffff;" value="Update listing" />
+        <div id="loadingDiv" style="margin-left: 10px;">
+        </div>
     </div>
 
 </form>
@@ -266,6 +340,10 @@
         $("#sqaureMetersize").on("keyup", () => {
             setPricePerMetersize()
         });
+
+        $("form").on("submit", ()=>{
+            $("#loadingDiv").html('<div class="show d-flex align-items-center justify-content-center w-100"><div class="spinner-border text-primary text-center" role = "status"><span class="sr-only" > Loading...</span></div></div>');
+        });
     });
 
     function propertyForm() {
@@ -325,5 +403,87 @@
     {
         sendNotification("error", "@Html.Raw(ViewBag.error)");
     }
+
+    const addBtn = document.getElementById('addNewImages');
+    const newInput = document.getElementById('newImages');
+    const allPreview = document.getElementById('allPreview');
+    const deletedIdsContainer= document.getElementById('deletedIdsContainer');
+
+    let newFiles = [];
+    let deletedPublicIds = [];
+
+    addBtn.addEventListener('click', () => newInput.click());
+
+    newInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+
+        files.forEach(file => {
+            newFiles.push(file);
+
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('preview-item');
+                wrapper.style.position = 'relative';
+
+                const img = document.createElement('img');
+                img.src = ev.target.result;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = "button";
+                removeBtn.textContent = "×";
+                removeBtn.classList.add('remove-btn');
+
+                removeBtn.addEventListener('click', () => {
+                    allPreview.removeChild(wrapper);
+                    newFiles = newFiles.filter(f => f !== file);
+                });
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(removeBtn);
+                allPreview.appendChild(wrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        const dataTransfer = new DataTransfer();
+        newFiles.forEach(f => dataTransfer.items.add(f));
+        newInput.files = dataTransfer.files;
+    });
+
+    allPreview.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const wrapper = e.target.parentElement;
+            const publicId = wrapper.dataset.publicid;
+
+            if (publicId) {
+                deletedPublicIds.push(publicId);
+                updateHiddenInputs();
+            }
+            allPreview.removeChild(wrapper);
+        });
+    });
+
+    function updateHiddenInputs() {
+        deletedIdsContainer.innerHTML = '';
+
+        deletedPublicIds.forEach((publicId, index)=> {
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = `DeletingImages[${index}]`;
+            hiddenInput.value = publicId;
+            deletedIdsContainer.appendChild(hiddenInput);
+        });
+    }
+
+    function senchronizeInput(){
+        const dataTransfer = new DataTransfer();
+        newFiles.forEach(f => dataTransfer.items.add(f));
+        newInput.files = dataTransfer.files;
+    }
+
 </script>
 <script src="~/lib/selectize/js/selectize.min.js"></script>

@@ -1,0 +1,51 @@
+﻿ul.d-grid {
+    font-size: 14px;
+}
+
+li {
+    padding: 5px 0;
+}
+
+.carousel-inner img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.content {
+    margin-left: 0;
+    width: 100%;
+}
+
+.info-table strong {
+    word-break: break-word;
+}
+
+.hero-title h2 {
+    word-break: break-word;
+}
+
+/* Mobil Sıralama için @media Query */
+@media (max-width: 767.98px) {
+    .row.responsive-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-wrapper {
+        display: contents;
+    }
+
+    .image-block {
+        order: 1; /* Görseller en üstte */
+    }
+
+    .info-wrapper {
+        order: 2; /* İlan bilgileri ikinci sırada */
+        margin-top: 1.5rem; /* Üstündeki görselle arasına boşluk koyalım */
+    }
+
+    .details-block {
+        order: 3; /* Detaylar en altta */
+    }
+}

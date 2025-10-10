@@ -38,4 +38,6 @@ public partial class PropertyListing
     public string? PropertyRequestId { get; set; }
     public PropertyRequest? PropertyRequest { get; set; }
     public string? Images { get; set; }
+    public string? ShareToken { get; set; }
+    public DateTime? TokenExpirationDate { get; set; }
 }

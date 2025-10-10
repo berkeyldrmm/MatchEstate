@@ -1,0 +1,182 @@
+﻿@{
+    Layout = null;
+}
+
+@using Newtonsoft.Json
+@using Shared.Dtos.Abstractions
+@model IPropertyListingDetailDto
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.title</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <link href="https://fonts.googleapis.com/css2?family=Coustard:wght@400;900&display=swap" rel="stylesheet">
+
+    @* <link href="img/favicon.ico" rel="icon"> *@
+
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/ShareListingStyle.css" rel="stylesheet">
+
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/js/sendNotification.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="notification-box d-flex flex-column align-items-end justify-content-center position-fixed w-100 p-3" style="z-index: 50; margin-top: 65px;"></div>
+        <div class="content">
+            @{
+                if (ViewBag.error != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="position:fixed;z-index:1000;top:10px;right:10px;">
+                        <strong>Error!</strong> @ViewBag.error
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                else
+                {
+                    <div class="hero-title" style="padding-left:0">
+                        <h2 class="mx-auto">@Model.Title</h2>
+                    </div>
+
+                    <div class="single-property section py-4 px-md-5">
+                        <div class="container">
+                            <div class="row responsive-row">
+
+                                <div class="col-md-7 content-wrapper">
+                                    <div class="image-block">
+                                        <div class="main-image text-center">
+                                            @{
+                                                var images = JsonConvert.DeserializeObject<List<string>>(Model.Images) ?? new List<string>();
+                                            }
+                                            <div id="image-carousel" class="carousel slide" data-bs-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    @for (int i = 0; i < images.Count; i++)
+                                                    {
+                                                        <div class="carousel-item@(i == 0 ? " active" : "")">
+                                                            <img class="d-block w-100 rounded"
+                                                                 src="@($"https://res.cloudinary.com/dzn0ydj19/image/upload/{Model.Id}/{images[i]}")"
+                                                                 alt="Product image @(i + 1)">
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#image-carousel" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Previous</span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#image-carousel" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Next</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="details-block" style="padding-left: 12px;">
+                                        <div class="main-content mt-4">
+                                            <h4 class="mb-3">Details</h4>
+                                            <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 info-wrapper">
+                                <div class="info-table">
+                                    <ul class="d-grid list-unstyled">
+                                        <li class="row">
+                                            <strong class="col-5">Client Name Surname</strong>|
+                                            <span class="col-6">@Model.ClientNameSurname</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Client Phone Number</strong>|
+                                            <span class="col-6">@Model.ClientPhoneNumber</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Client Email Address</strong>|
+                                            <span class="col-6">@Model.ClientEmailAddress</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Property Type</strong>|
+                                            <span class="col-6">@Model.PropertyType</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Property Status</strong>|
+                                            <span class="col-6">@Model.PropertyStatus</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Address</strong>|
+                                            <span class="col-6">@Model.Address</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Price</strong>|
+                                            <span class="col-6">@Model.Price</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Commission</strong>|
+                                            <span class="col-6">@Model.Commission</span>
+                                        </li>
+                                        <li class="row">
+                                            <strong class="col-5">Status</strong>|
+                                            <span class="col-6">@(Model.DealStatus ? "Finalized" : "Waiting for client")</span>
+                                        </li>
+                                        @if (Model.DealStatus)
+                                        {
+                                            <li class="row">
+                                                <strong class="col-5">Earning</strong>|
+                                                <span class="col-6">@Model.Earning</span>
+                                            </li>
+                                        }
+                                        <li class="row">
+                                            <strong class="col-5">Added Date</strong>|
+                                            <span class="col-6">@Model.AddedDate</span>
+                                        </li>
+                                        @await Component.InvokeAsync("ListingDetailComponent", new { dto = Model })
+                                    </ul>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="text-center pb-3"><i class="fa-solid fa-circle-info"></i> Danışanların görüntelemesi için tasarlanmıştır.</div>
+                }
+            }
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="bg-secondary rounded-top p-4">
+                <div class="row">
+                    <div class="col-12 col-sm-6 text-center mx-auto">
+                        &copy; <a href="/">MatchEstate</a>, All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/chart/chart.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="~/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="~/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+</body>
+</html>

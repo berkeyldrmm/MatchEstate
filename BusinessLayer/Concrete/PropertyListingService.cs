@@ -32,7 +32,7 @@ namespace BusinessLayer.Concrete
             _imageService = imageService;
         }
 
-        public void DeleteRange(string userId, IEnumerable<string> Ids)
+        public async Task DeleteRange(string userId, IEnumerable<string> Ids)
         {
             var items = _listingRepository.GetRange(userId, Ids);
             this.DeleteRange(items);
@@ -89,14 +89,9 @@ namespace BusinessLayer.Concrete
             var listing = ListingMapper.MapToListingEntity(dto, userId, property.ListingId, images);
 
             var listingResult = await _listingRepository.Insert(listing);
-            if (!listingResult)
-            {
-                return false;
-            }
-
             int saved = await _unitOfWork.SaveChanges();
 
-            return saved > 0;
+            return listingResult && saved > 0;
         }
 
         public async Task<IEnumerable<PropertyListing>> GetAllWithClient(string userId)
@@ -202,7 +197,8 @@ namespace BusinessLayer.Concrete
             if (listing == null)
                 return false;
 
-            var updatedListing = ListingMapper.MapToPropertyListing(dto, listing, userId);
+            var images = await _imageService.UpdateListingImages(listing.Id, dto.NewImages, dto.DeletingImages);
+            var updatedListing = ListingMapper.MapToPropertyListing(dto, listing, userId, images);
 
             var result = await _listingRepository.Update(listing);
             int saved = await _unitOfWork.SaveChanges();
@@ -218,6 +214,17 @@ namespace BusinessLayer.Concrete
         public async Task<IEnumerable<PropertyListing>> GetListingsByClient(string userId, string clientId)
         {
             return await _listingRepository.GetListingsByClient(userId, clientId);
+        }
+
+        public async Task<string> CreateShareLink(string userId, string id)
+        {
+            var token = await _listingRepository.GetShareToken(userId, id);
+            return $"https://localhost:7191/propertylisting/sharelisting/{id}?shareToken={token}";
+        }
+
+        public async Task<IPropertyListingDetailDto> GetListingByShareToken(string id, string shareToken)
+        {
+            return await _listingRepository.GetListingByShareToken(id, shareToken);
         }
     }
 }

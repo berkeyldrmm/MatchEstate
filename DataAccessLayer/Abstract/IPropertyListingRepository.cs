@@ -22,5 +22,8 @@ namespace DataAccessLayer.Abstract
         public UpdateListingDto? GetListingForUpdate(string userId, string id);
         public Task<IPropertyListingDetailDto> GetListingDetail(string userId, string id);
         public Task<IEnumerable<PropertyListing>> GetListingsByClient(string userId, string clientId);
+        public Task<string> GetShareToken(string userId, string id);
+        public Task<string> CreateShareToken(string userId, string id, int expirationInDays);
+        public Task<IPropertyListingDetailDto> GetListingByShareToken(string id, string shareToken);
     }
 }

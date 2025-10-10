@@ -4,6 +4,7 @@ using DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MatchEstateDbContext))]
-    partial class MatchEstateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251009111604_AddShareToken")]
+    partial class AddShareToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -706,7 +709,7 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = "7ccbcb73-1a84-40bc-8361-0ec4dacc26ad",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3F80B602-7C9B-476D-A1B4-8746974528D9",
+                            ConcurrencyStamp = "3bd4cfb5-28af-4c62-95df-18341014441a",
                             Email = "berke.yildirimm44@gmail.com",
                             EmailConfirmed = false,
                             IncomeExpenses = "[]",
@@ -714,7 +717,7 @@ namespace DataAccessLayer.Migrations
                             LockoutEnabled = false,
                             NameSurname = "Berke Yıldırım",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPwZZFryFv96B2o0ftzaEM8gLstcedFD1pQZD5GUDi/LcS+v4Ejpk0In1C61ox+/Xg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPsUvfl9YJ8IYNH7cvKO437gtZhipOxiHhvmMnyWSuldked8mbdD+sVvaHj9Lc4uEg==",
                             PhoneNumber = "5537531375",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "8da61664-d01e-420f-b884-b2fbb4ffdb4d",

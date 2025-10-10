@@ -3,6 +3,149 @@
 @model IPropertyListingDetailDto
 
 <style>
+        #openSharePopupBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            background-color: #f1f1f1;
+        }
+        
+        #openSharePopupBtn:hover {
+            background-color: #e7e7e7;
+        }
+
+        /* Arka Plan Karartma (Overlay) */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none; /* JS ile açılacak */
+        }
+
+        /* Popup Ana Konteyneri */
+        .share-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1001;
+            overflow: hidden;
+            display: none; /* JS ile açılacak */
+        }
+        
+        /* Popup Başlık Kısmı */
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .popup-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .popup-close-btn {
+            font-size: 24px;
+            color: #606060;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        
+        /* Popup İçerik Alanı */
+        .popup-content {
+            padding: 24px;
+        }
+
+        /* Link Input ve Kopyala Butonu */
+        .link-container {
+            display: flex;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 40px;
+        }
+
+        #shareLinkInput {
+            flex-grow: 1;
+            border: none;
+            padding: 0 16px;
+            font-size: 14px;
+            background-color: #f1f1f1;
+            outline: none;
+            color: #333;
+        }
+
+        #copyLinkBtn {
+            border: none;
+            background-color: #f1f1f1;
+            padding: 0 16px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #065fd4;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        #copyLinkBtn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Sosyal Medya Paylaşım Alanı */
+        .social-share-container {
+            margin-top: 24px;
+        }
+        
+        .social-share-container p {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #606060;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #030303;
+        }
+
+        .social-icon i {
+            font-size: 40px;
+            color: #25D366; /* WhatsApp Rengi */
+        }
+        
+        .social-icon span {
+            font-size: 12px;
+            margin-top: 6px;
+        }
+        
+        /* JS tarafından eklenecek 'active' class'ı */
+        .popup-overlay.active,
+        .share-popup.active {
+            display: block;
+        }
+
     h4{
         margin-right:25px;
     }
@@ -39,7 +182,7 @@
                             {
                                 <div class="carousel-item@(i == 0 ? " active" : "")">
                                     <img class="d-block w-100" 
-                                        src="@($"https://res.cloudinary.com/dzn0ydj19/image/upload/{images[i]}")" 
+                                        src="@($"https://res.cloudinary.com/dzn0ydj19/image/upload/{Model.Id}/{images[i]}")" 
                                         alt="Product image @(i+1)">
                                 </div>
                             }
@@ -59,7 +202,32 @@
                     <h4>Details</h4>
                     <p class="card-text">@(Model.Details != null && Model.Details != "" ? Model.Details : Html.Raw("<p class='text-warning'>No details</p>"))</p>
                 </div>
-                <hr style="margin-top:50px;" />
+                <button id="openSharePopupBtn" class="mt-3">Paylaş 🚀</button>
+
+                <div class="popup-overlay" id="popupOverlay"></div>
+
+                <div class="share-popup" id="sharePopup">
+                    <div class="popup-header">
+                        <h2>Paylaş</h2>
+                        <button class="popup-close-btn" id="closePopupBtn">&times;</button>
+                    </div>
+                    <div class="popup-content">
+                        <div class="link-container">
+                            <input type="text" id="shareLinkInput" value="Bağlantı yükleniyor..." readonly>
+                            <button id="copyLinkBtn"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                        <div class="social-share-container">
+                            <p>Şurada paylaş:</p>
+                            <div class="social-icons">
+                                <a href="#" class="social-icon" id="whatsappShareLink" target="_blank">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-4" />
                 <h3 class="card-title" style="margin-top:50px;">Suitable Requests</h3>
                 <div>
                     @await Component.InvokeAsync("GetRequestsOfListingComponent", new { listingId = Model.Id })
@@ -135,4 +303,81 @@
         autoplayTimeout:3000
       });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+            const openSharePopupBtn = document.getElementById('openSharePopupBtn');
+            const closePopupBtn = document.getElementById('closePopupBtn');
+            const popupOverlay = document.getElementById('popupOverlay');
+            const sharePopup = document.getElementById('sharePopup');
+            const shareLinkInput = document.getElementById('shareLinkInput');
+            const copyLinkBtn = document.getElementById('copyLinkBtn');
+            const whatsappShareLink = document.getElementById('whatsappShareLink');
+
+            // BURAYI DEĞİŞTİRİN: Kendi API endpoint adresiniz
+            const API_ENDPOINT = 'https://localhost:7191/propertylisting/createsharelink/@Model.Id';
+
+            // --- Fonksiyonlar ---
+
+            // API'den paylaşım linkini çeken asenkron fonksiyon
+            const fetchShareLink = async () => {
+                try {
+                    // Gerçek bir API isteği
+                    const response = await fetch(API_ENDPOINT);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const data = await response.json();
+                    return data.data; // API'nizin 'url' adında bir alan döndürdüğünü varsayıyoruz
+                
+                } catch (error) {
+                    console.error('Bağlantı alınamadı:', error);
+                    return 'Bağlantı alınamadı!'; // Hata durumunda kullanıcıya gösterilecek metin
+                }
+            };
+
+            // Popup'ı açan fonksiyon
+            const openPopup = async () => {
+                popupOverlay.classList.add('active');
+                sharePopup.classList.add('active');
+                
+                // Input'u başlangıç durumuna getir
+                shareLinkInput.value = 'Bağlantı yükleniyor...';
+                copyLinkBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
+                
+                // Linki API'den çek ve alanları güncelle
+                const link = await fetchShareLink();
+                shareLinkInput.value = link;
+
+                // WhatsApp paylaşım linkini oluştur (URL'yi kodlayarak)
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(link)}`;
+                whatsappShareLink.href = whatsappUrl;
+            };
+
+            // Popup'ı kapatan fonksiyon
+            const closePopup = () => {
+                popupOverlay.classList.remove('active');
+                sharePopup.classList.remove('active');
+            };
+
+            // Linki panoya kopyalayan fonksiyon
+            const copyLinkToClipboard = () => {
+                // Input'un readonly olmasına rağmen kopyalama yapılabilir
+                navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+                    // Başarılı olunca kullanıcıya geri bildirim ver
+                    copyLinkBtn.textContent = 'Kopyalandı!';
+                    setTimeout(() => {
+                        copyLinkBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
+                    }, 2000); // 2 saniye sonra eski haline dön
+                }).catch(err => {
+                    console.error('Kopyalama başarısız oldu: ', err);
+                });
+            };
+
+            // --- Olay Dinleyicileri (Event Listeners) ---
+
+            openSharePopupBtn.addEventListener('click', openPopup);
+            closePopupBtn.addEventListener('click', closePopup);
+            popupOverlay.addEventListener('click', closePopup); // Dışarı tıklayınca kapat
+            copyLinkBtn.addEventListener('click', copyLinkToClipboard);
+        });
 </script>

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using BusinessLayer.Services;
 using Shared.Wrappers;
 using Shared.Dtos.PropertyListing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MatchEstate.Controllers
 {
@@ -51,7 +52,7 @@ namespace MatchEstate.Controllers
         public async Task<IActionResult> DeleteListing(string idsJson)
         {
             var listingIds = JsonConvert.DeserializeObject<List<string>>(idsJson);
-            _listingService.DeleteRange(UserId, listingIds);
+            await _listingService.DeleteRange(UserId, listingIds);
             var result = await _unitOfWork.SaveChanges();
             var response = new BaseResponse();
 
@@ -179,6 +180,32 @@ namespace MatchEstate.Controllers
                 }
             };
             return Ok(response);
+        }
+
+        [Route("[controller]/[action]/{id}")]
+        public async Task<IActionResult> CreateShareLink(string id)
+        {
+            var link = await _listingService.CreateShareLink(UserId, id);
+            var response = new DataResponse<string>()
+            {
+                Success = true,
+                Message = "Share link created successfully.",
+                Data = link
+            };
+
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [Route("[controller]/[action]/{id}")]
+        public async Task<IActionResult> ShareListing(string id, [FromQuery]string shareToken)
+        {
+            ViewBag.title = "Client Listing Detail Page";
+            var dto = await _listingService.GetListingByShareToken(id, shareToken);
+            if (dto is not null) return View(dto);
+
+            ViewBag.error = "Görüntülemek istediğiniz ilan kaldırılmış veya paylaşım süresi dolmuş. Emlakçınızdan tekrar link paylaşmasını isteyiniz.";
+            return View();
         }
     }
 }

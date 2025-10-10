@@ -152,7 +152,7 @@ namespace BusinessLayer.Concrete
             expressions.Add(t => t.District.Contains("\""+ilan.District+"\"") && t.City == ilan.City);
             expressions.Add(t => t.MinimumPrice <= ilan.Price && t.MaximumPrice >= ilan.Price);
 
-            if (ilan.PropertyTypeId == 5)
+            if (ilan.PropertyTypeId == 4)
             {
                 expressions.Add(t => t.NumberOfRooms.Contains("\""+ilan.Apartment.NumberOfRooms+"\""));
             }

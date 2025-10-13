@@ -47,5 +47,6 @@ namespace Shared.Dtos.PropertyListing
         public string? Commission { get; set; } = string.Empty;
         public string? Details { get; set; } = string.Empty;
         public List<IFormFile> Images { get; set; }
+        public string? LocationUrl { get; set; } = string.Empty;
     }
 }

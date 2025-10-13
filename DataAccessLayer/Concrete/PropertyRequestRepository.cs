@@ -174,9 +174,7 @@ namespace DataAccessLayer.Concrete
             request.DealStatus = true;
             request.DealDate = DateTime.Now;
 
-            var result = await Update(request);
-
-            return result;
+            return await Update(request);
         }
 
         public async Task<IEnumerable<PropertyRequest>> GetRequestsNotDeal(string userId)

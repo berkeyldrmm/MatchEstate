@@ -313,71 +313,56 @@
             const copyLinkBtn = document.getElementById('copyLinkBtn');
             const whatsappShareLink = document.getElementById('whatsappShareLink');
 
-            // BURAYI DEĞİŞTİRİN: Kendi API endpoint adresiniz
             const API_ENDPOINT = 'https://localhost:7191/propertylisting/createsharelink/@Model.Id';
 
-            // --- Fonksiyonlar ---
-
-            // API'den paylaşım linkini çeken asenkron fonksiyon
             const fetchShareLink = async () => {
                 try {
-                    // Gerçek bir API isteği
                     const response = await fetch(API_ENDPOINT);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     const data = await response.json();
-                    return data.data; // API'nizin 'url' adında bir alan döndürdüğünü varsayıyoruz
+                    return data.data;
                 
                 } catch (error) {
                     console.error('Bağlantı alınamadı:', error);
-                    return 'Bağlantı alınamadı!'; // Hata durumunda kullanıcıya gösterilecek metin
+                    return 'Bağlantı alınamadı!';
                 }
             };
 
-            // Popup'ı açan fonksiyon
             const openPopup = async () => {
                 popupOverlay.classList.add('active');
                 sharePopup.classList.add('active');
                 
-                // Input'u başlangıç durumuna getir
                 shareLinkInput.value = 'Bağlantı yükleniyor...';
                 copyLinkBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
                 
-                // Linki API'den çek ve alanları güncelle
                 const link = await fetchShareLink();
                 shareLinkInput.value = link;
 
-                // WhatsApp paylaşım linkini oluştur (URL'yi kodlayarak)
                 const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(link)}`;
                 whatsappShareLink.href = whatsappUrl;
             };
 
-            // Popup'ı kapatan fonksiyon
             const closePopup = () => {
                 popupOverlay.classList.remove('active');
                 sharePopup.classList.remove('active');
             };
 
-            // Linki panoya kopyalayan fonksiyon
             const copyLinkToClipboard = () => {
-                // Input'un readonly olmasına rağmen kopyalama yapılabilir
                 navigator.clipboard.writeText(shareLinkInput.value).then(() => {
-                    // Başarılı olunca kullanıcıya geri bildirim ver
                     copyLinkBtn.textContent = 'Kopyalandı!';
                     setTimeout(() => {
                         copyLinkBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
-                    }, 2000); // 2 saniye sonra eski haline dön
+                    }, 2000);
                 }).catch(err => {
                     console.error('Kopyalama başarısız oldu: ', err);
                 });
             };
 
-            // --- Olay Dinleyicileri (Event Listeners) ---
-
             openSharePopupBtn.addEventListener('click', openPopup);
             closePopupBtn.addEventListener('click', closePopup);
-            popupOverlay.addEventListener('click', closePopup); // Dışarı tıklayınca kapat
+            popupOverlay.addEventListener('click', closePopup);
             copyLinkBtn.addEventListener('click', copyLinkToClipboard);
         });
 </script>

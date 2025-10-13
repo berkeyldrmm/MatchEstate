@@ -419,14 +419,19 @@
             </div>
         </div>
     </div>
-
+    <hr />
+    <div class="form-group">
+        <label>Konum Linki</label>
+        <input asp-for="LocationUrl" type="text" placeholder="Konum" class="form-control" />
+    </div>
+    <hr />
     <div class="form-group">
         <label>Other Details</label>
         <textarea asp-for="Details" class="form-control" placeholder="Details..."></textarea>
     </div>
     <hr />
     <div class="form-group mt-4">
-        <label for="images">Listing images</label>
+        <label for="images">Listing Images</label>
         <input type="file" id="images" asp-for="Images" multiple>
         <button type="button" class="upload-btn" id="uploadTrigger">Select images</button>
         <div class="error" id="errorMsg"></div>

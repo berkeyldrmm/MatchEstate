@@ -19,6 +19,7 @@ public class UpdateListingDto
     public string Price { get; set; }
     public string? Commission { get; set; } = string.Empty;
     public string? Details { get; set; } = string.Empty;
+    public string? LocationUrl { get; set; } = string.Empty;
     public List<string> ExistingImages { get; set; }
     public List<string> DeletingImages { get; set; } = new List<string>();
     public List<IFormFile> NewImages { get; set; }

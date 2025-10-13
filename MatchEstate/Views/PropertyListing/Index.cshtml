@@ -117,7 +117,9 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                            <div id="noListingDiv" class="d-flex justify-content-center"></div>
+                            <div id="noListingDiv">
+                                <div class='alert-warning text-center'>There is no listing.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -260,16 +262,15 @@
         .then(res=>res.json())
         .then(data=>{
             requests = data.data;
-            console.log(requests);
+            let html = "<option value='0' selected>Select property request</option>";
             if(requests.length != 0){
-                let html = "<option value='0' selected>Select property request</option>";
                 requests.forEach(request=>{
                     html += `
                         <option value='${request.id}'>${request.title} - ${request.propertyType}</option>
                     `;
-                    $("#select-request").html(html)
                 })
             }
+            $("#select-request").html(html);
         })
 
         $("#earning-footer").html(`<button type="button" style="color:#ffffff;" class="btn btn-success" data-bs-dismiss="modal" onclick="finalizeListing('${id}')">Finalize</button>
@@ -332,38 +333,41 @@
     function showlistings(listings) {
         let html="";
         if(listings.length == 0){
-            $("#noListingDiv").html(`<div class='alert-warning text-center'>There is no listing.</div>`);
+            $("#noListingDiv").css("display", "block");
             $("tbody").html("");
         }
-        for (i = 0; i < listings.length; i++) {
-            if (listings[i] != null || listings[i] != undefined) {
-                html += `
-                           <tr ${listings[i].status ? "style=background-color:#95d5b2;" : ""}>
-                              <td><input name="listings" class="form-check-input" type="checkbox" value=${listings[i].id}></td>
-                              <td>${listings[i].listingTitle}</td>
-                              <td>${listings[i].clientNameSurname}</td>
-                              <td>${listings[i].propertyType}</td>
-                              <td>${listings[i].price}<i class="fa fa-dollar"></i></td>
-                              <td>${listings[i].commission}<i class="fa fa-dollar"></i></td>
-                              <td>${listings[i].propertyStatusName}</td>
-                              <td>${listings[i].earning}<i class="fa fa-dollar"></i></td>
-                              <td>${listings[i].district}, ${listings[i].city}</td>
-                              <td>${listings[i].addedDate}</td>
-                              <td><a class="btn btn-sm btn-warning" style="color:#ffffff;" href="propertylisting/updatelisting/${listings[i].id}"><i class="fa-solid fa-gear"></i></a></td>
-                              <td><a class="btn btn-sm btn-primary" href="propertylisting/detail/${listings[i].id}">Details</a></td>
-                              <td>
-                                  <div class="d-flex justify-content-center align-items-center">
-                                       ${listings[i].status ? '<div>Finalized</div>' : `<button type="button" style="height:fit-content;margin-left:10px;color:#ffffff;" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#sellListingModal" onclick="sellListingModal('${listings[i].id}', '${listings[i].propertyTypeId}')">Finalize</button>`}
-                                  </div>
-                              </td>
-                           </tr>
-                        `
-                $("tbody").html(html);
-            }
-            else {
-                break;
-            }
-        };
+        else{
+            $("#noListingDiv").css("display", "none");
+            for (i = 0; i < listings.length; i++) {
+                if (listings[i] != null || listings[i] != undefined) {
+                    html += `
+                               <tr ${listings[i].status ? "style=background-color:#95d5b2;" : ""}>
+                                  <td><input name="listings" class="form-check-input" type="checkbox" value=${listings[i].id}></td>
+                                  <td>${listings[i].listingTitle}</td>
+                                  <td>${listings[i].clientNameSurname}</td>
+                                  <td>${listings[i].propertyType}</td>
+                                  <td>${listings[i].price}<i class="fa fa-dollar"></i></td>
+                                  <td>${listings[i].commission}<i class="fa fa-dollar"></i></td>
+                                  <td>${listings[i].propertyStatusName}</td>
+                                  <td>${listings[i].earning}<i class="fa fa-dollar"></i></td>
+                                  <td>${listings[i].district}, ${listings[i].city}</td>
+                                  <td>${listings[i].addedDate}</td>
+                                  <td><a class="btn btn-sm btn-warning" style="color:#ffffff;" href="propertylisting/updatelisting/${listings[i].id}"><i class="fa-solid fa-gear"></i></a></td>
+                                  <td><a class="btn btn-sm btn-primary" href="propertylisting/detail/${listings[i].id}">Details</a></td>
+                                  <td>
+                                      <div class="d-flex justify-content-center align-items-center">
+                                           ${listings[i].status ? '<div>Finalized</div>' : `<button type="button" style="height:fit-content;margin-left:10px;color:#ffffff;" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#sellListingModal" onclick="sellListingModal('${listings[i].id}', '${listings[i].propertyTypeId}')">Finalize</button>`}
+                                      </div>
+                                  </td>
+                               </tr>
+                            `
+                    $("tbody").html(html);
+                }
+                else {
+                    break;
+                }
+            };
+        }
     }
 
     getByFilters(1);

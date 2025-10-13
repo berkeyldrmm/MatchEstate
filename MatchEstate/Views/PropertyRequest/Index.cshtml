@@ -100,7 +100,9 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                            <div id="noRequestDiv" class="d-flex justify-content-center"></div>
+                            <div id="noRequestDiv">
+                                <div class="alert-warning text-center">There is no request.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,36 +228,39 @@
     function showRequests(requests) {
         let html = "";
         if(requests.length == 0){
-            $("#noRequestDiv").html(`<div class="alert-warning text-center">There is no request.</div>`);
+            $("#noRequestDiv").css("display", "block");
             $("tbody").html("");
         }
-        for (i = 0; i < requests.length; i++) {
-            if (requests[i] != null || requests[i] != undefined) {
-                html += `
-                         <tr ${requests[i].status ? "style=background-color:#95d5b2;" : ""}>
-                                     <td><input name="request" class="form-check-input" type="checkbox" value=${requests[i].id}></td>
-                                     <td>${requests[i].title}</td>
-                                     <td>${requests[i].nameSurname}</td>
-                                     <td>${requests[i].type}</td>
-                                     <td>${requests[i].city}</td>
-                                     <td>${requests[i].minPrice} - ${requests[i].maxPrice} <i class="fa fa-dollar"></i></td>
-                                     <td>${requests[i].propertyStatus}</td>
-                                     <td>${requests[i].addedDate}</td>
-                                     <td><a class="btn btn-sm btn-warning" style="color:#ffffff;" href="propertyrequest/updaterequest/${requests[i].id}"><i class="fa-solid fa-gear"></i></a></td>
-                                     <td><a class="btn btn-sm btn-primary" href="propertyrequest/detail/${requests[i].id}">Details</a></td>
-                                     <td>
-                                         <div class="d-flex justify-content-center align-items-center">
-                                            <div>${requests[i].status ? 'Finalized' : 'Not finalized'}</div>
-                                         </div>
-                                     </td>
-                         </tr>
-                      `
-                $("tbody").html(html);
-            }
-            else {
-                break;
-            }
-        };
+        else{
+            $("#noRequestDiv").css("display", "none");
+            for (i = 0; i < requests.length; i++) {
+                if (requests[i] != null || requests[i] != undefined) {
+                    html += `
+                             <tr ${requests[i].status ? "style=background-color:#95d5b2;" : ""}>
+                                         <td><input name="request" class="form-check-input" type="checkbox" value=${requests[i].id}></td>
+                                         <td>${requests[i].title}</td>
+                                         <td>${requests[i].nameSurname}</td>
+                                         <td>${requests[i].type}</td>
+                                         <td>${requests[i].city}</td>
+                                         <td>${requests[i].minPrice} - ${requests[i].maxPrice} <i class="fa fa-dollar"></i></td>
+                                         <td>${requests[i].propertyStatus}</td>
+                                         <td>${requests[i].addedDate}</td>
+                                         <td><a class="btn btn-sm btn-warning" style="color:#ffffff;" href="propertyrequest/updaterequest/${requests[i].id}"><i class="fa-solid fa-gear"></i></a></td>
+                                         <td><a class="btn btn-sm btn-primary" href="propertyrequest/detail/${requests[i].id}">Details</a></td>
+                                         <td>
+                                             <div class="d-flex justify-content-center align-items-center">
+                                                <div>${requests[i].status ? 'Finalized' : 'Not finalized'}</div>
+                                             </div>
+                                         </td>
+                             </tr>
+                          `
+                    $("tbody").html(html);
+                }
+                else {
+                    break;
+                }
+            };
+        }
     }
 
     getByFilters(1);

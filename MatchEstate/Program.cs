@@ -75,9 +75,6 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddHostedService<InactiveUserService>();
 
-//Cloudinary cloudinary = new Cloudinary(builder.Configuration["CLOUDINARY_URL"]);
-//cloudinary.Api.Secure = true;
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -145,20 +142,5 @@ app.MapGet("/getStatistics", (IStatisticsRepository statisticsDal, ClaimsPrincip
         CountOfFinalizedRequests = CountOfFinalizedRequests
     };
 });
-
-//app.MapGet("/cloudinary-test", () =>
-//{
-//    var env = app.Services.GetRequiredService<IWebHostEnvironment>();
-//    string wwwrootPath = env.WebRootPath;
-//    var uploadParams = new ImageUploadParams()
-//    {
-//        File = new FileDescription(Path.Combine(wwwrootPath, "img", "bg.png")),
-//        UseFilename = true,
-//        UniqueFilename = false,
-//        Overwrite = true
-//    };
-//    var uploadResult = cloudinary.Upload(uploadParams);
-//    Console.WriteLine(uploadResult.JsonObj);
-//});
 
 app.Run();

@@ -23,6 +23,7 @@ namespace BusinessLayer.Mapping
                 City = dto.City,
                 District = dto.District,
                 Neighbourhood = dto.Neighbourhood,
+                LocationUrl = dto.LocationUrl,
                 Images = JsonConvert.SerializeObject(images)
             };
             listing.PropertyTypeId = Convert.ToInt32(dto.PropertyTypeId);
@@ -72,6 +73,7 @@ namespace BusinessLayer.Mapping
                 ClientPhoneNumber = "",
                 Commission = listing.Commission.ToString().Split(",")[0],
                 RadioForClient = "0",
+                LocationUrl = listing.LocationUrl,
                 ExistingImages = JsonConvert.DeserializeObject<List<string>>(listing.Images) ?? []
             };
         }
@@ -106,6 +108,7 @@ namespace BusinessLayer.Mapping
             listing.Neighbourhood = dto.Neighbourhood;
             listing.Details = dto.Details;
             listing.Commission = Convert.ToDecimal(dto.Commission);
+            listing.LocationUrl = dto.LocationUrl;
 
             var existingImages = JsonConvert.DeserializeObject<List<string>>(listing.Images) ?? new List<string>();
             foreach (var image in dto.DeletingImages)

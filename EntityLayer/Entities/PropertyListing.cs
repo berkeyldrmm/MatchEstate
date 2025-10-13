@@ -40,4 +40,5 @@ public partial class PropertyListing
     public string? Images { get; set; }
     public string? ShareToken { get; set; }
     public DateTime? TokenExpirationDate { get; set; }
+    public string LocationUrl { get; set; }
 }

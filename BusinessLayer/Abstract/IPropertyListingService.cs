@@ -1,8 +1,6 @@
-﻿using BusinessLayer.Mapping;
-using EntityLayer.Entities;
+﻿using EntityLayer.Entities;
 using Shared.Dtos.Abstractions;
 using Shared.Dtos.PropertyListing;
-using Shared.Dtos.PropertyListing.Detail;
 
 namespace BusinessLayer.Abstract
 {

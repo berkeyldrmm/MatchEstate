@@ -1,10 +1,6 @@
-﻿using BusinessLayer.Abstract;
-using DataAccessLayer.Abstract;
-using EntityLayer.Entities;
+﻿using DataAccessLayer.Abstract;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Shared.Dtos.PropertyRequest;
 

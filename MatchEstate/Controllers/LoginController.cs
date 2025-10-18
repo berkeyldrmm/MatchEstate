@@ -1,12 +1,9 @@
-﻿using Azure.Core;
-using BusinessLayer.Concrete;
-using EntityLayer.Entities;
+﻿using EntityLayer.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Security.Claims;
 using BusinessLayer.Services;
 using Shared.Dtos.Auth;

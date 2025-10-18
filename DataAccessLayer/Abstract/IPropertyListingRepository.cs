@@ -1,9 +1,7 @@
 ﻿using EntityLayer.Entities;
 using System.Linq.Expressions;
 using Shared.Dtos.PropertyListing;
-using Shared.Dtos.PropertyListing.Detail;
 using Shared.Dtos.Abstractions;
-using Azure.Core;
 
 namespace DataAccessLayer.Abstract
 {

@@ -6,7 +6,6 @@ using BusinessLayer.Concrete.PropertyServices;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using EntityLayer.Entities;
-using Shared;
 
 namespace RealEstate.Extensions
 {

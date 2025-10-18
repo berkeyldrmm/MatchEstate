@@ -1,6 +1,5 @@
 using BusinessLayer.Validation;
 using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Context;
 using EntityLayer.Entities;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RealEstate.Extensions;
 using RealEstate.Middlewares;
 using Shared.Dtos.Statistics;

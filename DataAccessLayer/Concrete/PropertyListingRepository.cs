@@ -8,7 +8,6 @@ using Shared.Services;
 using Shared.Dtos.PropertyListing;
 using Shared.Dtos.PropertyListing.Detail;
 using Shared.Dtos.Abstractions;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete;
 

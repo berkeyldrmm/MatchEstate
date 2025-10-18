@@ -4,11 +4,8 @@ using DataAccessLayer.Abstract;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Globalization;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using Shared.Dtos.PropertyListing;
-using Shared.Dtos.PropertyListing.Detail;
 using Shared.Dtos.Abstractions;
 using BusinessLayer.Abstract.Factory;
 

@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Abstract;
 using EntityLayer.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Dtos.PropertyListing;
 using System.Security.Claims;

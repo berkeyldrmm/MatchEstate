@@ -1,13 +1,6 @@
 ﻿using BusinessLayer.Abstract;
-using DataAccessLayer;
 using DataAccessLayer.Abstract;
-using DataAccessLayer.Concrete;
 using EntityLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Shared.Dtos.Client;
 
 namespace BusinessLayer.Concrete

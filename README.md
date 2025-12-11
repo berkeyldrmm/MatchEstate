@@ -68,14 +68,3 @@ MatchEstate/
 
 6. **Access the Application**
    Open a web browser and navigate to `http://localhost:7191`.
-
-   ## Application is live
-   You can try the application by visiting following link.
-   
-   https://berkeyld-001-site1.ntempurl.com/
-   
-   Demo Account:
-   
-   Email: berke.yildirim44@gmail.com
-   
-   Password: Berkeyld.44
